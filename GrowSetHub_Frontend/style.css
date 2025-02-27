@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100%;
+    width: 100%;
+}
+body{
+    height: 100%;
+    width: 100%;
+}
+.heroSection{
+    background-image: linear-gradient(45deg, #00ffea,#00c3ff, #005eff);
+    width: 100%;
+    height: 500px;
+}
+.amount{
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.card{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+.masterLogo{
+    position: absolute;
+    left: 40%;
+    top: 36%;
+    width: 50px;
+    height: 30px;
+    transform: translate(-50%,-50%);
+    border-radius: 20px;
+}
+.balance{
+    color: white;
+    position: absolute;
+    left: 48%;
+    top: 56%;
+    transform: translate(-50%,-50%);
+    font-size: 40px;
+}
+.lablebalance{
+    color: rgb(144, 143, 143);
+    position: absolute;
+    left: 46%;
+    top: 47%;
+    transform: translate(-50%,-50%);
+    font-size: 20px;
+}
+.pin{
+    color: rgb(144, 143, 143);
+    position: absolute;
+    left: 44%;
+    top: 36%;
+    transform: translate(-50%,-50%);
+    font-size: 20px;
+}
+.date{
+    color: rgb(144, 143, 143);
+    position: absolute;
+    left: 60%;
+    top: 36%;
+    transform: translate(-50%,-50%);
+    font-size: 20px;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+.box {
+    border: 2px solid #005eff;
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding: 30px;
+    width: 150px;
+    border-radius: 15px;
+    color: #005eff;
+    font-family: 'Roboto' , sans-serif;
+    font-weight: lighter;
+    cursor: pointer;
+}
