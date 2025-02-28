@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
         loginForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
-            const username = document.getElementById("login-name").value;
-            const password = document.getElementById("login-password").value;
+            let username = document.getElementById("login-name").value;
+            let password = document.getElementById("login-password").value;
 
             const userData = {
                 username: username,
@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             console.log("Logging in with:", userData);
-            //const response = await loginUser(userData);
-            //console.log("Login Response:", response);
+            const response = await loginUser(userData);
+            console.log("Login Response:", response);
             username = "";
             password = "";
         });
@@ -49,8 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
         signupForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
-            const username = document.getElementById("signup-name").value;
-            const password = document.getElementById("signup-password").value;
+            const form = event.target;
+
+            let username = document.getElementById("signup-name").value;
+            let password = document.getElementById("signup-password").value;
 
             const isUnique = await checkUserExists(username);
             if (!isUnique) {
@@ -64,10 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             console.log("Signing up with:", userData);
-            //const response = await signupUser(userData);
-            //console.log("Signup Response:", response);
-            username = "";
-            password = "";
+            const response = await signupUser(userData);
+            console.log("Signup Response:", response);
+            form.reset();
         });
     }
 });
@@ -107,6 +108,7 @@ async function signupUser(userData) {
 
         const result = await response.json();
         console.log("Signup Successful:", result);
+        // window.location.href = "login.html";   // resirect to login page
         return result;
     } catch (error) {
         console.error("Signup Error:", error);
@@ -131,10 +133,10 @@ async function loginUser(credentials) {
 
         const result = await response.json();
         console.log("Login Successful:", result);
+        window.location.href = 'home.html';
         return result;
     } catch (error) {
         console.error("Login Error:", error);
         return null;
     }
 }
-
