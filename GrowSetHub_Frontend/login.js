@@ -133,6 +133,7 @@ async function loginUser(credentials) {
 
         const result = await response.json();
         console.log("Login Successful:", result);
+        localStorage.setItem("credentials", JSON.stringify(credentials));
         window.location.href = 'home.html';
         return result;
     } catch (error) {
