@@ -3,9 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="profile.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    
+
+    <div class="container">
+        <div class="containerBody">
+            <div class="maincontainer">
+            <header>
+                <h2>Profile</h2>
+                <div class="profile-pic">
+                    <img src="images/profileimg.png" alt="Profile">
+                </div>
+            </header>
+
+            <section class="fortune">
+                <h1>$67.8 B</h1>
+                <p>Fortune</p>
+                <div class="progress-bar">
+                    <div class="bar balance"></div>
+                    <div class="bar business"></div>
+                    <div class="bar real-estate"></div>
+                    <div class="bar stocks"></div>
+                </div>
+            </section>
+
+            <section class="assets">
+                <div class="card">
+                    <span class="color-line balance"></span>
+                    <div class="card-content">
+                        <span>Balance</span>
+                        <p>$ 43.8 B</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="color-line business"></span>
+                    <div class="card-content">
+                        <span>Businesses</span>
+                        <p>$ 7.5 B</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="color-line stocks"></span>
+                    <div class="card-content">
+                        <span>Stocks</span>
+                        <p>$ 3,687.13</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="color-line real-estate"></span>
+                    <div class="card-content">
+                        <span>Real Estate</span>
+                        <p>$ 7.7 B</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="taxes">
+                <div class="tax-header">
+                    <span class="notification">4</span>
+                </div>
+                <div class="tax-actions">
+                    <img src="images/Taxesimg.png">
+                    <div>
+                        <p style="margin-bottom: 10px;font-size: 20px;">Taxes</p>
+                        <button class="pay-taxes">Pay all taxes</button>
+                    </div>
+                </div>
+            </section>
+            </div>
+            
+            <div class="statscontainer">
+            <div class="stats-card">
+                <h2 class="title">Statistics</h2>
+                <div class="section">
+                    <p>Number of businesses <span class="value">9</span></p>
+                    <p>Real estate <span class="value">16 of 138</span></p>
+                    <p>Bought out companies <span class="value">0 of 50</span></p>
+                </div>
+                <!--<div class="section">
+                    <p>Cars <span class="value">7</span></p>
+                    <p>Aircraft <span class="value">6</span></p>
+                    <p>Yachts <span class="value">3</span></p>
+                    <p>Collectibles <span class="value">10</span></p>
+                    <p>Islands <span class="value">3</span></p>
+                    <p>NFT <span class="value">0</span></p>
+                </div>-->
+                <h3 class="subtitle">Earned</h3>
+                <div class="section">
+                    <p>In business <span class="value">$34.5B</span></p>
+                    <p>On rent <span class="value">$37.4B</span></p>
+                    <p>On dividends <span class="value">$21,642.34</span></p>
+                    <p>On trading <span class="value">-$227.80</span></p>
+                    <p>On crypto trading <span class="value">-$321.5k</span></p>
+                </div>
+            </div>
+            </div>
+        </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item"><img src="images/Investing.png"><span>Investing</span><span class="badge">1</span></div>
+                <div class="nav-item"><img src="images/Business.png"><span>Business</span><span class="badge">8</span></div>
+                <div class="nav-item"><img src="images/Earnings.png"><span>Earnings</span></div>
+                <!--<div class="nav-item"><i class="fas fa-box"></i><span>Items</span></div>-->
+                <div class="nav-item active"><img src="images/Profile.png"><span>Profile</span><span class="badge">1</span></div>
+            </div>
+    </div>
+
 </body>
 </html>

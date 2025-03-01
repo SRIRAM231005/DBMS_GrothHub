@@ -1,0 +1,244 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: white;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    /*max-width: 400px;*/
+    margin: 80px;
+    padding-bottom: 60px;
+}
+
+.containerBody{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+header h2{
+    font-size: 30px;
+}
+
+.profile-pic img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+}
+
+.fortune {
+    text-align: center;
+    padding: 10px;
+}
+
+.fortune h1 {
+    font-size: 32px;
+}
+
+.progress-bar {
+    display: flex;
+    height: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #ddd;
+    margin-top: 10px;
+}
+
+.bar {
+    height: 100%;
+}
+
+.balance { background: #4b9cd3; width: 60%; }
+.business { background: #e74c3c; width: 15%; }
+.real-estate { background: #8e44ad; width: 15%; }
+.stocks { background: #27ae60; width: 10%; }
+
+.assets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 15px 0;
+}
+
+.card {
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-height: 80px;
+    width: 200px;
+}
+
+.color-line {
+    width: 6px;
+    height: 100%;
+}
+
+.card-content {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.card-content span {
+    font-size: 18px;
+    color: #888;
+}
+
+.card-content p {
+    font-size: 28px;
+    /*font-weight: bold;*/
+    margin-top: 15px;
+}
+
+.taxes {
+    background: #f5f5f5;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.tax-header {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: red;
+    color: white;
+    /*padding: 8px 8px;*/
+    height: 20px;
+    width: 20px;
+    font-size: 12px;
+    border-radius: 50%;
+}
+
+.tax-actions {
+    display: flex;
+    justify-content: left;
+    gap: 40px;
+    margin-top: 10px;
+}
+
+.pay-taxes {
+    background: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.bottom-nav {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 10px;
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    margin-top: 100px;
+    width: 100%;
+    /*max-width: 400px;*/
+}
+
+.nav-item {
+    background-color: #f5f5f5;
+    text-align: center;
+    position: relative;
+    padding: 30px;
+    width: 150px;
+    border: 2px solid blue;
+    border-radius: 15px;
+    color: #005eff;
+    cursor: pointer;
+}
+
+/*.nav-item i {
+    font-size: 18px;
+    display: block;
+}*/
+
+.nav-item span {
+    font-size: 20px;
+}
+
+.active {
+    color: blue;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: red;
+    color: white;
+    font-size: 10px;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+}
+
+.color-line.balance { background: #4b9cd3; }
+.color-line.business { background: #e74c3c; }
+.color-line.real-estate { background: #8e44ad; }
+.color-line.stocks { background: #27ae60; }
+
+/* Statistics Section */
+.stats-card {
+    background: linear-gradient(135deg, #2bb0ed, #0a0f30);/*135deg, #2bb0ed, #0a0f30*/
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    line-height: 2.0;
+    width: 400px;
+}
+.title {
+    font-size: 22px;
+    font-weight: bold;
+}
+.subtitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+.section {
+    margin-bottom: 10px;
+}
+p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+}
+.value {
+    font-weight: bold;
+}
