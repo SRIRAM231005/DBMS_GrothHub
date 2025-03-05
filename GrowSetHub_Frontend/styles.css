@@ -13,6 +13,72 @@ body {
     background: linear-gradient(45deg, #00c3ff, #005eff);
 }
 
+
+/* Loader Container */
+#loader-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #0077ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* Coin Stacking Effect */
+.coin {
+    width: 100px;
+    height: 100px;
+    background: gold;
+    border-radius: 50%;
+    border: 3px solid #d4af37;
+    position: absolute;
+    bottom: 50%;
+    animation: dropCoin 0.5s ease-out forwards;
+}
+
+@keyframes dropCoin {
+    0% { transform: translateY(-100px) scale(1.2); opacity: 0}
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Website Name */
+#website-name {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #eef3ff;
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Smooth Fade-Out Effect with Blending */
+.fade-out {
+    animation: fadeMoveLeft 1s forwards;
+}
+
+@keyframes fadeMoveLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+        mask-image: linear-gradient(to right, white 100%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, white 100%, transparent 100%);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-100px);
+        mask-image: linear-gradient(to right, white 0%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, white 0%, transparent 100%);
+    }
+}
+
+
 .container {
     background: white;
     padding: 30px;

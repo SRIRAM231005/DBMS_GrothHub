@@ -1,3 +1,18 @@
+setTimeout(() => {
+    document.getElementById("loader-container").style.display = "none"; // Hide loader
+    document.getElementById("website-name").style.display = "flex"; // Show website name
+
+    setTimeout(() => {
+        document.getElementById("website-name").classList.add("fade-out"); // Fade out name
+        setTimeout(() => {
+            document.getElementById("website-name").style.display = "none"; // Hide name
+            document.getElementById("login-container").style.display = "flex"; // Show login page
+        }, 1000);
+    }, 2000);
+}, 2500);
+
+
+
 function switchTab(tab) {
     let loginForm = document.getElementById("loginForm");
     let signupForm = document.getElementById("signupForm");
