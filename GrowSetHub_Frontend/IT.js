@@ -26,3 +26,80 @@ employees.forEach(emp => {
     `;
     employeeList.appendChild(employeeDiv);
 });
+
+
+
+username = '';
+
+
+async function fetchITMainBusiness(username) {
+    try {
+        const response = await fetch('/ITmainbusiness', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username }),
+        });
+
+        const data = await response.json();
+        return data; // Return fetched data
+        console.log(data);
+    } catch (error) {
+        console.error("❌ Error fetching IT main business:", error);
+        return null;
+    }
+}
+
+async function fetchITUserProjects(username) {
+    try {
+        const response = await fetch('/ITUserProjects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username }),
+        });
+
+        const data = await response.json();
+        return data;
+        console.log(data);
+    } catch (error) {
+        console.error("❌ Error fetching IT user projects:", error);
+        return null;
+    }
+}
+
+async function fetchITUserEmployees(username) {
+    try {
+        const response = await fetch('/ITUserEmployees', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username }),
+        });
+
+        const data = await response.json();
+        return data;
+        console.log(data);
+    } catch (error) {
+        console.error("❌ Error fetching IT user employees:", error);
+        return null;
+    }
+}
+
+async function fetchITProjectsEmployees() {
+    try {
+        const response = await fetch('/ITProjectsEmployees', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await response.json();
+        return data;
+        console.log(data);
+    } catch (error) {
+        console.error("❌ Error fetching IT projects employees:", error);
+        return null;
+    }
+}
+
+fetchITMainBusiness();
+fetchITUserProjects();
+fetchITUserEmployees();
+fetchITProjectsEmployees();

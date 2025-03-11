@@ -31,12 +31,14 @@ connection.connect((err) => {
 });
 
 const userrouter = require('./routes/users');
+const ITbusinessrouter = require('./routes/ITbusiness');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use('/user',userrouter);
+app.use('/ITbusiness',ITbusinessrouter);
 
 app.listen(8008,  ()=>{
     console.log('server started');
