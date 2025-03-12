@@ -46,10 +46,12 @@ async function ITUserProjects(req, res) {
 async function ITUserEmployees(req, res) {
     try {
         const { username } = req.body;
-        const sql = "SELECT * FROM ITEmployees WHERE Username = ?";
+        const sql = "SELECT * FROM ITUseremployees WHERE Username = ?";
         
         const [results] = await connection.promise().query(sql, [username]);
-
+        console.log(results);
+        console.log(username);
+        console.log(req.body);
         if (results.length > 0) {
             return res.status(200).json(results);
         }else{
@@ -61,14 +63,30 @@ async function ITUserEmployees(req, res) {
     }
 }
 
-async function ITProjectsEmployees(req, res){
+// async function ITProjectsEmployees(req, res){
+//     try {
+//         const sql = "SELECT * FROM ITProjects; SELECT * FROM ITEmployees";
+//         const [results] = await connection.promise().query(sql);
+
+//         return res.status(200).json({
+//             Projects: results[0], 
+//             Employees: results[1]
+//         });
+
+//     } catch (err) {
+//         console.error("❌ Error getting data:", err);
+//         return res.status(500).json({ error: "Database error" });
+//     }
+// }
+
+async function ITProjectsEmployees(req, res) {
     try {
-        const sql = "SELECT * FROM ITProjects; SELECT * FROM ITEmployees";
-        const [results] = await connection.promise().query(sql);
+        const [projects] = await connection.promise().execute("SELECT * FROM ITProjects");
+        const [employees] = await connection.promise().execute("SELECT * FROM ITEmployees");
 
         return res.status(200).json({
-            Projects: results[0], 
-            Employees: results[1]
+            Projects: projects,
+            Employees: employees
         });
 
     } catch (err) {
@@ -76,6 +94,7 @@ async function ITProjectsEmployees(req, res){
         return res.status(500).json({ error: "Database error" });
     }
 }
+
 
 module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees };
 

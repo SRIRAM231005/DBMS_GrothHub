@@ -29,20 +29,20 @@ employees.forEach(emp => {
 
 
 
-username = '';
+let username = 'user';
 
 
 async function fetchITMainBusiness(username) {
     try {
-        const response = await fetch('/ITmainbusiness', {
+        const response = await fetch('http://localhost:8008/ITbusiness/ITmainbusiness', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username }),
         });
 
         const data = await response.json();
-        return data; // Return fetched data
         console.log(data);
+        return data; // Return fetched data
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
         return null;
@@ -51,15 +51,15 @@ async function fetchITMainBusiness(username) {
 
 async function fetchITUserProjects(username) {
     try {
-        const response = await fetch('/ITUserProjects', {
+        const response = await fetch('http://localhost:8008/ITbusiness/ITUserProjects', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username }),
         });
 
         const data = await response.json();
-        return data;
         console.log(data);
+        return data;
     } catch (error) {
         console.error("❌ Error fetching IT user projects:", error);
         return null;
@@ -68,15 +68,15 @@ async function fetchITUserProjects(username) {
 
 async function fetchITUserEmployees(username) {
     try {
-        const response = await fetch('/ITUserEmployees', {
+        const response = await fetch('http://localhost:8008/ITbusiness/ITUserEmployees', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username }),
         });
 
         const data = await response.json();
-        return data;
         console.log(data);
+        return data;
     } catch (error) {
         console.error("❌ Error fetching IT user employees:", error);
         return null;
@@ -85,21 +85,21 @@ async function fetchITUserEmployees(username) {
 
 async function fetchITProjectsEmployees() {
     try {
-        const response = await fetch('/ITProjectsEmployees', {
+        const response = await fetch('http://localhost:8008/ITbusiness/ITProjectsEmployees', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
 
         const data = await response.json();
-        return data;
         console.log(data);
+        return data;
     } catch (error) {
         console.error("❌ Error fetching IT projects employees:", error);
         return null;
     }
 }
 
-fetchITMainBusiness();
-fetchITUserProjects();
-fetchITUserEmployees();
+fetchITMainBusiness(username);
+fetchITUserProjects(username);
+fetchITUserEmployees(username);
 fetchITProjectsEmployees();
