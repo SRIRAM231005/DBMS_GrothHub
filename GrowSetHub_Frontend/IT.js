@@ -104,14 +104,13 @@ async function fetchITProjectsEmployees(username) {
         });
 
         ProjectsAndEmployees = await response.json();
-        console.log("hee:",ProjectsAndEmployees);
+        console.log(ProjectsAndEmployees);
         if(Object.keys(ProjectsAndEmployees).length===0){
             return;
         }else{
             showPrjList();
             EmployeeListGeneration();       
         }
-        //return data;
     } catch (error) {
         console.error("❌ Error fetching IT projects employees:", error);
         return null;

@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS ItUserProjects(
     Username VARCHAR(255),
     Projectname VARCHAR(255)
 );
+-- ALTER TABLE ItUserProjects ADD COLUMN 
 
 CREATE TABLE IF NOT EXISTS ItEmployees(
     Employeename VARCHAR(255) PRIMARY KEY,
