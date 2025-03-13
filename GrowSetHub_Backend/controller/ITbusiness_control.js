@@ -115,6 +115,22 @@ async function ITEmployeesFire(req , res){
     }
 }
 
+async function ITEmployeesHire(req , res){
+    try {
+        const { username } = req.body;
+        const sql = "SELECT e.* FROM ITEmployees e LEFT JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName AND ue.Username = ? WHERE ue.EmployeeName IS NULL";
+        
+        const [results] = await connection.promise().query(sql, [username]);
+        console.log(req.body);
+        
+        return res.status(200).json(results);
 
-module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire };
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+
+module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire };
 

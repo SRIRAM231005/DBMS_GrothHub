@@ -117,7 +117,7 @@ async function fetchITProjectsEmployees(username) {
     }
 }
 
-async function ITEmployeesFire(username,employeename){
+async function fetchITEmployeesFire(username,employeename){
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITEmployeesFire', {
             method: 'POST',
@@ -137,11 +137,33 @@ async function ITEmployeesFire(username,employeename){
     }
 }
 
+
+async function fetchITEmployeesFire(username){
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/ITEmployeesHire', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                 username: username
+            }),
+        });
+        const data = await response.json();
+        console.log(data);
+        dialogueClose1();
+        EmployeeHireDialog();
+        //return data;
+    } catch (error) {
+        console.error("❌ Error fetching IT projects employees:", error);
+        return null;
+    }
+}
+
+
 fetchITMainBusiness(username);
 fetchITUserProjects(username);
 fetchITUserEmployees(username);
 fetchITProjectsEmployees(username);
-fetchITEmployeesFire(username,employeename);
+//fetchITEmployeesFire(username,employeename);
 //EmployeeListGeneration()
 function UpdateNameAndRevenue(data){
     const businessName = document.querySelector('.logo h1');
@@ -281,8 +303,9 @@ function EmployeeDivFunction(count){
                                 <div>${employees[count-1].name}</div>
                                 <div><img src="images/cross_close.png" onclick="dialogueClose1();"></div>
                             </div>
-                            <div class="EmployeesBody"></div>`;
-        ProjectsAndEmployees.Employees.forEach(element =>{
+                            <div class="EmployeesBody"></div>
+                            <div><button class="HireButton">Hire</button></div>`;
+        ProjectsAndEmployees.Employees.forEach(element,index =>{
             console.log(element);
             if(element.Role === employees[count-1].name){
                 console.log(4);
@@ -305,7 +328,7 @@ function EmployeeDivFunction(count){
                 </div>`;
                 document.querySelector('.EmployeesBody').appendChild(EmployeeBox);
             }
-            
+            FireEmployee(index,count);
         })
         dialog.showModal();
     })
@@ -318,3 +341,11 @@ function dialogueClose1() {
         dialog.remove(); // Remove the dialog from the DOM to clean up
     }
 }
+
+function FireEmployee(index,count){
+    document.querySelector(`.employeeFireButton${count}`).addEventListener('click', ()=>{
+        fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[index].Employeename);
+    })
+}
+
+function EmployeeHireDialog(){}
