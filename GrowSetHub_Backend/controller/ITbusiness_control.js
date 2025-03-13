@@ -83,7 +83,8 @@ async function ITProjectsEmployees(req, res) {
     try {
         const { username } = req.body;
         const [projects] = await connection.promise().execute("SELECT * FROM ITProjects");
-        const sqlemployees = "SELECT e.* FROM ITEmployees e LEFT JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName AND ue.Username = ? WHERE ue.EmployeeName IS NULL;";
+        const sqlemployees = "SELECT e.* FROM ITEmployees e INNER JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName WHERE ue.Username = ?";
+        //SELECT e.* FROM ITEmployees e LEFT JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName AND ue.Username = 'user' WHERE ue.EmployeeName IS NULL;
 
         const [employees] = await connection.promise().query(sqlemployees, [username]);
 

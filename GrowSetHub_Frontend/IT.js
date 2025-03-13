@@ -37,6 +37,12 @@ function EmployeeListGeneration(){
 let username = 'user';
 let ProjectsAndEmployees;
 
+/*const ProjectsListButton = document.querySelector('.start-project');
+    ProjectsListButton.addEventListener('click', ()=>{
+        console.log(1);
+        fetchITProjectsEmployees(username);
+    })*/
+
 async function fetchITMainBusiness(username) {
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITmainbusiness', {
@@ -97,14 +103,14 @@ async function fetchITProjectsEmployees(username) {
             body: JSON.stringify({ username }),
         });
 
-        const data = await response.json();
-        console.log(data);
-        ProjectsAndEmployees = data;
-        console.log(ProjectsAndEmployees);
-        if(ProjectsAndEmployees){
+        ProjectsAndEmployees = await response.json();
+        console.log("hee:",ProjectsAndEmployees);
+        if(Object.keys(ProjectsAndEmployees).length===0){
+            return;
+        }else{
             showPrjList();
-            EmployeeListGeneration();
-        }        
+            EmployeeListGeneration();       
+        }
         //return data;
     } catch (error) {
         console.error("❌ Error fetching IT projects employees:", error);
@@ -137,6 +143,7 @@ fetchITUserProjects(username);
 fetchITUserEmployees(username);
 fetchITProjectsEmployees(username);
 fetchITEmployeesFire(username,employeename);
+//EmployeeListGeneration()
 function UpdateNameAndRevenue(data){
     const businessName = document.querySelector('.logo h1');
     const Revenue = document.querySelector('.finance-card h2');
@@ -210,8 +217,8 @@ function UpdateNameAndRevenue(data){
 
 function showPrjList(){
     const ProjectsListButton = document.querySelector('.start-project');
-    ProjectsListButton.addEventListener('click', ()=>{
-        console.log("hi");
+        console.log("2");
+        ProjectsListButton.addEventListener('click', ()=>{
         let dialog = document.querySelector('.d1');
         if(!dialog){
             const body = document.body;
@@ -240,14 +247,15 @@ function showPrjList(){
                             <span><img src="${employees[5].icon}"></span> ${element.NoOfTester}
                         </div>
                         <div class="project-cost" style="margin:10px; padding-bottom:10px;">
-                            💰 $${element.Cost.toLocaleString()}
+                            💰 $${element.Cost}
                         </div>
                     </div>
                 </div>`;
             document.querySelector('.ProjectsBody').appendChild(ProjectsBox);
         })
         dialog.showModal();
-    })
+
+        });
 }
 
 function dialogueClose() {
@@ -261,6 +269,7 @@ function dialogueClose() {
 
 function EmployeeDivFunction(count){
     const EmployeeType = document.querySelector(`.employee${count}`);
+    console.log(3);
     EmployeeType.addEventListener('click', ()=>{
         let dialog = document.querySelector('.d2');
         if(!dialog){
@@ -275,13 +284,15 @@ function EmployeeDivFunction(count){
                             </div>
                             <div class="EmployeesBody"></div>`;
         ProjectsAndEmployees.Employees.forEach(element =>{
+            console.log(element);
             if(element.Role === employees[count-1].name){
+                console.log(4);
                 const EmployeeBox = document.createElement('div');
                 EmployeeBox.classList.add('EmployeeBox');
                 EmployeeBox.innerHTML = `<div class="employee-card">
                     <div class="employee-header" style="display: flex; align-items: center ; margin-bottom:10px; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 20px;">
                         <img src="${employees[count-1].icon}">
-                        <span style="padding-left: 5px;">${element.EmployeeName}</span>
+                        <span style="padding-left: 5px;">${element.Employeename}</span>
                     </div>
                     <div class="employee-details" style="font-size:20px;">
                         <div>
