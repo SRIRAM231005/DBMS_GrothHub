@@ -81,8 +81,11 @@ async function ITUserEmployees(req, res) {
 
 async function ITProjectsEmployees(req, res) {
     try {
+        const { username } = req.body;
         const [projects] = await connection.promise().execute("SELECT * FROM ITProjects");
-        const [employees] = await connection.promise().execute("SELECT * FROM ITEmployees");
+        const sqlemployees = "SELECT e.* FROM ITEmployees e LEFT JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName AND ue.Username = ? WHERE ue.EmployeeName IS NULL;";
+
+        const [employees] = await connection.promise().query(sqlemployees, [username]);
 
         return res.status(200).json({
             Projects: projects,
@@ -95,6 +98,22 @@ async function ITProjectsEmployees(req, res) {
     }
 }
 
+async function ITEmployeesFire(req , res){
+    try {
+        const { username,employeename } = req.body;
+        const sql = "DELETE FROM ITUseremployees WHERE Username = ? AND EmployeeName = ?";
+        
+        const [results] = await connection.promise().query(sql, [username,employeename]);
+        console.log(req.body);
+        
+        return res.status(200).json(results);
 
-module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees };
+    } catch (err) {
+        console.error("❌ Error getting data1:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+
+module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire };
 

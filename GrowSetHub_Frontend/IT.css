@@ -218,3 +218,80 @@ header {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Dialog Box Styling*/ 
+.d1,.d2 {
+    width: 400px;
+    max-width: 90%;
+    background: white;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Dialog Header */
+.dialogHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Close Button */
+.dialogHead img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Project Boxes */
+.ProjectsBox, .EmployeeBox {
+    background: #f5f5f5;
+    margin: 30px 30px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.ProjectsBody, .EmployeesBody{
+    max-height: 480px;
+    overflow-y: auto;
+}
+
+.ProjectsBody::-webkit-scrollbar {
+    display: none;
+}
+
+.EmployeesBody::-webkit-scrollbar {
+    display: none;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.project-details div span img{
+    width: 25px;
+    height: 25px;
+}
+.project-details div span{
+    padding: 5px;
+}
