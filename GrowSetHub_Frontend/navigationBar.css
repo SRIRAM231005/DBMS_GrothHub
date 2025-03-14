@@ -1,0 +1,62 @@
+.Fullbox{
+    position: relative;
+}
+.bottom-nav {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+}
+
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+    font-size: 20px;
+    color: #0056b3;
+    cursor: pointer;
+    width: 90px;
+    transition: background 0.2s ease-in-out, padding 0.3s ease-in-out;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 1px solid rgb(155, 154, 154);
+}
+
+.text {
+    padding-left: 12px;
+    opacity: 0;
+    width: 0;
+    transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+.nav-item:hover {
+    background: white;
+    width: 200px;
+    padding: 20px 24px;
+    border-top: 1px solid rgb(155, 154, 154);
+    border-bottom: 1px solid rgb(155, 154, 154);
+    border-right: 1px solid rgb(155, 154, 154);
+}
+
+.nav-item:hover span {
+    opacity: 1;
+    width: auto;
+}
+
+.badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 50%;
+    transition: transform 0.2s ease-in-out;
+}

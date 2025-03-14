@@ -5,21 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT Company Dashboard</title>
     <link rel="stylesheet" href="IT.css">
+    <link rel="stylesheet" href="navigationBar.css">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
     <div class="Fullbox">
-    <div class="bottom-nav">
-        <div class="nav-item"><img src="images/Investing.png"><span class="text">Investing</span><span class="badge">1</span></div>
-        <div class="nav-item"><img src="images/Business.png"><span class="text">Business</span><span class="badge">8</span></div>
-        <div class="nav-item"><img src="images/Earnings.png"><span class="text">Earnings</span></div>
-        <!--<div class="nav-item"><i class="fas fa-box"></i><span>Items</span></div>-->
-        <div class="nav-item active"><img src="images/Profile.png"><span class="text">Profile</span><span class="badge">1</span></div>
-    </div>
-
+    <div class="bottom-nav" id="bottomNav"></div>
     <div class="dashboard">
-        <!-- Header -->
         <header>
             <div class="logo">
                 <i class="fas fa-desktop"></i>
@@ -28,7 +21,6 @@
             <i class="fas fa-cog settings"></i>
         </header>
 
-        <!-- Finance Section -->
         <section class="finance-card">
             <h2>$ 22,000,000.00</h2>
             <p class="pending">Pending</p>
@@ -36,7 +28,6 @@
             <p class="wage">Wage costs per hour</p>
         </section>
 
-        <!-- Projects Section -->
         <section class="projects">
             <h2>Projects</h2>
             <div class="project-cards">
@@ -54,19 +45,13 @@
                 </div>
             </div>
         </section>
-
-        <!-- Start Project Button -->
         <button class="start-project">Start New Project</button>
-
-        <!-- Employees Section -->
         <section class="employees">
             <h2>Employees</h2>
             <div class="employee-list" id="employeeList"></div>
         </section>
     </div>
     </div>
-
-    <!-- JavaScript -->
     <script src="IT.js"></script>
 </body>
 </html>
