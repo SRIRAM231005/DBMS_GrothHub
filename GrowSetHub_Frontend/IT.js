@@ -255,7 +255,7 @@ function showPrjList(){
         ProjectsAndEmployees.Projects.forEach(element =>{
             const ProjectsBox = document.createElement('div');
             ProjectsBox.classList.add('ProjectsBox');
-            ProjectsBox.innerHTML = `<div class="project-card">
+            ProjectsBox.innerHTML = `<div class="project-card" onclick = "openInterfacePage()">
                     <div class="project-header" style="display: flex; align-items: center; background: #5a0fb1; color:white ;margin-bottom:10px; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 20px;">
                         <img src="images/project_icon.png">
                         <span style="padding-left: 5px;">${element.Projectname}</span>
@@ -285,6 +285,10 @@ function dialogueClose() {
         dialog.close(); // Close the dialog
         dialog.remove(); // Remove the dialog from the DOM to clean up
     }
+}
+
+function openInterfacePage(){
+    window.location.href = "interface_layout.html";
 }
 
 

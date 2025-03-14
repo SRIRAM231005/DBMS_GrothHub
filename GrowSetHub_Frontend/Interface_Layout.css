@@ -32,7 +32,11 @@ body {
 
 .teams {
     margin-top: 20px;
-    /* align-items: center; */
+    /* margin-left: 350px; */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
 }
 
 .team {
@@ -43,8 +47,13 @@ body {
     border-radius: 6px;
     margin: 5px 0;
     cursor: pointer;
-    width: 50%;
+    width: 750px;
     align-items: center;
+}
+
+.parent-div{
+    position: relative;
+    /* margin-left: 300px; */
 }
 
 .team.disabled {
@@ -53,11 +62,11 @@ body {
 }
 
 .footer {
-    margin-top: 20px;
+    margin-top: 400px;
 }
 
 button {
-    width: 100%;
+    width: 770px;
     padding: 10px;
     background: #9370db;
     border: none;
