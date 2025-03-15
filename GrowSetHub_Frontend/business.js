@@ -1,3 +1,21 @@
+const socket = io('http://localhost:8008'); // Connect to backend
+
+        socket.on('updateProjects', (projects) => {
+            console.log('Received updated projects:', projects);
+            /*const list = document.getElementById('projectList');
+            list.innerHTML = ''; // Clear existing list
+
+            projects.forEach(project => {
+                const li = document.createElement('li');
+                li.textContent = `${project.name} - ${project.status}`;
+                list.appendChild(li);
+            });*/
+        });
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
         { img: "images/Investing.png", text: "Investing", badge: "1", link: "investing.html" },
@@ -28,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const credentials= localStorage.getItem('credentials');
-//console.log(credentials);
+console.log(credentials);
 
 
 
@@ -118,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
     startButton.addEventListener("click", openModal);
 });
 
-async function fetchITUserBusiness(username) {
+async function fetchUserBusiness(username) {
     try {
         const response = await fetch('http://localhost:8008/user/SelectUserbusiness', {
             method: 'POST',
@@ -127,14 +145,18 @@ async function fetchITUserBusiness(username) {
         });
 
         const data = await response.json();
-        console.log(data);
+        console.log('userBusiness:',data);
         //return data; // Return fetched data
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
         return null;
     }
 }
-//fetchITUserBusiness(credentials.username);
+fetchUserBusiness(credentials);
+
+async function fetchAddUserBusiness(username,businessname,business){
+
+}
 
 const businesses = [
     {
