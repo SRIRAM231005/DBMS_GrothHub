@@ -118,7 +118,7 @@ async function ITEmployeesFire(req , res){
 async function ITEmployeesHire(req , res){
     try {
         const { username } = req.body;
-        const sql = "SELECT e.* FROM ITEmployees e LEFT JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName AND ue.Username = ? WHERE ue.EmployeeName IS NULL";
+        const sql = "select e.*, ee.Username from ITEmployees e left join ITUserEmployees ee using(Employeename) where ee.Username<>? or ee.Username is null";
         
         const [results] = await connection.promise().query(sql, [username]);
         console.log(req.body);

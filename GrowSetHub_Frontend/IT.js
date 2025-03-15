@@ -63,7 +63,7 @@ function EmployeeListGeneration(){
 
 
 
-const credentials= localStorage.getItem('credentials');
+const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log(credentials);
 let username = credentials;
 let ProjectsAndEmployees;
@@ -161,6 +161,7 @@ async function fetchITEmployeesFire(username,employeename){
         const data = await response.json();
         console.log(data);
         dialogueClose1();
+        location.reload();
         //return data;
     } catch (error) {
         console.error("❌ Error fetching IT projects employees:", error);
@@ -169,7 +170,8 @@ async function fetchITEmployeesFire(username,employeename){
 }
 
 
-async function fetchITEmployeesFire(username){
+async function fetchITEmployeesHire(username){
+    console.log(username);
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITEmployeesHire', {
             method: 'POST',
@@ -179,7 +181,7 @@ async function fetchITEmployeesFire(username){
             }),
         });
         const data = await response.json();
-        console.log(data);
+        console.log("hire:",data);
         dialogueClose1();
         EmployeeHireDialog();
         //return data;
@@ -339,8 +341,8 @@ function EmployeeDivFunction(count){
                                 <div><img src="images/cross_close.png" onclick="dialogueClose1();"></div>
                             </div>
                             <div class="EmployeesBody"></div>
-                            <div><button class="HireButton">Hire</button></div>`;
-        ProjectsAndEmployees.Employees.forEach(element,index =>{
+                            <div><button class="HireButton${count}">Hire</button></div>`;
+        ProjectsAndEmployees.Employees.forEach((element, index) =>{
             console.log(element);
             if(element.Role === employees[count-1].name){
                 console.log(4);
@@ -364,6 +366,7 @@ function EmployeeDivFunction(count){
                 document.querySelector('.EmployeesBody').appendChild(EmployeeBox);
             }
             FireEmployee(index,count);
+            HireEmployeeBSR(count);
         })
         dialog.showModal();
     })
@@ -378,8 +381,16 @@ function dialogueClose1() {
 }
 
 function FireEmployee(index,count){
-    document.querySelector(`.employeeFireButton${count}`).addEventListener('click', ()=>{
+    document.querySelector(`.employee-fire-button${count}`).addEventListener('click', ()=>{
         fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[index].Employeename);
+    })
+}
+
+function HireEmployeeBSR(count){
+    console.log("55");
+    document.querySelector(`.HireButton${count}`).addEventListener('click', ()=>{
+        console.log("5");
+        fetchITEmployeesHire(username);
     })
 }
 
