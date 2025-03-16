@@ -1,4 +1,4 @@
-const credentials= localStorage.getItem('credentials');
+const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log(credentials);
 
 
@@ -35,3 +35,6 @@ async function fetchStatistics(username){
         return null;
     }
 }
+
+fetchBalance(credentials);
+fetchStatistics(credentials);

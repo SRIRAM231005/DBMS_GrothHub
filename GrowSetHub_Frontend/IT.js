@@ -271,7 +271,6 @@ function UpdateNameAndRevenue(data){
 
 function showPrjList(){
     const ProjectsListButton = document.querySelector('.start-project');
-        console.log("2");
         ProjectsListButton.addEventListener('click', ()=>{
         let dialog = document.querySelector('.d1');
         if(!dialog){

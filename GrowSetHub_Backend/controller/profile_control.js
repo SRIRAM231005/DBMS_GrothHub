@@ -12,10 +12,11 @@ const connection = mysql.createConnection({
 async function Balance(req , res){
     try {
         const { username } = req.body;
+        console.log(username);
         const sql = "SELECT * FROM Balances WHERE Username = ?";
         
         const [results] = await connection.promise().query(sql, [username]);
-
+        console.log(results);
         return res.status(200).json(results);
 
     } catch (err) {

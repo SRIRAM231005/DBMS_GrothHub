@@ -1,5 +1,5 @@
 const express = require("express");
-const {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire} = require('../controller/ITbusiness_control');
+const {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire,showDevList} = require('../controller/ITbusiness_control');
 
 const ITbusinessRouter = express.Router();
 
@@ -10,5 +10,6 @@ ITbusinessRouter.route('/ITProjectsEmployees').post(ITProjectsEmployees);
 ITbusinessRouter.route('/ITEmployeesFire').post(ITEmployeesFire);
 ITbusinessRouter.route('/ITEmployeesHire').post(ITEmployeesHire);
 ITbusinessRouter.route('/ITEmployeesAfterHire').post(ITEmployeesAfterHire);
+ITbusinessRouter.route('/showDevList').post(showDevList);
 
 module.exports = ITbusinessRouter

@@ -30,7 +30,7 @@ const userSignup = (req, res) => {
         return res.status(500).json({ error: "Database error" });
       }
 
-      const sql2 = "INSERT INTO Statitics (Username, NoOfBusiness, Real_estate) VALUES(?,?,?)";
+      const sql2 = "INSERT INTO Statistics (Username, NoOfBusiness, Real_estate) VALUES(?,?,?)";
       connection.query(sql2, [username, 0, 0], (err,result)=>{
         if (err) {
           console.error("❌ Signup error:", err);
