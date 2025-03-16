@@ -1,6 +1,33 @@
 const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log(credentials);
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    const Investing = document.querySelector('.Investing');
+    const Business = document.querySelector('.Business');
+    const Earning = document.querySelector('.Earnings');
+    const Profile = document.querySelector('.Profile');
+
+    Investing.addEventListener('click', () => {
+        console.log("Investing Clicked");
+        window.location.href = 'investment.html';
+    });
+    Business.addEventListener('click', () => {
+        console.log("Business Clicked");
+        window.location.href = 'business.html';
+    });
+    Earning.addEventListener('click', () => {
+        console.log("Earning Clicked");
+        window.location.href = 'home.html';
+    });
+    Profile.addEventListener('click', () => {
+        console.log("Profile Clicked");
+        window.location.href = 'profile.html';
+    });
+});
+
+
+
 let Balance;
 let Statistics;
 async function fetchBalance(username){
@@ -73,8 +100,7 @@ function UpdateStatistics(){
     values[3].textContent = `$${formatNumber(Statistics.E_business)}`; 
     values[4].textContent = `$${formatNumber(Statistics.E_rent)}`; 
     values[5].textContent = `$${formatNumber(Statistics.E_trading)}`; 
-    values[6].textContent = `$${formatNumber(Statistics.E_dividents)}`; 
-    //values[7].textContent = `$${earnedCrypto.toFixed(2)}k`; 
+    values[6].textContent = `$${formatNumber(Statistics.E_dividends)}`; 
 }
 
 function formatNumber(value) {

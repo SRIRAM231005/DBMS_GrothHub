@@ -45,18 +45,30 @@ function showDevList(){
     const DevelopersListButton = document.getElementById('developmentTeam');
     console.log(DevelopersListButton);
         DevelopersListButton.addEventListener('click', ()=>{
-            
-                
-                
                 // Render the developers list in the UI
                 const developersList = document.querySelector('.developer-list'); // Ensure this div exists in your HTML
                 developersList.innerHTML = ''; // Clear previous data
                 console.log(developers);
+
+                // Ensure the developer list is visible
+                // document.getElementById('developerMenu').style.display = 'block';
+
+                // Create and append header row
+                const header = document.createElement('div');
+                header.classList.add('developer-header');
+                header.innerHTML = `
+                    <span style="flex: 0.1;"></span> <!-- Empty space for checkbox -->
+                    <span style="flex: 1;">Employee Name</span>
+                    <span style="flex: 1;">Salary</span>
+                    <span style="flex: 1;">Skill</span>
+                `;
+                developersList.appendChild(header);
                 
                 developers.forEach(dev => {
                     const devElement = document.createElement('div');
                     devElement.classList.add('developer-item');
                     devElement.innerHTML = `
+                        <input type="checkbox">
                         <span>${dev.Employeename}</span>
                         <span>$${dev.Salary}</span>
                         <span>${dev.Skill}</span>
@@ -66,45 +78,34 @@ function showDevList(){
         
                 // Show the developers menu
                 document.getElementById('developerMenu').style.display = 'block';
-        
-            
-        
-        // ProjectsAndEmployees.Projects.forEach(element =>{
-        //     const ProjectsBox = document.createElement('div');
-        //     ProjectsBox.classList.add('ProjectsBox');
-        //     ProjectsBox.innerHTML = `<div class="project-card" onclick = "openInterfacePage()">
-        //             <div class="project-header" style="display: flex; align-items: center; background: #5a0fb1; color:white ;margin-bottom:10px; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 20px;">
-        //                 <img src="images/project_icon.png">
-        //                 <span style="padding-left: 5px;">${element.Projectname}</span>
-        //             </div>
-        //             <div class="project-details" style="font-size:20px;">
-        //                 <div>
-        //                     <span><img src="${employees[0].icon}"></span> ${element.NoOfDev}
-        //                     <span><img src="${employees[3].icon}"></span> ${element.NoOfDesigner}
-        //                     <span><img src="${employees[4].icon}"></span> ${element.NoOfTeamLeader}
-        //                     <span><img src="${employees[5].icon}"></span> ${element.NoOfTester}
-        //                 </div>
-        //                 <div class="project-cost" style="margin:10px; padding-bottom:10px;">
-        //                     💰 $${element.Cost}
-        //                 </div>
-        //             </div>
-        //         </div>`;
-        //     document.querySelector('.ProjectsBody').appendChild(ProjectsBox);
-        // })
-        // dialog.showModal();
-
         });
 }
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     const developmentTeam = document.getElementById("developmentTeam");
+//     const developerMenu = document.getElementById("developerMenu");
+
+//     developmentTeam.addEventListener("click", function () {
+//         if (developerMenu.style.maxHeight) {
+//             developerMenu.style.maxHeight = null; // Collapse
+//         } else {
+//             developerMenu.style.maxHeight = developerMenu.scrollHeight + "px"; // Expand
+//         }
+//     });
+// });
 
 document.addEventListener("DOMContentLoaded", function () {
     const developmentTeam = document.getElementById("developmentTeam");
     const developerMenu = document.getElementById("developerMenu");
+    const container = document.querySelector(".container");
 
     developmentTeam.addEventListener("click", function () {
-        if (developerMenu.style.maxHeight) {
-            developerMenu.style.maxHeight = null; // Collapse
+        if (!developerMenu.classList.contains("expanded")) {
+            console.log("Opening menu");
+            developerMenu.classList.add("expanded");
         } else {
-            developerMenu.style.maxHeight = developerMenu.scrollHeight + "px"; // Expand
+            console.log("Closing menu");
+            developerMenu.classList.remove("expanded");
         }
     });
 });

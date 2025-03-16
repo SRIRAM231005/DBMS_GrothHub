@@ -30,7 +30,7 @@ body{
 }
 .masterLogo{
     position: absolute;
-    left: 40%;
+    left: 38%;
     top: 36%;
     width: 50px;
     height: 30px;
@@ -40,7 +40,7 @@ body{
 .balance{
     color: white;
     position: absolute;
-    left: 48%;
+    left: 49.5%;
     top: 56%;
     transform: translate(-50%,-50%);
     font-size: 40px;

@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // Employee Data Array
-const employees = [
+let employees = [
     { name: "Junior Developers", salary: "57,606", count: 16, icon: "images/juniorDev.png", color: "green" },
     { name: "Middle Developers", salary: "316,005", count: 3, icon: "images/middleDev.png", color: "blue" },
     { name: "Senior Developers", salary: "0", count: 0, icon: "images/seniorDev.png", color: "gold" },
@@ -39,7 +39,34 @@ const employees = [
 ];
 
 
-function EmployeeListGeneration(){
+function EmployeeListGeneration(ProjectsAndEmployees){
+
+
+    let roleCounts = {}; // Object to store role counts
+
+        ProjectsAndEmployees.Employees.forEach((emp) => {
+            let role = emp.Role; // Assuming `role` is the key storing employee role
+            console.log('role:',emp.Role);
+            if (roleCounts[role]) {
+                roleCounts[role]++;
+            } else {
+                roleCounts[role] = 1;
+            }
+        });
+
+        // Step 2: Update the `employees` array with these counts
+        employees.forEach((emp) => {
+            if (roleCounts[emp.name]) {
+                emp.count = roleCounts[emp.name]; // Update count
+            } else {
+                emp.count = 0; // If no employees in this role, set count to 0
+            }
+        });
+
+        console.log("roleCount:",roleCounts);
+
+
+
     const employeeList = document.getElementById("employeeList");
     let count = 1;
     employees.forEach(emp => {
@@ -56,8 +83,24 @@ function EmployeeListGeneration(){
             <span class="line" style="background-color: ${emp.color};"></span>
         `;
         employeeList.appendChild(employeeDiv);
-        EmployeeDivFunction(count);
+        //EmployeeDivFunction(count);
+        //const EmployeeType = document.querySelector(`.employee${count}`);
+        //EmployeeType.addEventListener('click', ()=>{
+        //    console.log(count);
+        //});
         count++;
+    });
+    //EmployeeDivFunction(count);
+    document.querySelectorAll('.employee').forEach((div,index) => {
+        div.addEventListener('click', () => {
+            // Extract number from class name (e.g., "emp3" → 3)
+            //let number = div.className.match(/employee(\d+)/);
+            //alert(`You clicked on ${div.className} - Number: ${number}`);
+            /*if (number) {
+                EmployeeDivFunction(number[1]); // Calls function with extracted number
+            }*/
+            EmployeeDivFunction(index+1);
+        });
     });
 }
 
@@ -140,7 +183,7 @@ async function fetchITProjectsEmployees(username) {
             return;
         }else{
             showPrjList();
-            EmployeeListGeneration();       
+            EmployeeListGeneration(ProjectsAndEmployees);       
         }
     } catch (error) {
         console.error("❌ Error fetching IT projects employees:", error);
@@ -169,6 +212,7 @@ async function fetchITEmployeesFire(username,employeename){
     }
 }
 
+let AllEmp;
 
 async function fetchITEmployeesHire(username){
     console.log(username);
@@ -180,8 +224,8 @@ async function fetchITEmployeesHire(username){
                  username: username
             }),
         });
-        const data = await response.json();
-        console.log("hire:",data);
+        AllEmp = await response.json();
+        console.log("hire:",AllEmp);
         dialogueClose1();
         EmployeeHireDialog();
         //return data;
@@ -325,9 +369,10 @@ function openInterfacePage(){
 
 
 function EmployeeDivFunction(count){
-    const EmployeeType = document.querySelector(`.employee${count}`);
-    console.log(3);
-    EmployeeType.addEventListener('click', ()=>{
+    //const EmployeeType = document.querySelector(`.employee${count}`);
+    //console.log(3);
+    //EmployeeType.addEventListener('click', ()=>{
+        console.log("1st:",count);
         let dialog = document.querySelector('.d2');
         if(!dialog){
             const body = document.body;
@@ -340,9 +385,9 @@ function EmployeeDivFunction(count){
                                 <div><img src="images/cross_close.png" onclick="dialogueClose1();"></div>
                             </div>
                             <div class="EmployeesBody"></div>
-                            <div><button class="HireButton${count}">Hire</button></div>`;
+                            <div><button class="HireButton${count} HireButtons">Hire</button></div>`;
         ProjectsAndEmployees.Employees.forEach((element, index) =>{
-            console.log(element);
+            console.log("element:",element);
             if(element.Role === employees[count-1].name){
                 console.log(4);
                 const EmployeeBox = document.createElement('div');
@@ -358,17 +403,29 @@ function EmployeeDivFunction(count){
                             <span>Skill:</span> ${element.Skill}
                         </div>
                         <div class="employee-fire" style="margin:10px; padding-bottom:10px;">
-                            <button class="employee-fire-button${count} employeeFireButton">Fire</button>
+                            <button class="employee-fire-button${count}${index} FireButton" data-number="${index}">Fire</button>   
                         </div>
                     </div>
                 </div>`;
                 document.querySelector('.EmployeesBody').appendChild(EmployeeBox);
             }
-            FireEmployee(index,count);
+            /*setTimeout(() => {
+                FireEmployee(index,count);
+            }, 100);*/
+            //FireEmployee(index,count);
             HireEmployeeBSR(count);
         })
+        if((document.querySelector(".employee-fire"))){
+            document.querySelector(".employee-fire").addEventListener("click", (event) => {
+                if (event.target.classList.contains("FireButton")) {
+                    console.log(`Button inside Employee ${count},${event.target.dataset.number} clicked!`);
+                    fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[event.target.dataset.number].Employeename);
+                }
+            });
+        }
+
         dialog.showModal();
-    })
+    //})//employeeFireButton
 }
 
 function dialogueClose1() {
@@ -380,9 +437,12 @@ function dialogueClose1() {
 }
 
 function FireEmployee(index,count){
-    document.querySelector(`.employee-fire-button${count}`).addEventListener('click', ()=>{
+    console.log("2nd:",count);
+    console.log("4th:",index);
+    console.log("3rd:",document.querySelector(`.employee-fire-button${count}${index}`))
+    /*document.querySelector(`.employee-fire-button${count}`).addEventListener('click', ()=>{
         fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[index].Employeename);
-    })
+    })*/
 }
 
 function HireEmployeeBSR(count){
@@ -393,4 +453,40 @@ function HireEmployeeBSR(count){
     })
 }
 
-function EmployeeHireDialog(){}
+function EmployeeHireDialog(){
+    // const ProjectsListButton = document.querySelector('.start-project');
+    //     ProjectsListButton.addEventListener('click', ()=>{
+        let dialog = document.querySelector('.d2');
+        if(!dialog){
+            const body = document.body;
+            dialog = document.createElement('dialog');
+            dialog.classList.add('d2');
+            body.appendChild(dialog);
+        }
+        dialog.innerHTML = `<div class="dialogHead">
+                                <div>Emp List</div>
+                                <div><img src="images/cross_close.png" onclick="dialogueClose1();"></div>
+                            </div>
+                            <div class="EmpListBody"></div>`;
+        AllEmp.forEach(element =>{
+            const EmpBox = document.createElement('div');
+            EmpBox.classList.add('EmpBox');
+            EmpBox.innerHTML = `<div class="emp-card">
+                    <div class="emp-header" style="display: flex; align-items: center; background: #5a0fb1; color:white ;margin-bottom:10px; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 20px;">
+                        <input type="checkbox">
+                        <span style="padding-left: 5px;">${element.Employeename}</span>
+                    </div>
+                    <div class="emp-details" style="font-size:20px;">
+                        <div>
+                            <span>Role:${element.Role}</span>
+                            <span>Salary:${element.Salary}</span>
+                            <span>Skill:${element.Skill}</span>
+                        </div>
+                    </div>
+                </div>`;
+            document.querySelector('.EmpListBody').appendChild(EmpBox);
+        })
+        dialog.showModal();
+
+        // });
+}

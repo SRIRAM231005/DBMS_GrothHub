@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-const credentials= localStorage.getItem('credentials');
+const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log(credentials);
 
 
@@ -169,7 +169,7 @@ async function fetchUserBusiness(username) {
 fetchUserBusiness(credentials);
 
 
-async function ShowBusiness(){
+async function ShowBusiness(username){
     UserBusinesses.forEach(async(element)=>{
         try {
             const response = await fetch(`http://localhost:8008/${element.Business}business/${element.Business}mainbusiness`, {

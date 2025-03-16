@@ -24,11 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     Investing?.addEventListener('click', () => {
         console.log("Investing Clicked");
-        window.location.href = 'home.html';
+        window.location.href = 'investment.html';
     });
     Business?.addEventListener('click', () => {
         console.log("Business Clicked");
-        window.location.href = 'home.html';
+        window.location.href = 'business.html';
     });
     Earning?.addEventListener('click', () => {
         console.log("Earning Clicked");

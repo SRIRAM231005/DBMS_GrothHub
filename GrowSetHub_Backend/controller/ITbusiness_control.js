@@ -164,5 +164,6 @@ async function showDevList(req, res){
 }
 
 
-module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire,ITEmployeesAfterHire, showDevList };
+module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList };
 
+ 
