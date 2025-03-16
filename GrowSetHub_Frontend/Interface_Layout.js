@@ -1,18 +1,20 @@
-const credentials= localStorage.getItem('credentials');
+const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log(credentials);
 
-document.addEventListener("DOMContentLoaded", function () {
-    const developmentTeam = document.getElementById("developmentTeam");
-    const developerMenu = document.getElementById("developerMenu");
+// document.addEventListener("DOMContentLoaded", function () {
+//     const developmentTeam = document.getElementById("developmentTeam");
+//     const developerMenu = document.getElementById("developerMenu");
 
-    developmentTeam.addEventListener("click", function () {
-        if (developerMenu.style.display === "none" || developerMenu.style.display === "") {
-            developerMenu.style.display = "block";
-        } else {
-            developerMenu.style.display = "none";
-        }
-    });
-});
+//     developmentTeam.addEventListener("click", function () {
+//         if (developerMenu.style.display === "none" || developerMenu.style.display === "") {
+//         console.log("5");
+//         developerMenu.style.display = "block";
+//         } else {
+//         console.log("6");
+//         developerMenu.style.display = "none";
+//         }
+//     });
+// });
 
 let developers;
 async function fetchShowDevList(username){
@@ -93,3 +95,16 @@ function showDevList(){
 
         });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const developmentTeam = document.getElementById("developmentTeam");
+    const developerMenu = document.getElementById("developerMenu");
+
+    developmentTeam.addEventListener("click", function () {
+        if (developerMenu.style.maxHeight) {
+            developerMenu.style.maxHeight = null; // Collapse
+        } else {
+            developerMenu.style.maxHeight = developerMenu.scrollHeight + "px"; // Expand
+        }
+    });
+});
