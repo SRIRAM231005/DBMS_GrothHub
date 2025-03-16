@@ -148,6 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
     startButton.addEventListener("click", openModal);
 });
 
+let UserBusinesses;
 async function fetchUserBusiness(username) {
     try {
         const response = await fetch('http://localhost:8008/user/SelectUserbusiness', {
@@ -156,8 +157,9 @@ async function fetchUserBusiness(username) {
             body: JSON.stringify({ username }),
         });
 
-        const data = await response.json();
-        console.log('userBusiness:',data);
+        UserBusinesses = await response.json();
+        console.log('userBusiness:',UserBusinesses);
+        ShowBusiness(username);
         //return data; // Return fetched data
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
@@ -165,6 +167,26 @@ async function fetchUserBusiness(username) {
     }
 }
 fetchUserBusiness(credentials);
+
+
+async function ShowBusiness(){
+    UserBusinesses.forEach(async(element)=>{
+        try {
+            const response = await fetch(`http://localhost:8008/${element.Business}business/${element.Business}mainbusiness`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username }),
+            });
+    
+            const data = await response.json();
+            console.log("IT data:",data);
+            //return data; // Return fetched data
+        } catch (error) {
+            console.error("❌ Error fetching main businesses:", error);
+            return null;
+        }
+    })
+}
 
 async function fetchAddUserBusiness(username,businessname,business){
 
