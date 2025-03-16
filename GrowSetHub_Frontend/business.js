@@ -1,6 +1,18 @@
-const socket = io('http://localhost:8008'); // Connect to backend
+// const socket = io('http://localhost:8008'); // Connect to backend
+console.log(typeof io); 
+const socket = io("http://localhost:8008");
 
-        socket.on('updateProjects', (projects) => {
+
+/*socket.on("connect", () => {
+    console.log("Connected with ID:", socket.id);
+});
+
+socket.on("disconnect", () => {
+    console.log("Disconnected from server");
+});*/
+
+
+        socket.on('message', (projects) => {
             console.log('Received updated projects:', projects);
             /*const list = document.getElementById('projectList');
             list.innerHTML = ''; // Clear existing list

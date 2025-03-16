@@ -1,16 +1,19 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const http = require("http");
 const mysql = require("mysql2");
-const socketIo = require('socket.io');
+const {Server} = require('socket.io');
 const cron = require('node-cron');
 
 const server = http.createServer(app);
-const io = socketIo(server, {
+const io = new Server(server, {
     cors: {
-        origin: '*', // Allow frontend connections
+      origin: '*', // Allow frontend origin
+      methods: ["GET", "POST"]
     }
-});
+  });
+  
 
 // const pool = require("./db");
 
@@ -40,12 +43,20 @@ connection.connect((err) => {
 });
 
 
+app.get("/", (req, res) => {
+    res.send("Socket.io Server is Running! 🚀");
+});
 
 let clients = [];
 
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
+    let projects = 'hi';
     clients.push(socket);
+    cron.schedule('*/10 * * * * *', () => {
+        console.log('Checking and updating project status...');
+        updateProjectStatus();
+    });
 
     // Handle client disconnection
     socket.on('disconnect', () => {
@@ -76,10 +87,10 @@ function updateProjectStatus() {
 }
 
 // Run every 5 minutes to update project status
-cron.schedule('*/10 * * * * *', () => {
-    console.log('Checking and updating project status...');
+//cron.schedule('*/10 * * * * *', () => {
+/*    console.log('Checking and updating project status...');
     updateProjectStatus();
-});
+});*/
 
 
 
@@ -94,6 +105,10 @@ app.use(cors());
 app.use('/user',userrouter);
 app.use('/ITbusiness',ITbusinessrouter);
 
-app.listen(8008,  ()=>{
+/*app.listen(8008,  ()=>{
     console.log('server started');
+});*/
+
+server.listen(8008,  ()=>{
+    console.log('socket started');
 });

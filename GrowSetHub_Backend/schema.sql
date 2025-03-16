@@ -54,7 +54,8 @@ CREATE TABLE IF NOT EXISTS ItProjects(
 
 CREATE TABLE IF NOT EXISTS ItUserProjects(
     Username VARCHAR(255),
-    Projectname VARCHAR(255)
+    Projectname VARCHAR(255),
+    ProjectStatus int default 0
 );
 -- ALTER TABLE ItUserProjects ADD COLUMN 
 
@@ -67,5 +68,6 @@ CREATE TABLE IF NOT EXISTS ItEmployees(
 
 CREATE TABLE IF NOT EXISTS ItUserEmployees(
     Username VARCHAR(255),
-    Employeename VARCHAR(255)
+    Employeename VARCHAR(255),
+    ParticipationStatus int default 0
 );
