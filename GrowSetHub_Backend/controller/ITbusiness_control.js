@@ -102,9 +102,11 @@ async function ITProjectsEmployees(req, res) {
 async function ITEmployeesFire(req , res){
     try {
         const { username,employeename } = req.body;
-        const sql = "DELETE FROM ITUseremployees WHERE Username = ? AND EmployeeName = ?";
+        const sql = "DELETE FROM ITUserEmployees WHERE Username = ? AND Employeename = ?";
+        const sql1 = "UPDATE ItBusiness SET Wages = Wages-(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
         
         const [results] = await connection.promise().query(sql, [username,employeename]);
+        await connection.promise().query(sql1, [employeename,username])
         console.log(req.body);
         
         return res.status(200).json(results);
@@ -131,6 +133,24 @@ async function ITEmployeesHire(req , res){
     }
 }
 
+async function ITEmployeesAfterHire(req , res){
+    try {
+        const { username,employeename } = req.body;
+        const sql = "INSERT INTO ITUserEmployees (Username, Employeename) VALUES (?, ?)";
+        const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
 
-module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire };
+        const [results] = await connection.promise().query(sql, [username,employeename]);
+        await connection.promise().query(sql1, [employeename,username])
+        console.log(req.body);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+
+module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire };
 
