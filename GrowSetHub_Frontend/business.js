@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Business Data
     const businesses = [
-        { name: "IT Business", price: "$4,899", image: "images/ITimage.png" },
+        { name: "IT", price: "$4,899", image: "images/ITimage.png" },
         { name: "Bank corporation", price: "$9,999", image: "images/ITimage.png" },
         { name: "Football Club", price: "$19,899", image: "images/ITimage.png" },
         //{ name: "Factory", price: "$24,999" }
@@ -135,8 +135,15 @@ document.addEventListener("DOMContentLoaded", function () {
         buyButton.classList.add("buy-btn");
         buyButton.innerText = "Start a Business";
         buyButton.addEventListener("click", () => {
-            alert(`${business.name} Purchased!`);
-            modal.remove();
+            //alert(`${business.name} Purchased!`);
+            const businessNameInput = modalContent.querySelector(".business-name-input").value.trim();
+        
+            if (businessNameInput) {
+                fetchAddUserBusiness(credentials,business.name, businessNameInput, business.price);
+                modal.remove();
+            } else {
+                alert("Please enter a business name!");
+            }
         });
 
         modalContent.appendChild(closeButton);
@@ -147,6 +154,32 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event Listener for Button Click
     startButton.addEventListener("click", openModal);
 });
+
+
+async function fetchAddUserBusiness(username,business,businessname,amount){
+    try {
+        const response = await fetch('http://localhost:8008/user/InsertUserbusiness', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                 username: username,
+                 business: business,
+                 businessname: businessname,
+                 amount: amount
+            }),
+        });
+
+        const data = await response.json();
+        console.log('New Business:',data);
+        fetchUserBusiness(username);
+        //return data; // Return fetched data
+    } catch (error) {
+        console.error("❌ Error fetching adding main business:", error);
+        return null;
+    }
+}
+
+
 
 let UserBusinesses;
 async function fetchUserBusiness(username) {
@@ -168,7 +201,8 @@ async function fetchUserBusiness(username) {
 }
 fetchUserBusiness(credentials);
 
-
+let UserBusinessData;
+let BusinessCatagory;
 async function ShowBusiness(username){
     UserBusinesses.forEach(async(element)=>{
         try {
@@ -178,9 +212,11 @@ async function ShowBusiness(username){
                 body: JSON.stringify({ username }),
             });
     
-            const data = await response.json();
-            console.log("IT data:",data);
+            UserBusinessData = await response.json();
+            console.log("IT data:",UserBusinessData);
+            BusinessCatagory = element.Business;
             //return data; // Return fetched data
+            DisplayUserBusiness();
         } catch (error) {
             console.error("❌ Error fetching main businesses:", error);
             return null;
@@ -188,11 +224,30 @@ async function ShowBusiness(username){
     })
 }
 
-async function fetchAddUserBusiness(username,businessname,business){
-
+function DisplayUserBusiness(){
+    const container = document.querySelector(".companies");
+    container.innerHTML = ""; 
+    const businessCard = document.createElement("div");
+        businessCard.classList.add("business-card");
+        businessCard.innerHTML = `
+            <div class="icon" style="margin-right: 20px;"><img src="${businesses.icon}" style="height:60px; width:60px;"></div>
+            <div class="details">
+                <div style="font-size:24px;">${UserBusinessData[0].Username}</div>
+                <div style="margin-top:5px;margin-bottom:20px;">${BusinessCatagory} company</div>
+                <div class="progress" style="margin-bottom:10px;">
+                    📊 ${businesses2[0].progress}
+                </div>
+                <div class="earnings">
+                    <strong>$${UserBusinessData[0].Revenue}</strong>
+                </div>
+            </div>
+            <span class="notification1">${businesses2[0].notificationCount}</span>
+        `;
+        container.appendChild(businessCard);
 }
 
-const businesses = [
+
+const businesses2 = [
     {
         name: "abc",
         category: "Shop",
@@ -211,7 +266,7 @@ const businesses = [
     }
 ];
 
-function renderBusinesses() {
+/*function renderBusinesses() {
     const container = document.querySelector(".companies");
     container.innerHTML = ""; // Clear existing content
 
@@ -237,6 +292,6 @@ function renderBusinesses() {
 }
 
 // Call function to display businesses
-renderBusinesses();
-
+//renderBusinesses();
+*/
 
