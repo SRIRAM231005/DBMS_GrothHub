@@ -101,10 +101,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     developmentTeam.addEventListener("click", function () {
         if (!developerMenu.classList.contains("expanded")) {
-            console.log("Opening menu");
             developerMenu.classList.add("expanded");
         } else {
-            console.log("Closing menu");
             developerMenu.classList.remove("expanded");
         }
     });

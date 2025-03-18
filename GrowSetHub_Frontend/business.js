@@ -67,9 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Business Data
     const businesses = [
-        { name: "IT", price: "$4,899", image: "images/ITimage.png" },
-        { name: "Bank corporation", price: "$9,999", image: "images/ITimage.png" },
-        { name: "Football Club", price: "$19,899", image: "images/ITimage.png" },
+        { name: "IT", price: "4899", image: "images/ITimage.png" },
+        { name: "Bank corporation", price: "9999", image: "images/ITimage.png" },
+        { name: "Football Club", price: "19899", image: "images/ITimage.png" },
         //{ name: "Factory", price: "$24,999" }
     ];
 
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <div><img src="${business.image}" style="height:40px; width:40px;"></div>  
                                 <div style="font-size:20px;">${business.name}</div>
                             </div>
-                            <div class="business-price">${business.price}</div>
+                            <div class="business-price">$ ${business.price}</div>
                             </div>`;
             div.addEventListener("click", () => showBusinessDetails(business, modal, modalContent));
             businessList.appendChild(div);
@@ -171,7 +171,15 @@ async function fetchAddUserBusiness(username,business,businessname,amount){
 
         const data = await response.json();
         console.log('New Business:',data);
-        fetchUserBusiness(username);
+        // fetchUserBusiness(username);
+        if(business = "IT"){
+            fetchAddUserBusinessintoITTable(username, businessname);
+            const container = document.querySelector(".companies");
+            container.innerHTML="";
+            fetchUserBusiness(credentials);
+
+            // fetchITMainBusiness(credentials);
+        }
         //return data; // Return fetched data
     } catch (error) {
         console.error("❌ Error fetching adding main business:", error);
@@ -179,6 +187,43 @@ async function fetchAddUserBusiness(username,business,businessname,amount){
     }
 }
 
+async function fetchAddUserBusinessintoITTable(username,businessname){
+    try {
+        const response = await fetch('http://localhost:8008/user/InsertITBusiness', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                 username: username,
+                 businessname: businessname
+            }),
+        });
+
+        const data = await response.json();
+        console.log('New Business:',data);
+    } catch (error) {
+        console.error("❌ Error fetching adding main business:", error);
+        return null;
+    }
+}
+
+
+/*async function fetchITMainBusiness(username) {
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/ITmainbusiness', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+        //UpdateNameAndRevenue(data);
+        //return data; // Return fetched data
+    } catch (error) {
+        console.error("❌ Error fetching IT main business:", error);
+        return null;
+    }
+}*/
 
 
 let UserBusinesses;
@@ -192,6 +237,9 @@ async function fetchUserBusiness(username) {
 
         UserBusinesses = await response.json();
         console.log('userBusiness:',UserBusinesses);
+        
+        const container = document.querySelector(".companies");
+        container.innerHTML = ""; 
         ShowBusiness(username);
         //return data; // Return fetched data
     } catch (error) {
@@ -203,8 +251,10 @@ fetchUserBusiness(credentials);
 
 let UserBusinessData;
 let BusinessCatagory;
+
 async function ShowBusiness(username){
-    UserBusinesses.forEach(async(element)=>{
+    console.log("sample:",UserBusinesses);
+    UserBusinesses.forEach(async(element,index)=>{
         try {
             const response = await fetch(`http://localhost:8008/${element.Business}business/${element.Business}mainbusiness`, {
                 method: 'POST',
@@ -216,7 +266,7 @@ async function ShowBusiness(username){
             console.log("IT data:",UserBusinessData);
             BusinessCatagory = element.Business;
             //return data; // Return fetched data
-            DisplayUserBusiness();
+            DisplayUserBusiness(index);
         } catch (error) {
             console.error("❌ Error fetching main businesses:", error);
             return null;
@@ -224,25 +274,30 @@ async function ShowBusiness(username){
     })
 }
 
-function DisplayUserBusiness(){
+let a=0;
+function DisplayUserBusiness(index){
     const container = document.querySelector(".companies");
-    container.innerHTML = ""; 
+    if(a===0){
+        container.innerHTML = ""; 
+        a++;
+    }
     const businessCard = document.createElement("div");
         businessCard.classList.add("business-card");
         businessCard.innerHTML = `
-            <div class="icon" style="margin-right: 20px;"><img src="${businesses.icon}" style="height:60px; width:60px;"></div>
+            <div class="icon" style="margin-right: 20px;"><img src="${businesses2[0].icon}" style="height:60px; width:60px;"></div>
             <div class="details">
-                <div style="font-size:24px;">${UserBusinessData[0].Username}</div>
+                <div style="font-size:24px;">${UserBusinessData[index].BusinessName}</div>
                 <div style="margin-top:5px;margin-bottom:20px;">${BusinessCatagory} company</div>
                 <div class="progress" style="margin-bottom:10px;">
                     📊 ${businesses2[0].progress}
                 </div>
                 <div class="earnings">
-                    <strong>$${UserBusinessData[0].Revenue}</strong>
+                    <strong>$${UserBusinessData[index].Revenue}</strong>
                 </div>
             </div>
             <span class="notification1">${businesses2[0].notificationCount}</span>
         `;
+        businessCard.addEventListener("click", () => window.location.href = "IT.html");
         container.appendChild(businessCard);
 }
 

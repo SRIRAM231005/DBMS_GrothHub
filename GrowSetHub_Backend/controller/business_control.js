@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 });
 
 async function InsertUserbusiness(req, res){
-    await connection.beginTransaction();
+    //await connection.beginTransaction();
     try {
         const { username, business, businessname, amount } = req.body;
         const sql = "INSERT INTO Userbusiness (Username, Business, Businessname) VALUES (?, ?, ?)";
@@ -25,11 +25,11 @@ async function InsertUserbusiness(req, res){
         const increaseBusinessCountSql = "UPDATE Statistics SET NoOfBusiness = NoOfBusiness + 1 WHERE Username = ?";
         await connection.promise().query(increaseBusinessCountSql, [username]);
 
-        await connection.commit();
+        //await connection.commit();
 
         res.status(200).json({ message: "Business Bought!" });
     } catch (err) {
-        await connection.rollback();
+        //await connection.rollback();
         console.error("❌ Error getting data1:", err);
         return res.status(500).json({ error: "Database error1" });
     }

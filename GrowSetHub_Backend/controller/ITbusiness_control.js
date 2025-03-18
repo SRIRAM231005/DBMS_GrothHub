@@ -119,10 +119,10 @@ async function ITEmployeesFire(req , res){
 
 async function ITEmployeesHire(req , res){
     try {
-        const { username } = req.body;
-        const sql = "select e.*, ee.Username from ITEmployees e left join ITUserEmployees ee using(Employeename) where ee.Username<>? or ee.Username is null";
+        const { username, role } = req.body;
+        const sql = "select * from ITEmployees where Employeename not in (select e.Employeename from ITEmployees e inner join ITUserEmployees ee using(Employeename) where Username = ?) and Role = ?";
         
-        const [results] = await connection.promise().query(sql, [username]);
+        const [results] = await connection.promise().query(sql, [username, role]);
         console.log(req.body);
         
         return res.status(200).json(results);
@@ -149,6 +149,7 @@ async function ITEmployeesAfterHire(req , res){
         console.error("❌ Error getting data2:", err);
     }
 }
+
 async function showDevList(req, res){
     try{
         const { username } = req.body;
@@ -163,7 +164,24 @@ async function showDevList(req, res){
     }
 }
 
+async function InsertITBusiness(req , res){
+    try {
+        const { username, businessname } = req.body;
+        const sql = "INSERT INTO ITBusiness (Username, BusinessName) VALUES (?, ?)";
+        // const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
 
-module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList };
+        const [results] = await connection.promise().query(sql, [username,businessname]);
+        // await connection.promise().query(sql1, [businessname,username])
+        console.log(req.body);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+
+module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness };
 
  

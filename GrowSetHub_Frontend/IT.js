@@ -214,14 +214,15 @@ async function fetchITEmployeesFire(username,employeename){
 
 let AllEmp;
 
-async function fetchITEmployeesHire(username){
+async function fetchITEmployeesHire(username,empRole){
     console.log(username);
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITEmployeesHire', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                 username: username
+                 username: username,
+                 role: empRole
             }),
         });
         AllEmp = await response.json();
@@ -385,7 +386,7 @@ function EmployeeDivFunction(count){
                                 <div><img src="images/cross_close.png" onclick="dialogueClose1();"></div>
                             </div>
                             <div class="EmployeesBody"></div>
-                            <div><button class="HireButton${count} HireButtons">Hire</button></div>`;
+                            <div class="Hire"><button class="HireButton${count} HireButtons">Hire</button></div>`;
         ProjectsAndEmployees.Employees.forEach((element, index) =>{
             console.log("element:",element);
             if(element.Role === employees[count-1].name){
@@ -408,21 +409,25 @@ function EmployeeDivFunction(count){
                     </div>
                 </div>`;
                 document.querySelector('.EmployeesBody').appendChild(EmployeeBox);
+                /*console.log("16");
+                HireEmployeeBSR(count,element.Role);   //error here!! passing element.role is a problem. It is taking the last role from table...
+                console.log("ele:",element.Role);*/
             }
             /*setTimeout(() => {
                 FireEmployee(index,count);
             }, 100);*/
             //FireEmployee(index,count);
-            HireEmployeeBSR(count);
         })
+        HireEmployeeBSR(count,employees[count-1].name);
         if((document.querySelector(".employee-fire"))){
             document.querySelector(".employee-fire").addEventListener("click", (event) => {
-                if (event.target.classList.contains("FireButton")) {
+                if (event.target.classList.contains("HireButtons")) {
                     console.log(`Button inside Employee ${count},${event.target.dataset.number} clicked!`);
                     fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[event.target.dataset.number].Employeename);
                 }
             });
         }
+
 
         dialog.showModal();
     //})//employeeFireButton
@@ -445,48 +450,55 @@ function FireEmployee(index,count){
     })*/
 }
 
-function HireEmployeeBSR(count){
+function HireEmployeeBSR(count,empRole){
     console.log("55");
     document.querySelector(`.HireButton${count}`).addEventListener('click', ()=>{
         console.log("5");
-        fetchITEmployeesHire(username);
+        fetchITEmployeesHire(username,empRole);
     })
 }
 
 function EmployeeHireDialog(){
-    // const ProjectsListButton = document.querySelector('.start-project');
-    //     ProjectsListButton.addEventListener('click', ()=>{
         let dialog = document.querySelector('.d2');
         if(!dialog){
             const body = document.body;
             dialog = document.createElement('dialog');
             dialog.classList.add('d2');
+
             body.appendChild(dialog);
         }
         dialog.innerHTML = `<div class="dialogHead">
                                 <div>Emp List</div>
                                 <div><img src="images/cross_close.png" onclick="dialogueClose1();"></div>
                             </div>
-                            <div class="EmpListBody"></div>`;
+                            <div class="EmpListBody"></div>
+                            <div class="dialog-footer">
+                                <button class="confirm-btn">Confirm</button>
+                            </div>
+                            `;
+                            
         AllEmp.forEach(element =>{
             const EmpBox = document.createElement('div');
             EmpBox.classList.add('EmpBox');
-            EmpBox.innerHTML = `<div class="emp-card">
+            EmpBox.innerHTML = `<div class="emp-card" style = "box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); border-radius:10px;">
                     <div class="emp-header" style="display: flex; align-items: center; background: #5a0fb1; color:white ;margin-bottom:10px; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 20px;">
                         <input type="checkbox">
                         <span style="padding-left: 5px;">${element.Employeename}</span>
                     </div>
                     <div class="emp-details" style="font-size:20px;">
                         <div>
-                            <span>Role:${element.Role}</span>
-                            <span>Salary:${element.Salary}</span>
+                            <span>Role:${element.Role}</span><br>
+                            <span>Salary:${element.Salary}</span><br>
                             <span>Skill:${element.Skill}</span>
                         </div>
                     </div>
                 </div>`;
             document.querySelector('.EmpListBody').appendChild(EmpBox);
-        })
-        dialog.showModal();
+        });
 
-        // });
+        document.querySelector('.confirm-btn').addEventListener('click', () => {
+            console.log('Confirm button clicked!');
+        });
+
+        dialog.showModal();
 }

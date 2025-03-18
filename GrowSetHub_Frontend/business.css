@@ -177,6 +177,12 @@ h1, h2 {
     margin: 20px;
     position: relative;
 }
+
+.business-card:hover{
+    background-color: #e6f0f5;
+    scale: 1.02;
+}
+
 .details {
     flex-grow: 1;
 }

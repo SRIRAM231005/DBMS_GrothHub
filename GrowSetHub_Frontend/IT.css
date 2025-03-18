@@ -243,3 +243,29 @@ header {
     border: none;
     font-size: 16px;
 }
+
+
+.confirm-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 12px;  /*10,20*/
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+
+}
+
+.confirm-btn:hover {
+    background-color: #388E3C;
+}
+
+.dialog-footer {
+    text-align: center;
+    margin-top: 15px; /* Adds 15px gap from EmpListBody */
+    padding: 10px;
+}
+

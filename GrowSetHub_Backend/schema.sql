@@ -36,10 +36,11 @@ CREATE TABLE IF NOT EXISTS UserBusiness(
 );
 
 CREATE TABLE IF NOT EXISTS ItBusiness(
-    Username VARCHAR(255) PRIMARY KEY,
+    Username VARCHAR(255) ,
     BusinessName VARCHAR(255),
     Wages decimal(10,2),
-    Revenue decimal(10,2) default 0
+    Revenue decimal(10,2) default 0,
+    PRIMARY KEY (Username, BusinessName)
 );
 
 CREATE TABLE IF NOT EXISTS ItProjects(
@@ -69,5 +70,6 @@ CREATE TABLE IF NOT EXISTS ItEmployees(
 CREATE TABLE IF NOT EXISTS ItUserEmployees(
     Username VARCHAR(255),
     Employeename VARCHAR(255),
+    
     ParticipationStatus int default 0
 );

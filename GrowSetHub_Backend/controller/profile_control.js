@@ -30,7 +30,7 @@ async function Statistics(req , res){
         const { username } = req.body;
         const sql = "UPDATE Statistics SET NoOfBusiness = (SELECT COUNT(Businessname) AS business_count FROM UserBusiness WHERE Username = ? ) WHERE Username = ?";
         /*const sql1 = "SELECT COUNT(Businessname) AS business_count FROM UserBusiness WHERE Username = ? "*/
-        const sql1 = "UPDATE Statistics SET E_business = (SELECT Revenue FROM ItBusiness WHERE Username = ?) WHERE Username = ?";
+        const sql1 = "UPDATE Statistics SET E_business = (SELECT Sum(Revenue) FROM ItBusiness WHERE Username = ?) WHERE Username = ?";
         const sql2 = "SELECT * FROM Statistics WHERE Username = ?";
         
         await connection.promise().query(sql, [username,username]);

@@ -150,3 +150,52 @@ body {
     font-size: 14px;
 }
 
+
+.footer {
+    display: flex;
+    justify-content: space-between; /* Space between text & button */
+    align-items: center;
+    background-color: white; 
+    padding: 12px 20px;
+    border-radius: 8px; /* Rounded corners */
+    font-family: Arial, sans-serif;
+}
+
+.footer p {
+    font-size: 16px;
+    color: #333; /* Dark gray text */
+    margin: 0;
+}
+
+.footer button {
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.footer button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.confirm-button {
+    /* position: absolute; */
+    /* bottom: 10px; */
+    /* right: 10px; */
+    padding: 8px 12px;  /*10,20*/
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+
+}
+
+.confirm-button:hover {
+    background-color: #388E3C;
+}
