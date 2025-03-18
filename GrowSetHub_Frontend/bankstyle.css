@@ -1,0 +1,40 @@
+.settings-btn {
+    background-color: #e5e7eb;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e5e7eb;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.confirm-btn {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
