@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
     let projects = 'hi';
     clients.push(socket);
-    cron.schedule('*/10 * * * * *', () => {
+    cron.schedule('*/600 * * * * *', () => {
         console.log('Checking and updating project status...');
         updateProjectStatus();
     });
@@ -67,23 +67,26 @@ io.on('connection', (socket) => {
 
 // Function to update project status and notify frontend
 function updateProjectStatus() {
-    /*const query = `UPDATE projects SET status = 'Completed' WHERE status = 'In Progress' AND completion_time <= NOW()`;*/
-    /*db.query(query, (err, result) => {
+    const query = `UPDATE ITUserprojects SET ProjectStatus = 1 WHERE ProjectStatus = 0 AND ProjectCompTime <= NOW()`;
+    console.log("117");
+    connection.query(query, (err, result) => {
+        console.log(result);
         if (err) {
             console.error('Error updating project status:', err);
         } else {
             console.log('Updated projects:', result.affectedRows);
 
             // Fetch updated projects and send to frontend
-            db.query(`SELECT * FROM projects`, (err, projects) => {
+            connection.query(`SELECT * FROM ITUserprojects`, (err, projects) => {
                 if (!err) {
                     io.emit('updateProjects', projects); // Send updated data to frontend
                 }
             });
         }
-    });*/
-    let projects='hi';
-    io.emit('message', projects);
+    });
+
+    // let projects='hi';
+    // io.emit('message', projects);
 }
 
 // Run every 5 minutes to update project status

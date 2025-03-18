@@ -152,12 +152,12 @@ async function ITEmployeesAfterHire(req , res){
 
 async function showDevList(req, res){
     try{
-        const { username } = req.body;
-        const sql = "select Employeename, Salary, Skill from itemployees where Employeename in (select Employeename from ituseremployees where Username = ?) ";
-        const [results] = await connection.promise().query(sql, [username]);
-        console.log(req.body);
+        const { username,role } = req.body;
+        const sql = "select Employeename, Salary, Skill from itemployees where Employeename in (select Employeename from ituseremployees where Username = ?) and Role like CONCAT('%', ?, '%')";
+        const [results] = await connection.promise().query(sql, [username,role]);
+        // console.log("demo:",req.body);
+        console.log("demo:",results);
         return res.status(200).json(results);
-
     }catch (err) {
         console.error("❌ Error getting data1:", err);
         return res.status(500).json({ error: "Database error1" });

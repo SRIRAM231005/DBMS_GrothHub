@@ -56,7 +56,8 @@ CREATE TABLE IF NOT EXISTS ItProjects(
 CREATE TABLE IF NOT EXISTS ItUserProjects(
     Username VARCHAR(255),
     Projectname VARCHAR(255),
-    ProjectStatus int default 0
+    ProjectStatus int default 0,
+    ProjectCompTime datetime
 );
 -- ALTER TABLE ItUserProjects ADD COLUMN 
 

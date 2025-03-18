@@ -1,33 +1,3 @@
-// const socket = io('http://localhost:8008'); // Connect to backend
-console.log(typeof io); 
-const socket = io("http://localhost:8008");
-
-
-/*socket.on("connect", () => {
-    console.log("Connected with ID:", socket.id);
-});
-
-socket.on("disconnect", () => {
-    console.log("Disconnected from server");
-});*/
-
-
-        socket.on('message', (projects) => {
-            console.log('Received updated projects:', projects);
-            /*const list = document.getElementById('projectList');
-            list.innerHTML = ''; // Clear existing list
-
-            projects.forEach(project => {
-                const li = document.createElement('li');
-                li.textContent = `${project.name} - ${project.status}`;
-                list.appendChild(li);
-            });*/
-        });
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
         { img: "images/Investing.png", text: "Investing", badge: "1", link: "investing.html" },

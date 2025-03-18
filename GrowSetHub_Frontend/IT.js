@@ -1,3 +1,32 @@
+// const socket = io('http://localhost:8008'); // Connect to backend
+console.log(typeof io); 
+const socket = io("http://localhost:8008");
+
+
+/*socket.on("connect", () => {
+    console.log("Connected with ID:", socket.id);
+});
+
+socket.on("disconnect", () => {
+    console.log("Disconnected from server");
+});*/
+
+
+        socket.on('updateProjects', (projects) => {
+            console.log('Received updated projects:', projects);
+            /*const list = document.getElementById('projectList');
+            list.innerHTML = ''; // Clear existing list
+
+            projects.forEach(project => {
+                const li = document.createElement('li');
+                li.textContent = `${project.name} - ${project.status}`;
+                list.appendChild(li);
+            });*/
+        });
+        
+        
+        
+        
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
         { img: "images/Investing.png", text: "Investing", badge: "1", link: "investing.html" },
@@ -332,7 +361,7 @@ function showPrjList(){
         ProjectsAndEmployees.Projects.forEach(element =>{
             const ProjectsBox = document.createElement('div');
             ProjectsBox.classList.add('ProjectsBox');
-            ProjectsBox.innerHTML = `<div class="project-card" onclick = "openInterfacePage()">
+            ProjectsBox.innerHTML = `<div class="project-card" ="${index}" onclick = "openInterfacePage(${element})">
                     <div class="project-header" style="display: flex; align-items: center; background: #5a0fb1; color:white ;margin-bottom:10px; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 20px;">
                         <img src="images/project_icon.png">
                         <span style="padding-left: 5px;">${element.Projectname}</span>
@@ -351,6 +380,16 @@ function showPrjList(){
                 </div>`;
             document.querySelector('.ProjectsBody').appendChild(ProjectsBox);
         })
+
+        if((document.querySelector(".ProjectsBox"))){
+            document.querySelector(".ProjectsBox").addEventListener("click", (event) => {
+                if (event.target.classList.contains("project-card")) {
+                    console.log(`Button inside Employee ${count},${event.target.dataset.number} clicked!`);
+                    fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[event.target.dataset.number].Employeename);
+                }
+            });
+        }
+        
         dialog.showModal();
 
         });
@@ -364,7 +403,9 @@ function dialogueClose() {
     }
 }
 
-function openInterfacePage(){
+function openInterfacePage(element){
+    localStorage.setItem("PrjInfo", JSON.stringify(element));
+    
     window.location.href = "interface_layout.html";
 }
 
@@ -419,6 +460,7 @@ function EmployeeDivFunction(count){
             //FireEmployee(index,count);
         })
         HireEmployeeBSR(count,employees[count-1].name);
+
         if((document.querySelector(".employee-fire"))){
             document.querySelector(".employee-fire").addEventListener("click", (event) => {
                 if (event.target.classList.contains("HireButtons")) {
