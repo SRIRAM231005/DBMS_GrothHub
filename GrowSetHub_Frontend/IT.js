@@ -358,10 +358,10 @@ function showPrjList(){
                                 <div><img src="images/cross_close.png" onclick="dialogueClose();"></div>
                             </div>
                             <div class="ProjectsBody"></div>`;
-        ProjectsAndEmployees.Projects.forEach(element =>{
+        ProjectsAndEmployees.Projects.forEach((element,index) =>{
             const ProjectsBox = document.createElement('div');
             ProjectsBox.classList.add('ProjectsBox');
-            ProjectsBox.innerHTML = `<div class="project-card" ="${index}" onclick = "openInterfacePage(${element})">
+            ProjectsBox.innerHTML = `<div class="project-card" onclick = "openInterfacePage(${index})">
                     <div class="project-header" style="display: flex; align-items: center; background: #5a0fb1; color:white ;margin-bottom:10px; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 20px;">
                         <img src="images/project_icon.png">
                         <span style="padding-left: 5px;">${element.Projectname}</span>
@@ -381,14 +381,14 @@ function showPrjList(){
             document.querySelector('.ProjectsBody').appendChild(ProjectsBox);
         })
 
-        if((document.querySelector(".ProjectsBox"))){
+        /*if((document.querySelector(".ProjectsBox"))){
             document.querySelector(".ProjectsBox").addEventListener("click", (event) => {
                 if (event.target.classList.contains("project-card")) {
                     console.log(`Button inside Employee ${count},${event.target.dataset.number} clicked!`);
                     fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[event.target.dataset.number].Employeename);
                 }
             });
-        }
+        }*/
         
         dialog.showModal();
 
@@ -403,10 +403,10 @@ function dialogueClose() {
     }
 }
 
-function openInterfacePage(element){
-    localStorage.setItem("PrjInfo", JSON.stringify(element));
+function openInterfacePage(index){
+    localStorage.setItem("PrjInfo", JSON.stringify(ProjectsAndEmployees.Projects[index]));
     
-    window.location.href = "interface_layout.html";
+    window.location.href = "Interface_Layout.html";
 }
 
 
