@@ -25,7 +25,7 @@ async function Stocks(req , res){
 
 async function CompanyData(req , res){
     const { symbol } = req.body;
-    const url = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=summaryDetail,defaultKeyStatistics`;
+    const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
 
     try {
         const response = await fetch(url);
@@ -38,3 +38,6 @@ async function CompanyData(req , res){
 }
 
 module.exports = { Stocks, CompanyData };
+
+
+//https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=summaryDetail,defaultKeyStatistics`;

@@ -267,7 +267,7 @@ fetch(url)
     
     // Fetch and display stock chart
     fetchStockData();
-    fetchCompanyData();
+    //fetchCompanyData();
 
     async function fetchCompanyData(){
         const symbol = "AAPL"; // Example stock
