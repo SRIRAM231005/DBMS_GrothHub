@@ -267,4 +267,23 @@ fetch(url)
     
     // Fetch and display stock chart
     fetchStockData();
+    fetchCompanyData();
+
+    async function fetchCompanyData(){
+        const symbol = "AAPL"; // Example stock
+        const url = `http://localhost:8008/investment/company`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symbol }),
+            });
+    
+            const Companydata = await response.json();
+            console.log("Companydata : ",Companydata);
+        } catch (error) {
+            console.error("Error fetching Company data:", error);
+        }
+    }
     
