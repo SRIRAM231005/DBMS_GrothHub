@@ -25,7 +25,22 @@ socket.on("disconnect", () => {
         });
         
         
-        
+let BusinessDetails;
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("22");
+    BusinessDetails = JSON.parse(localStorage.getItem('UserBusinessInfo'));
+    console.log("1st log",BusinessDetails); 
+    if (BusinessDetails) {
+        document.querySelector(".logo h1").textContent = BusinessDetails.BusinessName;
+        document.querySelector(".finance-card h2").textContent = BusinessDetails.Wages;
+        document.querySelector(".finance-card h3").textContent = BusinessDetails.Revenue;
+    } else {
+        console.error("❌ BusinessDetails is missing or does not contain enough elements.");
+    }
+});
+BusinessDetails = JSON.parse(localStorage.getItem('UserBusinessInfo'));
+
+console.log("check12",BusinessDetails);  
         
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
@@ -69,8 +84,7 @@ let employees = [
 
 
 function EmployeeListGeneration(ProjectsAndEmployees){
-
-
+    
     let roleCounts = {}; // Object to store role counts
 
         ProjectsAndEmployees.Employees.forEach((emp) => {
@@ -156,7 +170,6 @@ async function fetchITMainBusiness(username) {
 
         const data = await response.json();
         console.log(data);
-        UpdateNameAndRevenue(data);
         //return data; // Return fetched data
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
@@ -198,12 +211,12 @@ async function fetchITUserEmployees(username) {
     }
 }
 
-async function fetchITProjectsEmployees(username) {
+async function fetchITProjectsEmployees(username,businessname) {
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITProjectsEmployees', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username }),
+            body: JSON.stringify({ username,businessname }),
         });
 
         ProjectsAndEmployees = await response.json();
@@ -243,14 +256,15 @@ async function fetchITEmployeesFire(username,employeename){
 
 let AllEmp;
 
-async function fetchITEmployeesHire(username,empRole){
-    console.log(username);
+async function fetchITEmployeesHire(username,businessname,empRole){
+    console.log("de:",businessname);
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITEmployeesHire', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                  username: username,
+                 businessname: businessname,
                  role: empRole
             }),
         });
@@ -265,21 +279,35 @@ async function fetchITEmployeesHire(username,empRole){
     }
 }
 
+let HiredEmp;
+async function fetchEmpSelHire(username,businessname,employeename){
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/HireSelectedEmployees', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                 username: username,
+                 businessname: businessname,
+                 employeename: employeename
+            }),
+        });
+        HiredEmp = await response.json();
+        console.log(HiredEmp);
+        //return data;
+    } catch (error) {
+        console.error("❌ Error fetching IT projects employees:", error);
+        return null;
+    }
+}
 
+console.log("check123",BusinessDetails);
 fetchITMainBusiness(username);
 fetchITUserProjects(username);
 fetchITUserEmployees(username);
-fetchITProjectsEmployees(username);
+fetchITProjectsEmployees(username,BusinessDetails.BusinessName);
 //fetchITEmployeesFire(username,employeename);
 //EmployeeListGeneration()
-function UpdateNameAndRevenue(data){
-    const businessName = document.querySelector('.logo h1');
-    const Revenue = document.querySelector('.finance-card h2');
-    const Wages = document.querySelector('.finance-card h3');
-    Revenue.textContent = data[0].Revenue;
-    Wages.textContent = data[0].Wages;
-    businessName.textContent = data[0].BusinessName;
-}
+
 //EmployeeListGeneration();
 
 // const ProjectsAndEmployees = {
@@ -472,7 +500,6 @@ function EmployeeDivFunction(count){
 
 
         dialog.showModal();
-    //})//employeeFireButton
 }
 
 function dialogueClose1() {
@@ -496,9 +523,11 @@ function HireEmployeeBSR(count,empRole){
     console.log("55");
     document.querySelector(`.HireButton${count}`).addEventListener('click', ()=>{
         console.log("5");
-        fetchITEmployeesHire(username,empRole);
+        fetchITEmployeesHire(username,BusinessDetails.BusinessName,empRole);
     })
 }
+
+
 
 function EmployeeHireDialog(){
         let dialog = document.querySelector('.d2');
@@ -524,7 +553,7 @@ function EmployeeHireDialog(){
             EmpBox.classList.add('EmpBox');
             EmpBox.innerHTML = `<div class="emp-card" style = "box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); border-radius:10px;">
                     <div class="emp-header" style="display: flex; align-items: center; background: #5a0fb1; color:white ;margin-bottom:10px; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 20px;">
-                        <input type="checkbox">
+                        <input type="checkbox" class="emp-checkbox" data-name="${element.Employeename}">
                         <span style="padding-left: 5px;">${element.Employeename}</span>
                     </div>
                     <div class="emp-details" style="font-size:20px;">
@@ -540,6 +569,18 @@ function EmployeeHireDialog(){
 
         document.querySelector('.confirm-btn').addEventListener('click', () => {
             console.log('Confirm button clicked!');
+
+            let selectedEmployees = [];
+            document.querySelectorAll('.emp-checkbox:checked').forEach(checkbox => {
+                selectedEmployees.push(checkbox.getAttribute('data-name'));
+            });
+
+            selectedEmployees.forEach(empName =>{
+                fetchEmpSelHire(credentials,BusinessDetails.BusinessName,empName);
+            })
+            location.reload();
+            // Close the dialog
+            dialog.close();
         });
 
         dialog.showModal();

@@ -5,6 +5,7 @@ const PrjInfo = JSON.parse(localStorage.getItem('PrjInfo'));
 console.log(PrjInfo);
 
 
+
 // document.addEventListener("DOMContentLoaded", function () {
 //     const developmentTeam = document.getElementById("developmentTeam");
 //     const developerMenu = document.getElementById("developerMenu");
@@ -61,6 +62,23 @@ function getIndex(role){
 }
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    // Ensure PrjList exists and has enough values
+    if (PrjInfo) {
+        document.querySelector(".c1").textContent = `</> ${PrjInfo.NoOfDev}`;
+        document.querySelector(".c2").textContent = `🎨 ${PrjInfo.NoOfDesigner}`;
+        document.querySelector(".c3").textContent = `👥 ${PrjInfo.NoOfTeamLeader}`;
+        document.querySelector(".c4").textContent = `🛠️ ${PrjInfo.NoOfTester}`;
+
+        document.querySelector(".header h2").textContent = PrjInfo.Projectname;
+        document.querySelector(".header h1").textContent = "$"+PrjInfo.Cost;
+    } else {
+        console.error("❌ PrjList is missing or does not contain enough elements.");
+    }
+});
+
+
+
 function showDevList(List,role){
     console.log("12",role);
     let index = getIndex(role);
@@ -93,7 +111,7 @@ function showDevList(List,role){
                 const devElement = document.createElement('div');
                 devElement.classList.add('developer-item');
                 devElement.innerHTML = `
-                    <input type="checkbox">
+                    <input type="checkbox" class="emp-checkbox" data-name="${dev.Employeename}">
                     <span>${dev.Employeename}</span>
                     <span>$${dev.Salary}</span>
                     <span>${dev.Skill}</span>
@@ -108,6 +126,21 @@ function showDevList(List,role){
             } else {
                 ListDisplay.classList.remove("expanded");
             }
+        });
+
+
+        document.querySelector('.confirm-btn').addEventListener('click', () => {
+            console.log('Confirm button clicked!');
+
+            let selectedEmployees = [];
+            document.querySelectorAll('.emp-checkbox:checked').forEach(checkbox => {
+                selectedEmployees.push(checkbox.getAttribute('data-name'));
+            });
+
+            selectedEmployees.forEach(empName =>{
+                fetchChooseEmpforPrj(credentials,BusinessDetails.BusinessName,empName);
+            })
+            location.reload();
         });
 }
 

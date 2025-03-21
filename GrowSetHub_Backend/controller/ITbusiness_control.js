@@ -81,12 +81,12 @@ async function ITUserEmployees(req, res) {
 
 async function ITProjectsEmployees(req, res) {
     try {
-        const { username } = req.body;
+        const { username, businessname } = req.body;
         const [projects] = await connection.promise().execute("SELECT * FROM ITProjects");
-        const sqlemployees = "SELECT e.* FROM ITEmployees e INNER JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName WHERE ue.Username = ?";
+        const sqlemployees = "SELECT e.* FROM ITEmployees e INNER JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName WHERE ue.Username = ? and ue.BusinessName = ?";
         //SELECT e.* FROM ITEmployees e LEFT JOIN ITUserEmployees ue ON e.EmployeeName = ue.EmployeeName AND ue.Username = 'user' WHERE ue.EmployeeName IS NULL;
 
-        const [employees] = await connection.promise().query(sqlemployees, [username]);
+        const [employees] = await connection.promise().query(sqlemployees, [username,businessname]);
 
         return res.status(200).json({
             Projects: projects,
@@ -119,10 +119,10 @@ async function ITEmployeesFire(req , res){
 
 async function ITEmployeesHire(req , res){
     try {
-        const { username, role } = req.body;
-        const sql = "select * from ITEmployees where Employeename not in (select e.Employeename from ITEmployees e inner join ITUserEmployees ee using(Employeename) where Username = ?) and Role = ?";
+        const { username, businessname,role } = req.body;
+        const sql = "select * from ITEmployees where Employeename not in (select e.Employeename from ITEmployees e inner join ITUserEmployees ee using(Employeename) where Username = ? and BusinessName = ?) and Role = ?";
         
-        const [results] = await connection.promise().query(sql, [username, role]);
+        const [results] = await connection.promise().query(sql, [username, businessname, role]);
         console.log(req.body);
         
         return res.status(200).json(results);
@@ -181,7 +181,24 @@ async function InsertITBusiness(req , res){
     }
 }
 
+async function HireSelectedEmployees(req , res){
+    try {
+        const { username, businessname, employeename } = req.body;
+        const sql = "INSERT INTO ITUserEmployees VALUES (?, ?, ?)";
+        // const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
 
-module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness };
+        const [results] = await connection.promise().query(sql, [username,businessname,employeename]);
+        // await connection.promise().query(sql1, [businessname,username])
+        console.log(req.body);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+
+module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees};
 
  

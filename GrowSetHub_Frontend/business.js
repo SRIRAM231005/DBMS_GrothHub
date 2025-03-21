@@ -267,7 +267,11 @@ function DisplayUserBusiness(index){
             </div>
             <span class="notification1">${businesses2[0].notificationCount}</span>
         `;
-        businessCard.addEventListener("click", () => window.location.href = "IT.html");
+
+        businessCard.addEventListener("click", () => {
+            localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
+            window.location.href = "IT.html";
+        });
         container.appendChild(businessCard);
 }
 
