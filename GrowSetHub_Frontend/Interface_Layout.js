@@ -131,7 +131,7 @@ function showDevList(List,role){
                 ListDisplay.classList.remove("expanded");
             }
 
-            document.querySelector('.confirm-button').addEventListener('click', () => {
+            document.querySelector(`.btn${index}`).addEventListener('click', () => {
                 console.log('Confirm button clicked!');
     
                 document.querySelectorAll('.emp-checkbox:checked').forEach(checkbox => {
@@ -159,7 +159,7 @@ document.querySelector('.footer button').addEventListener('click', () => {
         selectedEmployees.forEach(empName =>{
             fetchChooseEmpforPrj(credentials,BusinessDetails.BusinessName,empName,PrjInfo.Projectname);
         });
-        location.reload();
+        selectedEmployees.length=0;
     }
 
 });
@@ -198,7 +198,12 @@ async function fetchChooseEmpforPrj(username,businessname,empName,prjname) {
         const response = await fetch('http://localhost:8008/ITbusiness/BusEmpPrjStart', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username,businessname,empName,prjname}),
+            body: JSON.stringify({ 
+                username: username,
+                businessname: businessname,
+                empName: empName,
+                prjname: prjname
+            }),
         });
 
         EmpDetails = await response.json();

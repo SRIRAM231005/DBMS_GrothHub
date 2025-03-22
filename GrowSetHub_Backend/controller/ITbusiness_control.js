@@ -201,6 +201,7 @@ async function HireSelectedEmployees(req , res){
 async function BusEmpPrjStart(req , res){
     try {
         const { username, businessname, employeename, prjname } = req.body;
+        console.log("Hello");
         const sql = "update ituseremployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and (Username, BusinessName, Employeename) = (?,?,?)";
         const sql1 = "insert into ituserprojects (Username, BusinessName, Projectname) values (?,?,?)";
 
