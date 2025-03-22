@@ -1,3 +1,6 @@
+const credentials= JSON.parse(localStorage.getItem('credentials'));
+console.log(credentials);
+
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
         { img: "images/Investing.png", text: "Investing", badge: "1", link: "investing.html" },
@@ -58,11 +61,19 @@ async function fetchCompaniesWithStocks(){
     }
 }
 
-async function fetchUserInvestments(){
+
+async function fetchUserInvestments(username){
     try {
-        const response = await fetch('http://localhost:8008/investment/UserInvestments');
+        const response = await fetch('http://localhost:8008/investment/UserInvestments',{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                 username: username
+            }),
+        });
         UserInvestmentCompanies = await response.json();
         console.log(UserInvestmentCompanies);
+        DispUserInvestedTotData();
     } catch (error) {
         console.error("❌ Error fetching data:", error);
         return null;
@@ -70,38 +81,44 @@ async function fetchUserInvestments(){
 }
 
 fetchCompaniesWithStocks();
-fetchUserInvestments();
+fetchUserInvestments(credentials);
 
 let UserInvestedTotalData = [];
-UserInvestmentCompanies.forEach((element) =>{
-    let Logo, symbol, valuation, Profits, closePrice, profitClass;
-    CompaniesWithStocks.forEach((element1) =>{
-        if(element.CompanyName === element1.CompanyName){
-            Logo = element1.logo;
-            valuation = element1.Valuation;
-            symbol = element1.symbol;
-        }
-    })
-    fetchStockData1(symbol).then((price) => {
-        closePrice = price || 0; 
-        Profits = (closePrice - element.buyPrice) * element.sharesOwned;
+function DispUserInvestedTotData(){
+    UserInvestmentCompanies.forEach((element) =>{
+        let Logo, symbol, valuation, Profits, closePrice, profitClass;
+        CompaniesWithStocks.forEach((element1) =>{
+            if(element.CompanyName === element1.CompanyName){
+                Logo = element1.logo;
+                valuation = element1.Valuation;
+                symbol = element1.symbol;
+            }
+        })
+        fetchStockData1(symbol).then((price) => {
+            closePrice = price || 0; 
+            closePrice = Number(closePrice.toFixed(3));
+            Profits = (closePrice - element.buyPrice) * element.sharesOwned;
+            Profits = Number(Profits.toFixed(3));
+            profitClass = Profits >= 0 ? "profit" : "loss";
+    
+            UserInvestedTotalData.push({
+                logo: Logo,
+                company: element.CompanyName,
+                valuation: valuation,
+                sharePrice: `$${closePrice}`,
+                profit: `$${Profits}`,
+                profitClass: profitClass
+            });
+    
+            console.log(UserInvestedTotalData);
+            loadInvestments();
 
-        profitClass = Profits >= 0 ? "profit" : "loss";
-
-        UserInvestedTotalData.push({
-            logo: Logo,
-            company: element.CompanyName,
-            valuation: valuation,
-            sharePrice: `$${closePrice}`,
-            profit: `$${Profits}`,
-            profitClass: profitClass
+        }).catch((error) => {
+            console.error("❌ Error fetching stock data:", error);
         });
-
-        console.log(UserInvestedTotalData);
-    }).catch((error) => {
-        console.error("❌ Error fetching stock data:", error);
     });
-})
+
+}
 
 
 async function fetchStockData1(symbol){
@@ -175,8 +192,9 @@ const companies = [
 function loadInvestments() {
     const investmentList = document.getElementById("investment-list");
     investmentList.innerHTML = "";
-
-    investments.forEach(inv => {
+    console.log("1st",UserInvestedTotalData[0]);
+    UserInvestedTotalData.forEach(inv => {
+        console.log("420");
         const row = document.createElement("tr");
         row.innerHTML = `
             <td><img src="${inv.logo}" alt="${inv.company}"></td>
@@ -210,7 +228,7 @@ function closeDialog() {
     document.getElementById("company-dialog").style.display = "none";
 }
 
-window.onload = loadInvestments;
+//window.onload = loadInvestments;
 
 
 

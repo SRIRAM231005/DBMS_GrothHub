@@ -39,9 +39,10 @@ async function CompaniesWithStocks(req , res){
 
 async function UserInvestments(req , res){
     try {
-        const sql = "select * from UserInvestments";
+        const {username} = req.body;
+        const sql = "select * from UserInvestments where Username = ?";
         
-        const [results] = await connection.promise().query(sql);
+        const [results] = await connection.promise().query(sql,[username]);
         
         return res.status(200).json(results);
 

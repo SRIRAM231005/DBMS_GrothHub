@@ -70,9 +70,9 @@ CREATE TABLE IF NOT EXISTS ItEmployees(
 
 CREATE TABLE IF NOT EXISTS ItUserEmployees(
     Username VARCHAR(255),
+    BusinessName VARCHAR(255),
     Employeename VARCHAR(255),
-    
-    ParticipationStatus int default 0
+    EmpStatusPrj int default 0
 );
 
 CREATE TABLE IF NOT EXISTS CompaniesWithStocks(
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS CompaniesWithStocks(
     symbol VARCHAR(255),
     logo VARCHAR(255),
     Valuation decimal(10,2),
-    SharesAvailable int,
+    SharesAvailable int
 );
 
 CREATE TABLE IF NOT EXISTS UserInvestments(
@@ -88,6 +88,6 @@ CREATE TABLE IF NOT EXISTS UserInvestments(
     CompanyName VARCHAR(255),
     buyPrice DECIMAL(10,2) NOT NULL,
     sharesOwned int,
-    currentSharePrice DECIMAL(10,2),
+    currentSharePrice DECIMAL(10,2)
 );
 
