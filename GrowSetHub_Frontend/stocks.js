@@ -103,6 +103,7 @@ function DispUserInvestedTotData(){
     
             UserInvestedTotalData.push({
                 logo: Logo,
+                symbol: symbol,
                 company: element.CompanyName,
                 valuation: valuation,
                 sharePrice: `$${closePrice}`,
@@ -193,9 +194,10 @@ function loadInvestments() {
     const investmentList = document.getElementById("investment-list");
     investmentList.innerHTML = "";
     console.log("1st",UserInvestedTotalData[0]);
-    UserInvestedTotalData.forEach(inv => {
+    UserInvestedTotalData.forEach((inv,index) => {
         console.log("420");
         const row = document.createElement("tr");
+        row.classList.add('Companystock');
         row.innerHTML = `
             <td><img src="${inv.logo}" alt="${inv.company}"></td>
             <td>${inv.company}</td>
@@ -204,6 +206,12 @@ function loadInvestments() {
             <td class="${inv.profitClass}">${inv.profit}</td>
         `;
         investmentList.appendChild(row);
+    });
+    document.querySelectorAll('.Companystock').forEach((div,index) => {
+        div.addEventListener('click', () => {
+            localStorage.setItem("StocksCompanyinfo", JSON.stringify(UserInvestedTotalData[index]));
+            window.location.href = "IndividualStocks.html";
+        });
     });
 }
 
