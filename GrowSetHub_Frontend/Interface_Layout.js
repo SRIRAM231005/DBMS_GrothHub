@@ -4,6 +4,9 @@ console.log(credentials);
 const PrjInfo = JSON.parse(localStorage.getItem('PrjInfo'));
 console.log(PrjInfo);
 
+const BusinessDetails = JSON.parse(localStorage.getItem('UserBusinessInfo'));
+console.log(BusinessDetails);
+
 
 
 // document.addEventListener("DOMContentLoaded", function () {
@@ -78,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+let selectedEmployees = [];
 
 function showDevList(List,role){
     console.log("12",role);
@@ -126,23 +130,39 @@ function showDevList(List,role){
             } else {
                 ListDisplay.classList.remove("expanded");
             }
-        });
 
-
-        document.querySelector('.confirm-btn').addEventListener('click', () => {
-            console.log('Confirm button clicked!');
-
-            let selectedEmployees = [];
-            document.querySelectorAll('.emp-checkbox:checked').forEach(checkbox => {
-                selectedEmployees.push(checkbox.getAttribute('data-name'));
+            document.querySelector('.confirm-button').addEventListener('click', () => {
+                console.log('Confirm button clicked!');
+    
+                document.querySelectorAll('.emp-checkbox:checked').forEach(checkbox => {
+                    selectedEmployees.push(checkbox.getAttribute('data-name'));
+                });
+                console.log("1st check:",selectedEmployees);
+    
             });
-
-            selectedEmployees.forEach(empName =>{
-                fetchChooseEmpforPrj(credentials,BusinessDetails.BusinessName,empName);
-            })
-            location.reload();
         });
+
+
+        
 }
+
+
+
+document.querySelector('.footer button').addEventListener('click', () => {
+    console.log('Start Project button clicked!');
+    console.log("Employees Selected:",selectedEmployees);
+
+    if(selectedEmployees.length===0){
+        alert("Select some Employees to start the project first!!");
+    }
+    else{
+        selectedEmployees.forEach(empName =>{
+            fetchChooseEmpforPrj(credentials,BusinessDetails.BusinessName,empName,PrjInfo.Projectname);
+        });
+        location.reload();
+    }
+
+});
 
 // document.addEventListener("DOMContentLoaded", function () {
 //     const developmentTeam = document.getElementById("developmentTeam");
@@ -170,3 +190,22 @@ function showDevList(List,role){
 //         }
 //     });
 // });
+
+let EmpDetails;
+
+async function fetchChooseEmpforPrj(username,businessname,empName,prjname) {
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/BusEmpPrjStart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username,businessname,empName,prjname}),
+        });
+
+        EmpDetails = await response.json();
+        console.log(EmpDetails);
+        //return data; // Return fetched data
+    } catch (error) {
+        console.error("❌ Error fetching IT main business:", error);
+        return null;
+    }
+}

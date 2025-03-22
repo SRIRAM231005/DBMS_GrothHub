@@ -198,7 +198,25 @@ async function HireSelectedEmployees(req , res){
     }
 }
 
+async function BusEmpPrjStart(req , res){
+    try {
+        const { username, businessname, employeename, prjname } = req.body;
+        const sql = "update ituseremployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and (Username, BusinessName, Employeename) = (?,?,?)";
+        const sql1 = "insert into ituserprojects (Username, BusinessName, Projectname) values (?,?,?)";
 
-module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees};
+        const [results] = await connection.promise().query(sql, [username,businessname,employeename]);
+        await connection.promise().query(sql1, [username,businessname,prjname]);
+        console.log(req.body);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+
+
+module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart};
 
  
