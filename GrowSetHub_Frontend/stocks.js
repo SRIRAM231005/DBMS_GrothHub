@@ -1,86 +1,224 @@
-/*const apiKey = "QUCPPGZVMERJTMCC";
-const symbol = "AAPL"; // Apple stock
-const interval = "1min"; // Fetch data every 5 minutes
-const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=${interval}&apikey=${apiKey}`;
+document.addEventListener("DOMContentLoaded", function () {
+    const navItems = [
+        { img: "images/Investing.png", text: "Investing", badge: "1", link: "investing.html" },
+        { img: "images/Business.png", text: "Business", badge: "8", link: "business.html" },
+        { img: "images/Earnings.png", text: "Earnings", badge: null, link: "home.html" },
+        { img: "images/Profile.png", text: "Profile", badge: "1", link: "profile.html", active: true }
+    ];
 
-fetch(url)
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error("Error fetching stock data:", error));*/
+    const bottomNav = document.getElementById("bottomNav");
+
+    navItems.forEach(item => {
+        const navDiv = document.createElement("div");
+        navDiv.classList.add("nav-item");
+        if (item.active) navDiv.classList.add("active");
+
+        navDiv.innerHTML = `
+            <img src="${item.img}">
+            <span class="text">${item.text}</span>
+            ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
+        `;
+
+        bottomNav.appendChild(navDiv);
+
+        navDiv.addEventListener("click", () => {
+            window.location.href = item.link;
+        });
+    });
+});
 
 
+function selectInvestment(type) {
+    // Remove 'active' from both cards
+    document.getElementById("stocksCard").classList.remove("active");
+    document.getElementById("realEstateCard").classList.remove("active");
+
+    // Add 'active' to the selected one
+    if (type === "stocks") {
+        document.getElementById("stocksCard").classList.add("active");
+    } else {
+        document.getElementById("realEstateCard").classList.add("active");
+    }
+}
+
+//const credentials= JSON.parse(localStorage.getItem('credentials'));
+//console.log(credentials);
 
 
-    /*function fetchStockData() {
-        const apiKey = "WJU7AOH8VG0EUAWV";
-        const symbol = "AAPL"; // Example stock
-        const interval = "200min"; // Get data for every 200 minutes
-        const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=${interval}&apikey=${apiKey}`;
+let CompaniesWithStocks;
+let UserInvestmentCompanies;
+async function fetchCompaniesWithStocks(){
+    try {
+        const response = await fetch('http://localhost:8008/investment/CompaniesWithStocks');
+        CompaniesWithStocks = await response.json();
+        console.log(CompaniesWithStocks);
+    } catch (error) {
+        console.error("❌ Error fetching data:", error);
+        return null;
+    }
+}
+
+async function fetchUserInvestments(){
+    try {
+        const response = await fetch('http://localhost:8008/investment/UserInvestments');
+        UserInvestmentCompanies = await response.json();
+        console.log(UserInvestmentCompanies);
+    } catch (error) {
+        console.error("❌ Error fetching data:", error);
+        return null;
+    }
+}
+
+fetchCompaniesWithStocks();
+fetchUserInvestments();
+
+let UserInvestedTotalData = [];
+UserInvestmentCompanies.forEach((element) =>{
+    let Logo, symbol, valuation, Profits, closePrice, profitClass;
+    CompaniesWithStocks.forEach((element1) =>{
+        if(element.CompanyName === element1.CompanyName){
+            Logo = element1.logo;
+            valuation = element1.Valuation;
+            symbol = element1.symbol;
+        }
+    })
+    fetchStockData1(symbol).then((price) => {
+        closePrice = price || 0; 
+        Profits = (closePrice - element.buyPrice) * element.sharesOwned;
+
+        profitClass = Profits >= 0 ? "profit" : "loss";
+
+        UserInvestedTotalData.push({
+            logo: Logo,
+            company: element.CompanyName,
+            valuation: valuation,
+            sharePrice: `$${closePrice}`,
+            profit: `$${Profits}`,
+            profitClass: profitClass
+        });
+
+        console.log(UserInvestedTotalData);
+    }).catch((error) => {
+        console.error("❌ Error fetching stock data:", error);
+    });
+})
+
+
+async function fetchStockData1(symbol){
+    //const symbol = "AAPL"; // Example stock
+    const url = `http://localhost:8008/investment/stocks`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ symbol }),
+        });
+
+        const data = await response.json();
         
-        //const response = fetch(url);
-        //const data = response.json();
 
-        let data;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data =>{
-                console.log(data);
-                const timeSeries = data["Time Series (200min)"];
-                const labels = []; // Time labels
-                const prices = []; // Closing prices
-                const colors = []; // Colors for bars
-            
-                Object.keys(timeSeries).slice(0, 20).reverse().forEach(time => {
-                    const closePrice = parseFloat(timeSeries[time]["4. close"]);
-                    const openPrice = parseFloat(timeSeries[time]["1. open"]);
-            
-                    labels.push(time);
-                    prices.push(closePrice);
-            
-                    // Green if price increased, red if decreased
-                    colors.push(closePrice >= openPrice ? "green" : "red");
-                });
-            
-                drawStockChart(labels, prices, colors);
-            })
-            .catch(error => console.error("Error fetching stock data:", error));
-        
-        /*if (!data["Time Series (1min)"]) {
+        if (!data.chart || !data.chart.result) {
             console.error("Invalid Data:", data);
             return;
         }
-    
+
+        const chartData = data.chart.result[0];
+            const quotes = chartData.indicators.quote[0];
+            const closePrices = quotes.close;
+            return closePrices[closePrices.length-1];
+            //console.log("close",closePrices);
+
+    } catch (error) {
+        console.error("Error fetching stock data:", error);
     }
 
+}
 
-    function drawStockChart(labels, prices, colors) {
-        const ctx = document.getElementById("stockChart").getContext("2d");
-        
-        new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: "Stock Price",
-                    data: prices,
-                    backgroundColor: colors, // Dynamic green/red bars
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: false
-                    }
-                }
-            }
-        });
+
+
+const investments = [
+    {
+        logo: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
+        company: "Tesla",
+        valuation: "$8.5T",
+        sharePrice: "₹1200",
+        profit: "+₹5,000",
+        profitClass: "profit"
+    },
+    {
+        logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+        company: "Apple",
+        valuation: "₹20T",
+        sharePrice: "₹1800",
+        profit: "-₹2,000",
+        profitClass: "loss"
+    },
+    {
+        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+        company: "Google",
+        valuation: "₹15T",
+        sharePrice: "₹1500",
+        profit: "+₹3,500",
+        profitClass: "profit"
     }
+];
+
+const companies = [
+    { name: "Amazon", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
+    { name: "Microsoft", logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" },
+    { name: "Netflix", logo: "https://upload.wikimedia.org/wikipedia/commons/6/69/Netflix_logo.svg" },
+    { name: "Meta", logo: "https://upload.wikimedia.org/wikipedia/commons/8/89/Meta_Logo.svg" },
+    { name: "Intel", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Intel_logo_%282020%2C_dark_blue%29.svg" }
+];
+
+function loadInvestments() {
+    const investmentList = document.getElementById("investment-list");
+    investmentList.innerHTML = "";
+
+    investments.forEach(inv => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td><img src="${inv.logo}" alt="${inv.company}"></td>
+            <td>${inv.company}</td>
+            <td>${inv.valuation}</td>
+            <td>${inv.sharePrice}</td>
+            <td class="${inv.profitClass}">${inv.profit}</td>
+        `;
+        investmentList.appendChild(row);
+    });
+}
+
+function openDialog() {
+    document.getElementById("company-dialog").style.display = "block";
+    const companyList = document.getElementById("company-list");
+    companyList.innerHTML = "";
+
+    companies.forEach(company => {
+        const div = document.createElement("div");
+        div.className = "company-item";
+        div.innerHTML = `
+            <img src="${company.logo}" alt="${company.name}" class="company-logo">
+            <span>${company.name}</span>
+        `;
+        div.onclick = () => alert(`Navigating to ${company.name}`);
+        companyList.appendChild(div);
+    });
+}
+
+function closeDialog() {
+    document.getElementById("company-dialog").style.display = "none";
+}
+
+window.onload = loadInvestments;
+
+
+
+
+
     
     // Fetch and display the stock chart
-    fetchStockData();*/
+    //fetchStockData();
 
 
 
@@ -165,7 +303,14 @@ fetch(url)
     fetchStockData();*/
     
 
-    async function fetchStockData() {
+
+
+    ////real function////
+
+
+
+
+    /*async function fetchStockData() {
         const symbol = "AAPL"; // Example stock
         const url = `http://localhost:8008/investment/stocks`;
     
@@ -285,5 +430,5 @@ fetch(url)
         } catch (error) {
             console.error("Error fetching Company data:", error);
         }
-    }
+    }*/
     

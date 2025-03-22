@@ -74,3 +74,20 @@ CREATE TABLE IF NOT EXISTS ItUserEmployees(
     
     ParticipationStatus int default 0
 );
+
+CREATE TABLE IF NOT EXISTS CompaniesWithStocks(
+    CompanyName VARCHAR(255),
+    symbol VARCHAR(255),
+    logo VARCHAR(255),
+    Valuation decimal(10,2),
+    SharesAvailable int,
+);
+
+CREATE TABLE IF NOT EXISTS UserInvestments(
+    Username VARCHAR(255),
+    CompanyName VARCHAR(255),
+    buyPrice DECIMAL(10,2) NOT NULL,
+    sharesOwned int,
+    currentSharePrice DECIMAL(10,2),
+);
+

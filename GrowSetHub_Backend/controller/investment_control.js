@@ -23,21 +23,35 @@ async function Stocks(req , res){
     }
 }
 
-async function CompanyData(req , res){
-    const { symbol } = req.body;
-    const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
-
+async function CompaniesWithStocks(req , res){
     try {
-        const response = await fetch(url);
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        console.error("Error fetching stock data:", error);
-        res.status(500).json({ error: "Failed to fetch company data" });
+        const sql = "select * from CompaniesWithStocks";
+        
+        const [results] = await connection.promise().query(sql);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
     }
 }
 
-module.exports = { Stocks, CompanyData };
+async function UserInvestments(req , res){
+    try {
+        const sql = "select * from UserInvestments";
+        
+        const [results] = await connection.promise().query(sql);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+module.exports = { Stocks, CompaniesWithStocks, UserInvestments };
 
 
 //https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=summaryDetail,defaultKeyStatistics`;
