@@ -201,15 +201,18 @@ async function HireSelectedEmployees(req , res){
 async function BusEmpPrjStart(req , res){
     try {
         const { username, businessname, employeename, prjname } = req.body;
-        console.log("Hello");
-        const sql = "update ituseremployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and (Username, BusinessName, Employeename) = (?,?,?)";
-        const sql1 = "insert into ituserprojects (Username, BusinessName, Projectname) values (?,?,?)";
-
-        const [results] = await connection.promise().query(sql, [username,businessname,employeename]);
-        await connection.promise().query(sql1, [username,businessname,prjname]);
-        console.log(req.body);
-        
-        return res.status(200).json(results);
+        console.log(req.body.username);
+        console.log(req.body.businessname);
+        const sql0 = "select * from ituseremployees where EmpStatusPrj = 0 and trim(Username) = trim(?) and trim(BusinessName) = trim(?) and trim(Employeename) = trim(?)";
+        // const sql = "update ituseremployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and Username = ? and BusinessName = ? and Employeename = ?";
+        // const sql1 = "insert into ituserprojects (Username, BusinessName, Projectname) values (?,?,?)";
+        // const [results] = await connection.promise().query(sql, [username,businessname,employeename]);
+        // await connection.promise().query(sql1, [username,businessname,prjname]);
+        const [demo] = await connection.promise().query(sql0,[username,businessname,employeename]);
+        // const [results] = await connection.promise().query(sql0);
+        // console.log("res: ",query(sql, [username,businessname,employeename]));
+        console.log(demo);
+        // return res.status(200).json(results);
 
     } catch (err) {
         console.error("❌ Error getting data2:", err);

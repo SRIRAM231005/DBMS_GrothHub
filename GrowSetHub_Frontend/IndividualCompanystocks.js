@@ -1,6 +1,7 @@
 const StocksCompanyinfo= JSON.parse(localStorage.getItem('StocksCompanyinfo'));
 console.log(StocksCompanyinfo);
 const symbol = StocksCompanyinfo.symbol;
+let CurrentSharePrice;
 
 
 async function fetchStockData() {
@@ -31,6 +32,8 @@ async function fetchStockData() {
         console.log("open",openPrices);
         const closePrices = quotes.close;
         console.log("close",closePrices);
+        CurrentSharePrice = closePrices[closePrices.length-1];
+        CurrentSharePrice = Number(CurrentSharePrice.toFixed(3));
         const highPrices = quotes.high;
         console.log("high",highPrices);
         const lowPrices = quotes.low;
@@ -49,6 +52,7 @@ async function fetchStockData() {
         }));
 
         drawStockChart(candlestickData);
+        displayDetails();
     } catch (error) {
         console.error("Error fetching stock data:", error);
     }
@@ -107,7 +111,7 @@ function drawStockChart(data) {
 fetchStockData();
 //fetchCompanyData();
 
-async function fetchCompanyData(){
+/*async function fetchCompanyData(){
     const symbol = "AAPL"; // Example stock
     const url = `http://localhost:8008/investment/company`;
     
@@ -123,4 +127,31 @@ async function fetchCompanyData(){
     } catch (error) {
         console.error("Error fetching Company data:", error);
     }
+}*/
+
+function displayDetails(){
+    // Fetch elements using their IDs
+    const companyName = document.getElementById("company-name");
+    const companyValuation = document.getElementById("company-valuation");
+    const currentPrice = document.getElementById("current-price");
+    const totalCost = document.getElementById("total-cost");
+    const profit = document.getElementById("profit");
+
+    // Update the content dynamically
+    companyName.textContent = StocksCompanyinfo.company;
+    companyValuation.textContent = `Valuation: $${StocksCompanyinfo.valuation}`;
+    currentPrice.textContent = `$${CurrentSharePrice}`;
+    totalCost.textContent = `${StocksCompanyinfo.totalPrice}`;
+    profit.textContent = `${StocksCompanyinfo.profit}`;  // Assuming some profit calculation
+
+    // Optionally, change profit text color based on positive or negative value
+    //const profitValue = parseFloat(profit.textContent.replace("$", ""));
+    if (StocksCompanyinfo.profitClass === "profit") {
+        profit.style.color = "green";
+    } else if (StocksCompanyinfo.profitClass === "loss") {
+        profit.style.color = "red";
+    } else {
+        profit.style.color = "black";
+    }
+
 }

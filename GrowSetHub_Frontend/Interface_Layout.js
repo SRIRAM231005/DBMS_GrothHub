@@ -156,6 +156,7 @@ document.querySelector('.footer button').addEventListener('click', () => {
         alert("Select some Employees to start the project first!!");
     }
     else{
+        console.log("55");
         selectedEmployees.forEach(empName =>{
             fetchChooseEmpforPrj(credentials,BusinessDetails.BusinessName,empName,PrjInfo.Projectname);
         });

@@ -86,7 +86,9 @@ fetchUserInvestments(credentials);
 let UserInvestedTotalData = [];
 function DispUserInvestedTotData(){
     UserInvestmentCompanies.forEach((element) =>{
-        let Logo, symbol, valuation, Profits, closePrice, profitClass;
+        let Logo, symbol, valuation, Profits, closePrice, profitClass, totalPrice;
+        let buyPrice = element.buyPrice;
+        //console.log(buyPrice);
         CompaniesWithStocks.forEach((element1) =>{
             if(element.CompanyName === element1.CompanyName){
                 Logo = element1.logo;
@@ -97,8 +99,11 @@ function DispUserInvestedTotData(){
         fetchStockData1(symbol).then((price) => {
             closePrice = price || 0; 
             closePrice = Number(closePrice.toFixed(3));
-            Profits = (closePrice - element.buyPrice) * element.sharesOwned;
+            Profits = ((closePrice * element.sharesOwned) - element.buyPrice);
             Profits = Number(Profits.toFixed(3));
+            //buyPrice = Number(buyPrice.toFixed(2));
+            totalPrice = Number(buyPrice) + Number(Profits);
+            console.log(totalPrice);
             profitClass = Profits >= 0 ? "profit" : "loss";
     
             UserInvestedTotalData.push({
@@ -107,6 +112,7 @@ function DispUserInvestedTotData(){
                 company: element.CompanyName,
                 valuation: valuation,
                 sharePrice: `$${closePrice}`,
+                totalPrice: `$${totalPrice}`,
                 profit: `$${Profits}`,
                 profitClass: profitClass
             });
