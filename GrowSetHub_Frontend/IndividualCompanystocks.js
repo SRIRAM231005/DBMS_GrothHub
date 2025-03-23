@@ -168,6 +168,8 @@ let actionType = "";
 // Function to create and show dialog
 function openDialog(type) {
     actionType = type;
+    console.log(type);
+
     
     // Remove any existing dialog
     const existingDialog = document.getElementById("share-dialog");
@@ -192,7 +194,7 @@ function openDialog(type) {
             </div>
             <div class="dialog-buttons">
                 <button onclick="closeDialog()">Cancel</button>
-                <button onclick="confirmAction(${type})">Confirm</button>
+                <button onclick="confirmAction('${type}')">Confirm</button>
             </div>
         </div>
     `;
@@ -218,6 +220,7 @@ function closeDialog() {
 function confirmAction(type) {
     if (selectedShares !== null) {
         let Amount = CurrentSharePrice * selectedShares;
+        console.log("Amount:",Amount);
         if(type === "buy"){
             BoughtShares(Amount,selectedShares);
         }else{
@@ -233,7 +236,7 @@ function confirmAction(type) {
 
 async function BoughtShares(amount,selectedshares){
     try {
-        const response = await fetch('http://localhost:8008/investments/BoughtShares', {
+        const response = await fetch('http://localhost:8008/investment/BoughtShares', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

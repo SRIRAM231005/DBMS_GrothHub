@@ -190,8 +190,6 @@ async function fetchStockData1(symbol){
 
 }
 
-
-
 const investments = [
     {
         logo: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",

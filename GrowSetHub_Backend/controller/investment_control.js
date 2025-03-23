@@ -56,12 +56,14 @@ async function BoughtShares(req , res){
     try {
         const {username,companyname,amount,selectedshares} = req.body;
         const sql = "update UserInvestments set buyPrice = buyPrice + ? where Username = ? and CompanyName = ?";
-        const sql2 = "update UserInvestments set TotalShares = TotalShares + ? where Username = ? and CompanyName = ?";
+        const sql2 = "update UserInvestments set sharesOwned = sharesOwned + ? where Username = ? and CompanyName = ?";
         
-        const [results1] = await connection.promise().query(sql,[amount,companyname,username]);
-        const [results2] = await connection.promise().query(sql2,[selectedshares,companyname,username]);
+        const [results1] = await connection.promise().query(sql,[amount,username,companyname]);
+        const [results2] = await connection.promise().query(sql2,[selectedshares,username,companyname]);
+
+        console.log(results1);
         
-        return res.status(200).json({message: "done bought"});
+        return res.status(200).json(results1);
 
     } catch (err) {
         console.error("❌ Error getting data3:", err);

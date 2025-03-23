@@ -133,7 +133,6 @@ async function ITEmployeesHire(req , res){
     }
 }
 
-<<<<<<< Updated upstream
 async function ITEmployeesAfterHire(req , res){
     try {
         const { username,employeename } = req.body;
@@ -145,7 +144,6 @@ async function ITEmployeesAfterHire(req , res){
         console.log(req.body);
         
         return res.status(200).json(results);
-=======
 async function showDevList(req, res){
     try{
         const { username } = req.body;
@@ -162,7 +160,6 @@ async function showDevList(req, res){
 
 
 module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, showDevList };
->>>>>>> Stashed changes
 
     } catch (err) {
         console.error("❌ Error getting data2:", err);
