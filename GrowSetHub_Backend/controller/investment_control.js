@@ -52,7 +52,41 @@ async function UserInvestments(req , res){
     }
 }
 
-module.exports = { Stocks, CompaniesWithStocks, UserInvestments };
+async function BoughtShares(req , res){
+    try {
+        const {username,companyname,amount,selectedshares} = req.body;
+        const sql = "update UserInvestments set buyPrice = buyPrice + ? where Username = ? and CompanyName = ?";
+        const sql2 = "update UserInvestments set TotalShares = TotalShares + ? where Username = ? and CompanyName = ?";
+        
+        const [results1] = await connection.promise().query(sql,[amount,companyname,username]);
+        const [results2] = await connection.promise().query(sql2,[selectedshares,companyname,username]);
+        
+        return res.status(200).json({message: "done bought"});
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+async function SoldShares(req , res){
+    try {
+        const {username,companyname,amount,selectedshares} = req.body;
+        const sql = "update UserInvestments set buyPrice = buyPrice - ? where Username = ? and CompanyName = ?";
+        const sql2 = "update UserInvestments set TotalShares = TotalShares - ? where Username = ? and CompanyName = ?";
+        
+        const [results1] = await connection.promise().query(sql,[amount,companyname,username]);
+        const [results2] = await connection.promise().query(sql2,[selectedshares,companyname,username]);
+        
+        return res.status(200).json({message: "done sold"});
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+module.exports = { Stocks, CompaniesWithStocks, UserInvestments, BoughtShares, SoldShares };
 
 
 //https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=summaryDetail,defaultKeyStatistics`;

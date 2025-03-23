@@ -93,3 +93,69 @@ button {
 .sell-btn:hover {
     background-color: #a10808;
 }
+
+/* Dialog Box */
+.dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    text-align: center;
+    z-index: 1000;
+    width: 300px;
+    display: none;
+}
+
+.dialog-content h2 {
+    margin-bottom: 10px;
+}
+
+.share-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.share-box {
+    padding: 10px;
+    /*border: 2px solid white;*/
+    width: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.share-box.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Dialog Buttons */
+.dialog-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.dialog-buttons button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dialog-buttons button:first-child {
+    background: gray;
+}
+
+.dialog-buttons button:last-child {
+    background: green;
+}
+
+.dialog-buttons button:hover {
+    opacity: 0.8;
+}

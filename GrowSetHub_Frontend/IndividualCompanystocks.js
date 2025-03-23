@@ -1,5 +1,7 @@
 const StocksCompanyinfo= JSON.parse(localStorage.getItem('StocksCompanyinfo'));
 console.log(StocksCompanyinfo);
+const credentials= JSON.parse(localStorage.getItem('credentials'));
+console.log(credentials);
 const symbol = StocksCompanyinfo.symbol;
 let CurrentSharePrice;
 
@@ -154,4 +156,121 @@ function displayDetails(){
         profit.style.color = "black";
     }
 
+}
+
+
+
+
+
+let selectedShares = null;
+let actionType = "";
+
+// Function to create and show dialog
+function openDialog(type) {
+    actionType = type;
+    
+    // Remove any existing dialog
+    const existingDialog = document.getElementById("share-dialog");
+    if (existingDialog) existingDialog.remove();
+
+    // Create dialog container
+    const dialog = document.createElement("div");
+    dialog.id = "share-dialog";
+    dialog.className = "dialog";
+
+    // Dialog content
+    dialog.innerHTML = `
+        <div class="dialog-content">
+            <h2>${type === "buy" ? "Buy Shares" : "Sell Shares"}</h2>
+            <div style="color: rgb(142, 140, 140); font-size: 16px;">Select Number of Shares</div>
+            <div class="share-options">
+                <span class="share-box" onclick="selectShares(this, 10)">10</span>
+                <span class="share-box" onclick="selectShares(this, 20)">20</span>
+                <span class="share-box" onclick="selectShares(this, 50)">50</span>
+                <span class="share-box" onclick="selectShares(this, 100)">100</span>
+                <span class="share-box" onclick="selectShares(this, 200)">200</span>
+            </div>
+            <div class="dialog-buttons">
+                <button onclick="closeDialog()">Cancel</button>
+                <button onclick="confirmAction(${type})">Confirm</button>
+            </div>
+        </div>
+    `;
+
+    // Append dialog to body and display it
+    document.body.appendChild(dialog);
+    dialog.style.display = "block";
+}
+
+// Function to select shares
+function selectShares(element, shares) {
+    document.querySelectorAll(".share-box").forEach(box => box.classList.remove("selected"));
+    element.classList.add("selected");
+    selectedShares = shares;
+}
+
+// Function to close dialog
+function closeDialog() {
+    document.getElementById("share-dialog").remove();
+}
+
+// Function to confirm action
+function confirmAction(type) {
+    if (selectedShares !== null) {
+        let Amount = CurrentSharePrice * selectedShares;
+        if(type === "buy"){
+            BoughtShares(Amount,selectedShares);
+        }else{
+            SoldShares(Amount,selectedShares);
+        }
+        alert(`${actionType.toUpperCase()} ${selectedShares} shares`);
+        closeDialog();
+    } else {
+        alert("Please select the number of shares.");
+    }
+}
+
+
+async function BoughtShares(amount,selectedshares){
+    try {
+        const response = await fetch('http://localhost:8008/investments/BoughtShares', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: credentials,
+                companyname: StocksCompanyinfo.company,
+                amount: amount,
+                selectedshares: selectedshares
+            }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+        //return data;
+    } catch (error) {
+        console.error("❌ Error not bought:", error);
+        return null;
+    }
+}
+
+async function SoldShares(amount,selectedshares){
+    try {
+        const response = await fetch('http://localhost:8008/investment/SoldShares', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: credentials,
+                companyname: StocksCompanyinfo.company,
+                amount: amount,
+                selectedshares: selectedshares 
+            }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+        //return data;
+    } catch (error) {
+        console.error("❌ Error not sold:", error);
+        return null;
+    }
 }

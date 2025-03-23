@@ -74,6 +74,7 @@ async function fetchUserInvestments(username){
         UserInvestmentCompanies = await response.json();
         console.log(UserInvestmentCompanies);
         DispUserInvestedTotData();
+        DisplayCompaniesNotInvested();
     } catch (error) {
         console.error("❌ Error fetching data:", error);
         return null;
@@ -84,6 +85,7 @@ fetchCompaniesWithStocks();
 fetchUserInvestments(credentials);
 
 let UserInvestedTotalData = [];
+let UserNotInvestedTotalData = [];
 function DispUserInvestedTotData(){
     UserInvestmentCompanies.forEach((element) =>{
         let Logo, symbol, valuation, Profits, closePrice, profitClass, totalPrice;
@@ -125,6 +127,35 @@ function DispUserInvestedTotData(){
         });
     });
 
+}
+
+function DisplayCompaniesNotInvested(){
+    CompaniesWithStocks.forEach((element) =>{
+        let a=0;
+        let Logo, symbol, valuation, Profits, closePrice, profitClass, totalPrice;
+        let buyPrice = element.buyPrice;
+        //console.log(buyPrice);
+        UserInvestmentCompanies.forEach((element1) =>{
+            if(element.CompanyName === element1.CompanyName){
+                Logo = element1.logo;
+                valuation = element1.Valuation;
+                symbol = element1.symbol;
+                a=1;
+            }
+        })
+        if(a==0){
+            UserNotInvestedTotalData.push({
+                logo: Logo,
+                symbol: symbol,
+                company: element.CompanyName,
+                valuation: valuation,
+                sharePrice: `$${closePrice}`,
+                totalPrice: `$0`,
+                profit: `$0`,
+                profitClass: "profit"
+            });
+        }
+    });
 }
 
 
@@ -226,15 +257,21 @@ function openDialog() {
     const companyList = document.getElementById("company-list");
     companyList.innerHTML = "";
 
-    companies.forEach(company => {
+    UserNotInvestedTotalData.forEach(company => {
         const div = document.createElement("div");
         div.className = "company-item";
         div.innerHTML = `
-            <img src="${company.logo}" alt="${company.name}" class="company-logo">
-            <span>${company.name}</span>
+            <img src="${company.logo}" alt="${company.company}" class="company-logo">
+            <span>${company.company}</span>
         `;
-        div.onclick = () => alert(`Navigating to ${company.name}`);
+        //div.onclick = () => alert(`Navigating to ${company.name}`);
         companyList.appendChild(div);
+    });
+    document.querySelectorAll('.company-item').forEach((div,index) => {
+        div.addEventListener('click', () => {
+            localStorage.setItem("StocksCompanyinfo", JSON.stringify(UserNotInvestedTotalData[index]));
+            window.location.href = "IndividualStocks.html";
+        });
     });
 }
 
