@@ -133,6 +133,7 @@ async function ITEmployeesHire(req , res){
     }
 }
 
+<<<<<<< Updated upstream
 async function ITEmployeesAfterHire(req , res){
     try {
         const { username,employeename } = req.body;
@@ -144,6 +145,24 @@ async function ITEmployeesAfterHire(req , res){
         console.log(req.body);
         
         return res.status(200).json(results);
+=======
+async function showDevList(req, res){
+    try{
+        const { username } = req.body;
+        const sql = "select Employeename, Salary, Skill from itemployees where Employeename in (select Employeename from ituseremployees where Username = ?) ";
+        const [results] = await connection.promise().query(sql, [username]);
+        console.log(req.body);
+        return res.status(200).json(results);
+
+    }catch (err) {
+        console.error("❌ Error getting data1:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+
+module.exports = { ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, showDevList };
+>>>>>>> Stashed changes
 
     } catch (err) {
         console.error("❌ Error getting data2:", err);

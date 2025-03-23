@@ -199,3 +199,40 @@ body {
 .confirm-button:hover {
     background-color: #388E3C;
 }
+
+
+/* Dialog Box Styling*/ 
+.d1,.d2 {
+    width: 400px;
+    max-width: 90%;
+    background: white;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Dialog Header */
+.dialogHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Close Button */
+.dialogHead img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
