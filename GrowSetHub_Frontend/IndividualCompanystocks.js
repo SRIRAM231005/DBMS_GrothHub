@@ -68,6 +68,12 @@ function drawStockChart(data) {
         window.myChart.destroy();
     }
 
+    // Find min and max values for dynamic y-axis scaling
+    const prices = data.map(d => [d.o, d.h, d.l, d.c]).flat();
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const buffer = (maxPrice - minPrice) * 0.1; // 10% buffer for better visibility
+
     window.myChart = new Chart(ctx, {
         type: "candlestick",
         data: {
@@ -96,7 +102,9 @@ function drawStockChart(data) {
                     }
                 },
                 y: {
-                    beginAtZero: false
+                    beginAtZero: false,
+                    suggestedMin: minPrice - buffer,
+                    suggestedMax: maxPrice + buffer
                 }
             },
             plugins: {
