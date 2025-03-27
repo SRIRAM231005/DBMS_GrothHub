@@ -236,7 +236,21 @@ async function BusEmpPrjStart(req , res){
 }
 
 
+async function getPrjProgressCount(req , res){
+    try {
+        const { username, businessname } = req.body;
+        const sql = "select count(*) as countPrj from ItUserProjects where Username = ? and BusinessName = ? and ProjectStatus = 0 group by BusinessName";
+        const [results] = await connection.promise().query(sql, [username,businessname]);
+        console.log(req.body);
+        
+        return res.status(200).json(results);
 
-module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart};
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+
+module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount};
 
  

@@ -1,3 +1,5 @@
+// const { use } = require("../GrowSetHub_Backend/routes/ITbusiness");
+
 // const socket = io('http://localhost:8008'); // Connect to backend
 console.log(typeof io); 
 const socket = io("http://localhost:8008");
@@ -253,6 +255,34 @@ async function fetchITEmployeesFire(username,employeename){
         return null;
     }
 }
+
+async function fetchPrjinProgress(username,businessname) {
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/getPrjProgressCount', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username:username, businessname:businessname }),
+        });
+        
+        const data = await response.json();
+        console.log("lkjh",data);
+        return data;
+    } catch (error) {
+        console.error("❌ Error fetching IT user projects:", error);
+        return null;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const countProPrj = fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
+    if (countProPrj && countProPrj.length!==0) {
+        console.log("Display",countProPrj);
+        document.querySelector(".in-progress h3").textContent = `${countProPrj}`;
+    } else {
+        console.error("❌ countProPrj is missing or does not contain enough elements.");
+    }
+});
+
 
 let AllEmp;
 
