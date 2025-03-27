@@ -1,8 +1,9 @@
 const StocksCompanyinfo= JSON.parse(localStorage.getItem('StocksCompanyinfo'));
 console.log(StocksCompanyinfo);
 const credentials= JSON.parse(localStorage.getItem('credentials'));
-console.log(credentials);
+console.log("Cred:",credentials);
 const symbol = StocksCompanyinfo.symbol;
+console.log("Sym:",symbol);
 let CurrentSharePrice;
 
 

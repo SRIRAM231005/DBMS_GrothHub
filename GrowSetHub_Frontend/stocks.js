@@ -86,6 +86,7 @@ fetchUserInvestments(credentials);
 
 let UserInvestedTotalData = [];
 let UserNotInvestedTotalData = [];
+let CurrentPrice;
 function DispUserInvestedTotData(){
     UserInvestmentCompanies.forEach((element) =>{
         let Logo, symbol, valuation, Profits, closePrice, profitClass, totalPrice;
@@ -101,6 +102,7 @@ function DispUserInvestedTotData(){
         fetchStockData1(symbol).then((price) => {
             closePrice = price || 0; 
             closePrice = Number(closePrice.toFixed(3));
+            CurrentPrice=closePrice;
             Profits = ((closePrice * element.sharesOwned) - element.buyPrice);
             Profits = Number(Profits.toFixed(3));
             //buyPrice = Number(buyPrice.toFixed(2));
@@ -134,12 +136,12 @@ function DisplayCompaniesNotInvested(){
         let a=0;
         let Logo, symbol, valuation, Profits, closePrice, profitClass, totalPrice;
         let buyPrice = element.buyPrice;
+        Logo = element.logo;
+        valuation = element.Valuation;
+        symbol = element.symbol;
         //console.log(buyPrice);
         UserInvestmentCompanies.forEach((element1) =>{
             if(element.CompanyName === element1.CompanyName){
-                Logo = element1.logo;
-                valuation = element1.Valuation;
-                symbol = element1.symbol;
                 a=1;
             }
         })
@@ -149,13 +151,15 @@ function DisplayCompaniesNotInvested(){
                 symbol: symbol,
                 company: element.CompanyName,
                 valuation: valuation,
-                sharePrice: `$${closePrice}`,
+                sharePrice: `$${CurrentPrice}`,
                 totalPrice: `$0`,
                 profit: `$0`,
                 profitClass: "profit"
             });
         }
     });
+    console.log("Check1",UserNotInvestedTotalData);
+
 }
 
 
@@ -254,7 +258,8 @@ function openDialog() {
     document.getElementById("company-dialog").style.display = "block";
     const companyList = document.getElementById("company-list");
     companyList.innerHTML = "";
-
+    console.log("5");
+    console.log("Check",UserNotInvestedTotalData);
     UserNotInvestedTotalData.forEach(company => {
         const div = document.createElement("div");
         div.className = "company-item";
