@@ -54,6 +54,10 @@ async function fetchStockData() {
             c: closePrices[i]
         }));
 
+        timestamps.forEach((ts, i) => {
+            console.log(`Index ${i}: ${new Date(ts * 1000).toLocaleString()}`);
+        });
+
         drawStockChart(candlestickData);
         displayDetails();
     } catch (error) {
@@ -69,17 +73,34 @@ function drawStockChart(data) {
     }
 
     // Find min and max values for dynamic y-axis scaling
-    const prices = data.map(d => [d.o, d.h, d.l, d.c]).flat();
+    //const prices = data.map(d => [d.o, d.h, d.l, d.c]).flat();
+    //const filteredData = data.filter(entry => entry.value !== null);
+    const prices = data
+        .map(d => [d.o, d.h, d.l, d.c])
+        .flat()
+        .filter(price => price !== null && price !== undefined);
+    console.log("updated:",prices); 
+    let filteredData = data.filter(d => d.o !== null && d.c !== null);
+    let filteredData1 = data.filter(d => d.o !== null && d.o !== undefined && d.c !== null && d.c !== undefined);
+    console.log("updated1:",filteredData1);
+    console.log("updata:",data);
+    let filteredTimestamps = filteredData.map(d => d.x);
+    console.log("times:",filteredTimestamps);
+    const formatTime = (timestamp) => {
+        return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+    console.log("hey:",filteredTimestamps.map(data => formatTime(data)));
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
     const buffer = (maxPrice - minPrice) * 0.1; // 10% buffer for better visibility
+    console.log("Min Price:", minPrice, "Max Price:", maxPrice);
 
     window.myChart = new Chart(ctx, {
         type: "candlestick",
         data: {
             datasets: [{
                 label: "Stock Price",
-                data: data,
+                data: filteredData1,
                 borderColor: "black",
                 color: {
                     up: "green",
@@ -99,11 +120,18 @@ function drawStockChart(data) {
                         displayFormats: {
                             minute: "HH:mm"
                         }
+                    },
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 10 // Ensures even spacing
                     }
+                    //type: "category", // Use categorical scale instead of time
+                    //labels: filteredTimestamps.map(formatTime) // Convert timestamps to readable labels
+                    //labels: filteredData1.map(d => new Date(d.x).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
                 },
                 y: {
                     beginAtZero: false,
-                    suggestedMin: minPrice - buffer,
+                    suggestedMin: minPrice,
                     suggestedMax: maxPrice + buffer
                 }
             },

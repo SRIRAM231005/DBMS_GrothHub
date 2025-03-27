@@ -266,6 +266,8 @@ async function fetchPrjinProgress(username,businessname) {
         
         const data = await response.json();
         console.log("lkjh",data);
+        document.querySelector(".in-progress h3").textContent = `${data[0].countPrj}`;
+        console.log(document.querySelector(".in-progress h3"))
         return data;
     } catch (error) {
         console.error("❌ Error fetching IT user projects:", error);
@@ -273,17 +275,17 @@ async function fetchPrjinProgress(username,businessname) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const countProPrj = fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
-    if (countProPrj && countProPrj.length!==0) {
-        console.log("Display",countProPrj);
-        document.querySelector(".in-progress h3").textContent = `${countProPrj}`;
-    } else {
-        console.error("❌ countProPrj is missing or does not contain enough elements.");
-    }
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//     const countProPrj = fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
+//     if (countProPrj && countProPrj.length!==0) {
+//         console.log("Display",countProPrj);
+//         document.querySelector(".in-progress h3").textContent = `${countProPrj}`;
+//     } else {
+//         console.error("❌ countProPrj is missing or does not contain enough elements.");
+//     }
+// });
 
-
+fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
 let AllEmp;
 
 async function fetchITEmployeesHire(username,businessname,empRole){

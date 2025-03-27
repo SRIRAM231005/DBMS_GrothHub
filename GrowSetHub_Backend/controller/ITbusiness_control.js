@@ -242,6 +242,7 @@ async function getPrjProgressCount(req , res){
         const sql = "select count(*) as countPrj from ItUserProjects where Username = ? and BusinessName = ? and ProjectStatus = 0 group by BusinessName";
         const [results] = await connection.promise().query(sql, [username,businessname]);
         console.log(req.body);
+        console.log("Hollalala",results);
         
         return res.status(200).json(results);
 
