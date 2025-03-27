@@ -43,6 +43,14 @@ CREATE TABLE IF NOT EXISTS ItBusiness(
     PRIMARY KEY (Username, BusinessName)
 );
 
+CREATE TABLE IF NOT EXISTS BankBusiness(
+    Username VARCHAR(255) ,
+    BankName VARCHAR(255),
+    Wages decimal(10,2),
+    Revenue decimal(10,2) default 0,
+    PRIMARY KEY (Username, BankName)
+);
+
 CREATE TABLE IF NOT EXISTS ItProjects(
     Projectname VARCHAR(255) PRIMARY KEY,
     NoOfDev int,

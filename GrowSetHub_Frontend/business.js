@@ -147,9 +147,18 @@ async function fetchAddUserBusiness(username,business,businessname,amount){
             const container = document.querySelector(".companies");
             container.innerHTML="";
             fetchUserBusiness(credentials);
-
-            // fetchITMainBusiness(credentials);
         }
+        else if(business = "Bank corporation"){
+            fetchAddUserBusinessintoBankTable(username, bankname);
+            const container = document.querySelector(".companies");
+            container.innerHTML="";
+            fetchUserBusiness(credentials);
+        }
+        // else if(business = "Football Club"){
+
+        // }
+
+
         //return data; // Return fetched data
     } catch (error) {
         console.error("❌ Error fetching adding main business:", error);
@@ -172,6 +181,25 @@ async function fetchAddUserBusinessintoITTable(username,businessname){
         console.log('New Business:',data);
     } catch (error) {
         console.error("❌ Error fetching adding main business:", error);
+        return null;
+    }
+}
+
+async function fetchAddUserBusinessintoBankTable(username,bankname){
+    try {
+        const response = await fetch('http://localhost:8008/user/InsertBankBusiness', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                 username: username,
+                 bankname: bankname
+            }),
+        });
+
+        const data = await response.json();
+        console.log('New Bank Business:',data);
+    } catch (error) {
+        console.error("❌ Error fetching adding main bank business:", error);
         return null;
     }
 }
@@ -270,7 +298,11 @@ function DisplayUserBusiness(index){
 
         businessCard.addEventListener("click", () => {
             localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
-            window.location.href = "IT.html";
+            if(BusinessCatagory == "IT"){
+                window.location.href = "IT.html";
+            }else if(BusinessCatagory == "Bank corporation"){
+                window.location.href = "bank.html";
+            }
         });
         container.appendChild(businessCard);
 }
