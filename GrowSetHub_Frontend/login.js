@@ -11,6 +11,9 @@ setTimeout(() => {
     }, 2000);
 }, 2500);
 
+// Initialize Lucide icons
+lucide.createIcons();
+
 
 
 function switchTab(tab) {
@@ -25,15 +28,28 @@ function switchTab(tab) {
         signupForm.classList.add("hidden");
         loginTab.classList.add("active");
         signupTab.classList.remove("active");
-        formTitle.textContent = "Login Form";
+        formTitle.textContent = "Welcome Back!";
     } else {
         loginForm.classList.add("hidden");
         signupForm.classList.remove("hidden");
         loginTab.classList.remove("active");
         signupTab.classList.add("active");
-        formTitle.textContent = "Signup Form";
+        formTitle.textContent = "Join the Game!";
     }
 }
+
+
+// Show popup message
+function showPopup(message) {
+    popupMessage.textContent = message;
+    popup.classList.add('show');
+    
+    // Hide popup after 3 seconds
+    setTimeout(() => {
+        popup.classList.remove('show');
+    }, 3000);
+}
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -148,8 +164,12 @@ async function loginUser(credentials) {
 
         const result = await response.json();
         console.log("Login Successful:", result);
-        localStorage.setItem("credentials", JSON.stringify(credentials.username));
-        window.location.href = 'home.html';
+        if(result.error){
+            showPopup("Invalid Username or Password");
+        }else{
+            localStorage.setItem("credentials", JSON.stringify(credentials.username));
+            window.location.href = 'home.html';
+        }
         return result;
     } catch (error) {
         console.error("Login Error:", error);

@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,
     700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -37,29 +38,40 @@
     </div>
 
     <div class="container">
-        <h2 id="formTitle">Login Form</h2>
+        <h2 id="formTitle">Welcome Back!</h2>
 
         <div class="tabs">
-            <button id="loginTab" class="active" onclick="switchTab('login')">Login</button>
-            <button id="signupTab" onclick="switchTab('signup')">Signup</button>
+            <button id="loginTab" class="active" onclick="switchTab('login')"><i data-lucide="log-in" class="toggle-icon"></i> Login</button>
+            <button id="signupTab" onclick="switchTab('signup')"><i data-lucide="user-plus" class="toggle-icon"></i> Signup</button>
         </div>
 
         <div class="form-container">
             <form id="loginForm">
-                <input type="text" placeholder="Username" id="login-name" required>
-                <input type="password" placeholder="Password" id="login-password" required>
-                <button type="submit" class="submit-btn">Login</button>
-                <p class="switch-text">Not a member? <a href="#" onclick="switchTab('signup')">Signup now</a></p>
+                <label for="username"><i data-lucide="user" class="input-icon"></i> Username</label>
+                <input type="text" placeholder="Enter your username" id="login-name" required>
+                <label for="password"><i data-lucide="lock" class="input-icon"></i> Password</label>
+                <input type="password" placeholder="Enter your password" id="login-password" required>
+                <button type="submit" class="submit-btn"><i data-lucide="log-in" class="toggle-icon"></i> Login</button>
             </form>
 
             <form id="signupForm" class="hidden">
-                <input type="text" placeholder="Username" id="signup-name" required>
-                <input type="password" placeholder="Password" id="signup-password" required>
-                <button type="submit" class="submit-btn">Signup</button>
-                <p class="switch-text">Already a member? <a href="#" onclick="switchTab('login')">Login now</a></p>
+                <label for="username"><i data-lucide="user" class="input-icon"></i> Username</label>
+                <input type="text" placeholder="Enter your username" id="signup-name" required>
+                <label for="password"><i data-lucide="lock" class="input-icon"></i> Password</label>
+                <input type="password" placeholder="Enter your password" id="signup-password" required>
+                <button type="submit" class="submit-btn"><i data-lucide="user-plus" class="toggle-icon"></i> Signup</button>
             </form>
         </div>
     </div>
+
+    <div id="popup" class="popup">
+      <div class="popup-content">
+          <i data-lucide="alert-circle" class="popup-icon"></i>
+          <span id="popupMessage"></span>
+      </div>
+    </div>
+
+    
 
     <script src="login.js"></script>
 
