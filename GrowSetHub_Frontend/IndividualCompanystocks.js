@@ -256,12 +256,12 @@ function closeDialog() {
 // Function to confirm action
 function confirmAction(type) {
     if (selectedShares !== null) {
-        let Amount = CurrentSharePrice * selectedShares;
-        console.log("Amount:",Amount);
+        /*let Amount = CurrentSharePrice * selectedShares;
+        console.log("Amount:",Amount);*/
         if(type === "buy"){
-            BoughtShares(Amount,selectedShares);
+            BoughtShares(CurrentSharePrice,selectedShares);
         }else{
-            SoldShares(Amount,selectedShares);
+            SoldShares(CurrentSharePrice,selectedShares);
         }
         alert(`${actionType.toUpperCase()} ${selectedShares} shares`);
         closeDialog();
@@ -271,7 +271,7 @@ function confirmAction(type) {
 }
 
 
-async function BoughtShares(amount,selectedshares){
+async function BoughtShares(shareprice,selectedshares){
     try {
         const response = await fetch('http://localhost:8008/investment/BoughtShares', {
             method: 'POST',
@@ -279,7 +279,7 @@ async function BoughtShares(amount,selectedshares){
             body: JSON.stringify({
                 username: credentials,
                 companyname: StocksCompanyinfo.company,
-                amount: amount,
+                shareprice: shareprice,
                 selectedshares: selectedshares
             }),
         });
@@ -293,7 +293,7 @@ async function BoughtShares(amount,selectedshares){
     }
 }
 
-async function SoldShares(amount,selectedshares){
+async function SoldShares(shareprice,selectedshares){
     try {
         const response = await fetch('http://localhost:8008/investment/SoldShares', {
             method: 'POST',
@@ -301,7 +301,7 @@ async function SoldShares(amount,selectedshares){
             body: JSON.stringify({
                 username: credentials,
                 companyname: StocksCompanyinfo.company,
-                amount: amount,
+                shareprice: shareprice,
                 selectedshares: selectedshares 
             }),
         });

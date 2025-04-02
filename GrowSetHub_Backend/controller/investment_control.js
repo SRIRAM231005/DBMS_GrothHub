@@ -54,16 +54,23 @@ async function UserInvestments(req , res){
 
 async function BoughtShares(req , res){
     try {
-        const {username,companyname,amount,selectedshares} = req.body;
-        const sql = "update UserInvestments set buyPrice = buyPrice + ? where Username = ? and CompanyName = ?";
+        const {username,companyname,shareprice,selectedshares} = req.body;
+        /*const sql = "update UserInvestments set buyPrice = buyPrice + ? where Username = ? and CompanyName = ?";
         const sql2 = "update UserInvestments set sharesOwned = sharesOwned + ? where Username = ? and CompanyName = ?";
         
         const [results1] = await connection.promise().query(sql,[amount,username,companyname]);
-        const [results2] = await connection.promise().query(sql2,[selectedshares,username,companyname]);
+        const [results2] = await connection.promise().query(sql2,[selectedshares,username,companyname]);*/
 
-        console.log(results1);
+        const sql1 = "select COUNT(*) as total from UserInvestments"
+        const [results1] = await connection.promise().query(sql1);
+        const count = results1[0].total;
+
+        const sql2 = "INSERT INTO UserInvestments (`index`, Username, CompanyName, buyPrice, sharesOwned, currentSharePrice) VALUES(?,?,?,?,?,?)";
+        const [results2] = await connection.promise().query(sql1,[count,username,companyname,shareprice,selectedshares,shareprice]);
+
+        console.log(results2);
         
-        return res.status(200).json(results1);
+        return res.status(200).json(results2);
 
     } catch (err) {
         console.error("❌ Error getting data3:", err);
@@ -73,12 +80,47 @@ async function BoughtShares(req , res){
 
 async function SoldShares(req , res){
     try {
-        const {username,companyname,amount,selectedshares} = req.body;
-        const sql = "update UserInvestments set buyPrice = buyPrice - ? where Username = ? and CompanyName = ?";
-        const sql2 = "update UserInvestments set TotalShares = TotalShares - ? where Username = ? and CompanyName = ?";
+        const {username,companyname,shareprice,selectedshares} = req.body;
+
+        const sql1 = "select * from UserInvestments where Username = ? and CompanyName = ?";
+        const [results1] = await connection.promise().query(sql1,[username,companyname]);
+
+        const sql2 = "SELECT Username, CompanyName, SUM(sharesOwned) AS TotalsharesOwned FROM UserInvestments WHERE Username = ? AND CompanyName = ? GROUP BY Username, CompanyName";
+
+        const [results2] = await connection.promise().query(sql2, [username, companyname]);
+        const totalAmount = (results2[0].TotalsharesOwned) * shareprice;
+        let tempTotalAmount = totalAmount;
+        let tempTotalAmount2 = 0;
+        let IndexArray = [];
+        let LastIndex = -1;
+        let a=0;
+        results1.some((row,index) =>{
+            if(a===0){
+                tempTotalAmount -= (row.buyPrice)*(row.sharesOwned);
+                IndexArray.push(row.index);
+                LastIndex = row.index;
+                if(tempTotalAmount <= 0){
+                    row.sharesOwned = row.sharesOwned - selectedshares;
+                    a=1;
+                }
+            }
+            tempTotalAmount2 = tempTotalAmount;
+        })
+
+        for (const row of IndexArray) {
+            if(row !== LastIndex){
+                const sql3 = "delete from UserInvestments where `index` = ?";
+                const [results3] = await connection.promise().query(sql3,[row]);
+            }   
+        }
         
-        const [results1] = await connection.promise().query(sql,[amount,companyname,username]);
-        const [results2] = await connection.promise().query(sql2,[selectedshares,companyname,username]);
+        if(tempTotalAmount2 === 0){
+            const sql4 = "delete from UserInvestments where `index` = ?";
+            const [results4] = await connection.promise().query(sql4,[LastIndex]);
+        }else{
+            const sql5 = "update UserInvestments set sharesOwned = sharesOwned - ? where `index` = ?";
+            const [results5] = await connection.promise().query(sql5,[selectedshares,LastIndex]);
+        }
         
         return res.status(200).json({message: "done sold"});
 
