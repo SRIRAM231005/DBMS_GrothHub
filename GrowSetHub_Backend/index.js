@@ -101,6 +101,7 @@ function updateProjectStatus() {
 const userrouter = require('./routes/users');
 const ITbusinessrouter = require('./routes/ITbusiness');
 const investmentrouter = require('./routes/investment');
+const BankCorporationRouter = require('./routes/Bank-Corporationbusiness');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 app.use(bodyParser.json());
@@ -109,6 +110,7 @@ app.use(cors());
 app.use('/user',userrouter);
 app.use('/ITbusiness',ITbusinessrouter);
 app.use('/investment',investmentrouter);
+app.use('/Bank-Corporationbusiness',BankCorporationRouter);
 
 /*app.listen(8008,  ()=>{
     console.log('server started');

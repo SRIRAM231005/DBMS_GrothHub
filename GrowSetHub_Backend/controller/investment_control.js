@@ -61,12 +61,12 @@ async function BoughtShares(req , res){
         const [results1] = await connection.promise().query(sql,[amount,username,companyname]);
         const [results2] = await connection.promise().query(sql2,[selectedshares,username,companyname]);*/
 
-        const sql1 = "select COUNT(*) as total from UserInvestments"
-        const [results1] = await connection.promise().query(sql1);
-        const count = results1[0].total;
+        // const sql1 = "select COUNT(*) as total from UserInvestments"
+        // const [results1] = await connection.promise().query(sql1);
+        // const count = results1[0].total;
 
-        const sql2 = "INSERT INTO UserInvestments (`index`, Username, CompanyName, buyPrice, sharesOwned, currentSharePrice) VALUES(?,?,?,?,?,?)";
-        const [results2] = await connection.promise().query(sql1,[count,username,companyname,shareprice,selectedshares,shareprice]);
+        const sql2 = "INSERT INTO UserInvestments (Username, CompanyName, buyPrice, sharesOwned, currentSharePrice) VALUES(?,?,?,?,?)";
+        const [results2] = await connection.promise().query(sql2,[username,companyname,shareprice,selectedshares,shareprice]);
 
         console.log(results2);
         
@@ -89,24 +89,33 @@ async function SoldShares(req , res){
 
         const [results2] = await connection.promise().query(sql2, [username, companyname]);
         const totalAmount = (results2[0].TotalsharesOwned) * shareprice;
-        let tempTotalAmount = totalAmount;
-        let tempTotalAmount2 = 0;
+        let TotalsharesOwned = results2[0].TotalsharesOwned;
+        //let tempTotalsharesOwned = TotalsharesOwned;
+        let tempTotalsharesSelected = selectedshares;
+        //let tempTotalsharesOwned2 = 0;
         let IndexArray = [];
         let LastIndex = -1;
+        let updatedShares = 0;
         let a=0;
         results1.some((row,index) =>{
             if(a===0){
-                tempTotalAmount -= (row.buyPrice)*(row.sharesOwned);
-                IndexArray.push(row.index);
-                LastIndex = row.index;
-                if(tempTotalAmount <= 0){
-                    row.sharesOwned = row.sharesOwned - selectedshares;
+                if(tempTotalsharesSelected <= row.sharesOwned){
                     a=1;
+                    LastIndex = row.index;
+                    updatedShares = row.sharesOwned - tempTotalsharesSelected;
+                    return true;
                 }
+                tempTotalsharesSelected -= row.sharesOwned;
+                IndexArray.push(row.index);
             }
-            tempTotalAmount2 = tempTotalAmount;
+            //tempTotalAmount2 = tempTotalAmount;
+            //tempTotalsharesOwned2 = tempTotalsharesOwned;
         })
 
+        console.log("updatedShares",updatedShares);
+        console.log("LastIndex",LastIndex);
+        console.log("IndexArray",IndexArray);
+        console.log("TotalsharesOwned",TotalsharesOwned);
         for (const row of IndexArray) {
             if(row !== LastIndex){
                 const sql3 = "delete from UserInvestments where `index` = ?";
@@ -114,12 +123,12 @@ async function SoldShares(req , res){
             }   
         }
         
-        if(tempTotalAmount2 === 0){
+        if(updatedShares === 0){
             const sql4 = "delete from UserInvestments where `index` = ?";
             const [results4] = await connection.promise().query(sql4,[LastIndex]);
         }else{
-            const sql5 = "update UserInvestments set sharesOwned = sharesOwned - ? where `index` = ?";
-            const [results5] = await connection.promise().query(sql5,[selectedshares,LastIndex]);
+            const sql5 = "update UserInvestments set sharesOwned = ? where `index` = ?";
+            const [results5] = await connection.promise().query(sql5,[updatedShares,LastIndex]);
         }
         
         return res.status(200).json({message: "done sold"});

@@ -46,7 +46,6 @@ CREATE TABLE IF NOT EXISTS ItBusiness(
 CREATE TABLE IF NOT EXISTS BankBusiness(
     Username VARCHAR(255) ,
     BankName VARCHAR(255),
-    Wages decimal(10,2),
     Revenue decimal(10,2) default 0,
     PRIMARY KEY (Username, BankName)
 );

@@ -140,10 +140,7 @@ function showDevList(List,role){
                 console.log("1st check:",selectedEmployees);
     
             });
-        });
-
-
-        
+        });        
 }
 
 

@@ -86,20 +86,21 @@ document.addEventListener("DOMContentLoaded", () => {
             let password = document.getElementById("signup-password").value;
 
             const isUnique = await checkUserExists(username);
+            console.log(isUnique);
             if (!isUnique) {
-                errorMessage.textContent = "User with username already exist. Try another!";
+                showPopup("Username already exists. Try other Username.");
                 return; 
+            }else{
+                const userData = {
+                    username: username,
+                    password: password
+                };
+    
+                console.log("Signing up with:", userData);
+                const response = await signupUser(userData);
+                console.log("Signup Response:", response);
+                form.reset();
             }
-
-            const userData = {
-                username: username,
-                password: password
-            };
-
-            console.log("Signing up with:", userData);
-            const response = await signupUser(userData);
-            console.log("Signup Response:", response);
-            form.reset();
         });
     }
 });
@@ -114,7 +115,12 @@ async function checkUserExists(username) {
             },
             body: JSON.stringify({ username })
         });
+        if (!response.ok) {
+            showPopup("Username already exists");
+            throw new Error(`Login failed! Status: ${response.status}`);
+        }
         const data = await response.json();
+
         return !data.exists;
     } catch (error) {
         console.error("Signup Error:", error);
@@ -159,6 +165,7 @@ async function loginUser(credentials) {
         });
 
         if (!response.ok) {
+            showPopup("Invalid Username or Password");
             throw new Error(`Login failed! Status: ${response.status}`);
         }
 

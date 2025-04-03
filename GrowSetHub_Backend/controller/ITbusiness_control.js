@@ -197,23 +197,6 @@ async function InsertITBusiness(req , res){
     }
 }
 
-async function InsertBankBusiness(req , res){
-    try {
-        const { username, bankname } = req.body;
-        const sql = "INSERT INTO BankBusiness (Username, BankName) VALUES (?, ?)";
-        // const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
-
-        const [results] = await connection.promise().query(sql, [username,bankname]);
-        // await connection.promise().query(sql1, [businessname,username])
-        console.log(req.body);
-        
-        return res.status(200).json(results);
-
-    } catch (err) {
-        console.error("❌ Error getting data2:", err);
-    }
-}
-
 async function HireSelectedEmployees(req , res){
     try {
         const { username, businessname, employeename } = req.body;
@@ -269,6 +252,6 @@ async function getPrjProgressCount(req , res){
 }
 
 
-module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,InsertBankBusiness};
+module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount};
 
  

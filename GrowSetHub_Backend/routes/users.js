@@ -2,7 +2,8 @@ const express = require("express");
 const {userSignup,userUniquenessCheck,userLogin} = require('../controller/user_control');
 const {InsertUserbusiness, SelectUserbusiness} = require('../controller/business_control');
 const {Balance, Statistics} = require('../controller/profile_control');
-const {InsertITBusiness,InsertBankBusiness} = require('../controller/ITbusiness_control');
+const {InsertITBusiness} = require('../controller/ITbusiness_control');
+const {InsertBankBusiness} = require('../controller/Bank-Corporationbusiness_control');
 
 const userRouter = express.Router();
 

@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Business Data
     const businesses = [
         { name: "IT", price: "4899", image: "images/ITimage.png" },
-        { name: "Bank corporation", price: "9999", image: "images/ITimage.png" },
-        { name: "Football Club", price: "19899", image: "images/ITimage.png" },
+        { name: "Bank-Corporation", price: "9999", image: "images/ITimage.png" },
+        { name: "Football-Club", price: "19899", image: "images/ITimage.png" },
         //{ name: "Factory", price: "$24,999" }
     ];
 
@@ -142,14 +142,14 @@ async function fetchAddUserBusiness(username,business,businessname,amount){
         const data = await response.json();
         console.log('New Business:',data);
         // fetchUserBusiness(username);
-        if(business = "IT"){
+        if(business == "IT"){
             fetchAddUserBusinessintoITTable(username, businessname);
             const container = document.querySelector(".companies");
             container.innerHTML="";
             fetchUserBusiness(credentials);
         }
-        else if(business = "Bank corporation"){
-            fetchAddUserBusinessintoBankTable(username, bankname);
+        else if(business == "Bank-Corporation"){
+            fetchAddUserBusinessintoBankTable(username, businessname);
             const container = document.querySelector(".companies");
             container.innerHTML="";
             fetchUserBusiness(credentials);
@@ -172,11 +172,11 @@ async function fetchAddUserBusinessintoITTable(username,businessname){
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                 username: username,
-                 businessname: businessname
+                username: username,
+                businessname: businessname
             }),
         });
-
+        
         const data = await response.json();
         console.log('New Business:',data);
     } catch (error) {
@@ -185,14 +185,15 @@ async function fetchAddUserBusinessintoITTable(username,businessname){
     }
 }
 
-async function fetchAddUserBusinessintoBankTable(username,bankname){
+async function fetchAddUserBusinessintoBankTable(username,businessname){
+    console.log("test",businessname);
     try {
         const response = await fetch('http://localhost:8008/user/InsertBankBusiness', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                  username: username,
-                 bankname: bankname
+                 businessname: businessname
             }),
         });
 
@@ -252,8 +253,9 @@ let BusinessCatagory;
 
 async function ShowBusiness(username){
     console.log("sample:",UserBusinesses);
-    UserBusinesses.forEach(async(element,index)=>{
+    UserBusinesses.forEach(async(element,idx)=>{
         try {
+            console.log("5555");
             const response = await fetch(`http://localhost:8008/${element.Business}business/${element.Business}mainbusiness`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -261,10 +263,15 @@ async function ShowBusiness(username){
             });
     
             UserBusinessData = await response.json();
-            console.log("IT data:",UserBusinessData);
+            //console.log("All Data:",UserBusinessData);
             BusinessCatagory = element.Business;
+            UserBusinessData.forEach((ele,ind) =>{
+                if(element.Businessname === ele.BusinessName){
+                    DisplayUserBusiness(ele.index,BusinessCatagory,idx);
+                }
+            })
             //return data; // Return fetched data
-            DisplayUserBusiness(index);
+            //DisplayUserBusiness(count,BusinessCatagory);
         } catch (error) {
             console.error("❌ Error fetching main businesses:", error);
             return null;
@@ -273,19 +280,24 @@ async function ShowBusiness(username){
 }
 
 let a=0;
-function DisplayUserBusiness(index){
+function DisplayUserBusiness(index,businessCat,idx){
+    console.log("Type of Business:",businessCat);
     const container = document.querySelector(".companies");
     if(a===0){
         container.innerHTML = ""; 
         a++;
     }
+    console.log("check11",UserBusinessData[index]);
+    console.log(index);
+    console.log("check12",UserBusinessData);
     const businessCard = document.createElement("div");
-        businessCard.classList.add("business-card");
+        businessCard.classList.add(`business-card${idx}`);
+        businessCard.classList.add('business-card');
         businessCard.innerHTML = `
             <div class="icon" style="margin-right: 20px;"><img src="${businesses2[0].icon}" style="height:60px; width:60px;"></div>
             <div class="details">
                 <div style="font-size:24px;">${UserBusinessData[index].BusinessName}</div>
-                <div style="margin-top:5px;margin-bottom:20px;">${BusinessCatagory} company</div>
+                <div style="margin-top:5px;margin-bottom:20px;">${businessCat}</div>
                 <div class="progress" style="margin-bottom:10px;">
                     📊 ${businesses2[0].progress}
                 </div>
@@ -296,15 +308,41 @@ function DisplayUserBusiness(index){
             <span class="notification1">${businesses2[0].notificationCount}</span>
         `;
 
-        businessCard.addEventListener("click", () => {
+        /*businessCard.addEventListener("click", () => {
             localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
-            if(BusinessCatagory == "IT"){
+            //console.log("BusinessCategory:",BusinessCatagory);
+            if(businessCat == "IT"){
                 window.location.href = "IT.html";
-            }else if(BusinessCatagory == "Bank corporation"){
+            }else if(businessCat == "Bank-Corporation"){
+                window.location.href = "bank.html";
+            }
+        });*/
+
+        // document.querySelectorAll('.business-card').forEach((div,index) => {
+        //     div.addEventListener('click', () => {
+        //         localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
+        //         //console.log("BusinessCategory:",BusinessCatagory);
+        //         if(businessCat == "IT"){
+        //             window.location.href = "IT.html";
+        //         }else if(businessCat == "Bank-Corporation"){
+        //             window.location.href = "bank.html";
+        //         }
+        //     });
+        // });
+
+        container.appendChild(businessCard);
+
+        document.querySelector(`.business-card${idx}`).addEventListener('click', () => {
+            localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
+            //console.log("BusinessCategory:",BusinessCatagory);
+            if(businessCat == "IT"){
+                window.location.href = "IT.html";
+            }else if(businessCat == "Bank-Corporation"){
                 window.location.href = "bank.html";
             }
         });
-        container.appendChild(businessCard);
+    
+    count++;
 }
 
 
