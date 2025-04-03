@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Market</title>
+    <link rel="stylesheet" href="market.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="estate.html" class="back-button">←</a>
+            <div class="header-content">
+                <h1>Real estate market</h1>
+                <p class="balance">Balance: $ 862.50</p>
+            </div>
+        </header>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active">Expensive first</button>
+            <button class="filter-btn">Cheap first</button>
+        </div>
+
+        <div class="property-list">
+            <div class="property-card">
+                <img src="https://example.com/house1.jpg" alt="House in Detroit">
+                <div class="property-info">
+                    <h2 class="price">$ 25,000</h2>
+                    <div class="location">
+                        <span class="location-icon">📍</span>
+                        <span>Detroit, Michigan</span>
+                    </div>
+                    <button class="buy-btn">Buy</button>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <img src="https://example.com/house2.jpg" alt="House in Cleveland">
+                <div class="property-info">
+                    <h2 class="price">$ 32,000</h2>
+                    <div class="location">
+                        <span class="location-icon">📍</span>
+                        <span>Cleveland, Ohio</span>
+                    </div>
+                    <button class="buy-btn">Buy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const propertyList = document.querySelector('.property-list');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        // Store properties data
+        let properties = [
+            {
+                image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994',
+                price: 25000,
+                location: 'Detroit, Michigan'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be',
+                price: 32000,
+                location: 'Cleveland, Ohio'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1576941089067-2de3c901e126',
+                price: 28500,
+                location: 'Detroit, Michigan'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1598228723793-52759bba239c',
+                price: 35000,
+                location: 'Cleveland, Ohio'
+            }
+            // Add more properties here
+        ];
+    
+        // Function to create property card HTML
+        function createPropertyCard(property) {
+            return `
+                <div class="property-card">
+                    <img src="${property.image}" alt="House">
+                    <div class="property-info">
+                        <h2 class="price">$ ${property.price.toLocaleString()}</h2>
+                        <div class="location">
+                            <span class="location-icon">📍</span>
+                            <span>${property.location}</span>
+                        </div>
+                        <button class="buy-btn">Buy</button>
+                    </div>
+                </div>
+            `;
+        }
+    
+        // Function to render property list
+        function renderProperties(sortedProperties) {
+            propertyList.innerHTML = sortedProperties.map(property => 
+                createPropertyCard(property)
+            ).join('');
+        }
+    
+        // Add click handlers to filter buttons
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+    
+                // Sort properties based on button text
+                const sortedProperties = [...properties].sort((a, b) => {
+                    if (button.textContent === 'Expensive first') {
+                        return b.price - a.price;
+                    } else {
+                        return a.price - b.price;
+                    }
+                });
+    
+                // Render sorted properties
+                renderProperties(sortedProperties);
+            });
+        });
+    
+        // Initial render with expensive first
+        renderProperties([...properties].sort((a, b) => b.price - a.price));
+
+            
+    </script>
+</body>
+</html>

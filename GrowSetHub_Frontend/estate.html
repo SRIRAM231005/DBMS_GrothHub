@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investing App</title>
+    <link rel="stylesheet" href="estate.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Investing</h1>
+            <nav>
+                <ul>
+                    <li><a href="stocksProfile.html">Shares</a></li>
+                    <li><a href="estate.html" class="active">Real Estate</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="income-display">
+            <h2>$ 0.00</h2>
+            <p>Rental income per hour</p>
+        </div>
+
+        <div class="cards">
+            <div class="card market">
+                <h2>Real estate market</h2>
+                <p>Buy properties all over the world and earn rental income!</p>
+            </div>
+
+            <div class="card property">
+                <h2>My property</h2>
+                <p>List of my properties</p>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="#" class="active">
+                <i class="icon-investing"></i>
+                <span>Investing</span>
+            </a>
+            <a href="#">
+                <i class="icon-business"></i>
+                <span>Business</span>
+            </a>
+            <a href="#">
+                <i class="icon-earnings"></i>
+                <span>Earnings</span>
+            </a>
+            <a href="#">
+                <i class="icon-items"></i>
+                <span>Items</span>
+            </a>
+            <a href="#">
+                <i class="icon-profile"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </div>
+    <script>
+        document.querySelector('.card.market').addEventListener('click', function() {
+            window.location.href = 'market.html';
+        });
+    </script>
+    <script>
+        document.querySelector('.card.property').addEventListener('click', function() {
+            window.location.href = 'property.html';
+        });
+    </script>
+</body>
+</html>
