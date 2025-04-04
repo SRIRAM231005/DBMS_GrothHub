@@ -5,15 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investing App</title>
     <link rel="stylesheet" href="estate.css">
+    <link rel="stylesheet" href="backgroundStyle.css">
+    <link rel="stylesheet" href="navigationBar1.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+
+    <div class="bottom-nav" id="bottomNav"></div>
+    <div class="bg-decoration">
+        <div class="wave-bottom"></div>
+        <div class="floating-elements">
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+        </div>
+        <div class="circuit-pattern"></div>
+    </div>
+
     <div class="container">
         <header>
             <h1>Investing</h1>
             <nav>
                 <ul>
-                    <li><a href="stocksProfile.html">Shares</a></li>
-                    <li><a href="estate.html" class="active">Real Estate</a></li>
+                    <li><a href="stocksProfile.html"><i data-lucide="activity" class="icon1"></i> Shares</a></li>
+                    <li><a href="estate.html" class="active"><i data-lucide="house" class="icon1"></i> Real Estate</a></li>
                 </ul>
             </nav>
         </header>
@@ -34,39 +49,7 @@
                 <p>List of my properties</p>
             </div>
         </div>
-
-        <nav class="bottom-nav">
-            <a href="#" class="active">
-                <i class="icon-investing"></i>
-                <span>Investing</span>
-            </a>
-            <a href="#">
-                <i class="icon-business"></i>
-                <span>Business</span>
-            </a>
-            <a href="#">
-                <i class="icon-earnings"></i>
-                <span>Earnings</span>
-            </a>
-            <a href="#">
-                <i class="icon-items"></i>
-                <span>Items</span>
-            </a>
-            <a href="#">
-                <i class="icon-profile"></i>
-                <span>Profile</span>
-            </a>
-        </nav>
     </div>
-    <script>
-        document.querySelector('.card.market').addEventListener('click', function() {
-            window.location.href = 'market.html';
-        });
-    </script>
-    <script>
-        document.querySelector('.card.property').addEventListener('click', function() {
-            window.location.href = 'property.html';
-        });
-    </script>
+    <script src="estate.js"></script>
 </body>
 </html>

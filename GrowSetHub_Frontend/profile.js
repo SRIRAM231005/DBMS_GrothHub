@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     Investing.addEventListener('click', () => {
         console.log("Investing Clicked");
-        window.location.href = 'investment.html';
+        window.location.href = 'stocksProfile.html';
     });
     Business.addEventListener('click', () => {
         console.log("Business Clicked");
@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = 'profile.html';
     });
 });
+
+lucide.createIcons();
 
 
 

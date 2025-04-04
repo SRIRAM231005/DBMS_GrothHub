@@ -1,20 +1,5 @@
-// const Investing = document.querySelector('.Investing');
-// const Business = document.querySelector('.Business');
-// const Earning = document.querySelector('.Earnings');
-// const Profile = document.querySelector('.Profile');
-
-// Investing?.addEventListener('click',()=>{
-//     window.location.href = 'home.html';
-// })
-// Business?.addEventListener('click',()=>{
-//     window.location.href = 'home.html';
-// })
-// Earning?.addEventListener('click',()=>{
-//     window.location.href = 'home.html';
-// })
-// Profile?.addEventListener('click',()=>{
-//     window.location.href = 'profile.html';
-// })
+const credentials= JSON.parse(localStorage.getItem('credentials'));
+console.log(credentials);
 
 document.addEventListener("DOMContentLoaded", () => {
     const Investing = document.querySelector('.Investing');
@@ -24,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     Investing?.addEventListener('click', () => {
         console.log("Investing Clicked");
-        window.location.href = 'investment.html';
+        window.location.href = 'stocksProfile.html';
     });
     Business?.addEventListener('click', () => {
         console.log("Business Clicked");
@@ -40,3 +25,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+lucide.createIcons();
+
+let Balance;
+async function fetchBalance(username){
+    try {
+        const response = await fetch('http://localhost:8008/user/Balance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username }),
+        });
+
+        Balance = await response.json();
+        console.log('Balance:',Balance);
+        UpdateBalance();
+        //return data; // Return fetched data
+    } catch (error) {
+        console.error("❌ Error fetching IT main business:", error);
+        return null;
+    }
+}
+
+function UpdateBalance(){
+    document.querySelector(".balance").textContent = `$${Balance.Balance}`;
+}
+
+fetchBalance(credentials);

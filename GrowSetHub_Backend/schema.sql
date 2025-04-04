@@ -82,7 +82,6 @@ CREATE TABLE IF NOT EXISTS ItUserEmployees(
     EmpStatusPrj int default 0
 );
 
-<<<<<<< Updated upstream
 CREATE TABLE IF NOT EXISTS CompaniesWithStocks(
     CompanyName VARCHAR(255),
     symbol VARCHAR(255),
@@ -92,12 +91,14 @@ CREATE TABLE IF NOT EXISTS CompaniesWithStocks(
 );
 
 CREATE TABLE IF NOT EXISTS UserInvestments(
+    `index` int primary key auto_increment,
     Username VARCHAR(255),
     CompanyName VARCHAR(255),
     buyPrice DECIMAL(10,2) NOT NULL,
     sharesOwned int,
     currentSharePrice DECIMAL(10,2)
-=======
+);
+
 create table if not exists RealEstate(
     idx int primary key,
     img_url varchar(100),
@@ -110,6 +111,5 @@ create table userRealEstate(
     username varchar(50),
     idx int,
     primary key(username,index)
->>>>>>> Stashed changes
 );
 

@@ -3,10 +3,10 @@ console.log(credentials);
 
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
-        { img: "images/Investing.png", text: "Investing", badge: "1", link: "investing.html" },
-        { img: "images/Business.png", text: "Business", badge: "8", link: "business.html" },
-        { img: "images/Earnings.png", text: "Earnings", badge: null, link: "home.html" },
-        { img: "images/Profile.png", text: "Profile", badge: "1", link: "profile.html", active: true }
+        { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "investing.html" },//images/Investing.png
+        { img: "building-2", text: "Business", badge: "8", link: "business.html" },//images/Business.png
+        { img: "circle-dollar-sign", text: "Earnings", badge: null, link: "home.html" },//images/Earnings.png
+        { img: "circle-user-round", text: "Profile", badge: "1", link: "profile.html", active: true }//images/Profile.png
     ];
 
     const bottomNav = document.getElementById("bottomNav");
@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (item.active) navDiv.classList.add("active");
 
         navDiv.innerHTML = `
-            <img src="${item.img}">
+            <i data-lucide="${item.img}" class="icon"></i>
             <span class="text">${item.text}</span>
             ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
-        `;
+        `;//<img src="${item.img}">
 
         bottomNav.appendChild(navDiv);
 
@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = item.link;
         });
     });
+
+    lucide.createIcons();
 });
 
 

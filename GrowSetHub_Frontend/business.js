@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
-        { img: "images/Investing.png", text: "Investing", badge: "1", link: "investing.html" },
-        { img: "images/Business.png", text: "Business", badge: "8", link: "business.html" },
-        { img: "images/Earnings.png", text: "Earnings", badge: null, link: "home.html" },
-        { img: "images/Profile.png", text: "Profile", badge: "1", link: "profile.html", active: true }
+        { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "stocksProfile.html" },//images/Investing.png
+        { img: "building-2", text: "Business", badge: "8", link: "business.html" },//images/Business.png
+        { img: "circle-dollar-sign", text: "Earnings", badge: null, link: "home.html" },//images/Earnings.png
+        { img: "circle-user-round", text: "Profile", badge: "1", link: "profile.html", active: true }//images/Profile.png
     ];
 
     const bottomNav = document.getElementById("bottomNav");
@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (item.active) navDiv.classList.add("active");
 
         navDiv.innerHTML = `
-            <img src="${item.img}">
+            <i data-lucide="${item.img}" class="icon"></i>
             <span class="text">${item.text}</span>
             ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
-        `;
+        `;//<img src="${item.img}"> 
 
         bottomNav.appendChild(navDiv);
 
@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = item.link;
         });
     });
+
+    lucide.createIcons();
 });
 
 const credentials= JSON.parse(localStorage.getItem('credentials'));
@@ -38,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Business Data
     const businesses = [
         { name: "IT", price: "4899", image: "images/ITimage.png" },
-        { name: "Bank-Corporation", price: "9999", image: "images/ITimage.png" },
-        { name: "Football-Club", price: "19899", image: "images/ITimage.png" },
+        { name: "Bank-Corporation", price: "9999", image: "images/bankimage.png" },
+        { name: "Football-Club", price: "19899", image: "images/footballimage.png" },
         //{ name: "Factory", price: "$24,999" }
     ];
 
@@ -55,10 +57,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const closeButton = document.createElement("span");
         closeButton.classList.add("close");
-        closeButton.innerHTML = "&times;";
+        closeButton.innerHTML = `<div>Business Details</div> <i data-lucide="x" class="icon" style="height:20px; width:20px; cursor:pointer;"></i>`;//&times;
         closeButton.addEventListener("click", () => {
             modal.remove();
         });
+
+        /*const Heading = document.createElement("div");
+        Heading.classList.add("dialogHeading");
+        Heading.innerHTML = `<div class="dialogHeadingDiv" style="display:flex; align-items:center; justify-content:space-between; font-size:25px;padding:10px;">
+                                <div>Business Details</div>
+                                <i data-lucide="x" class="icon" style="height:20px; width:20px; cursor:pointer;" onclick="closeButton();"></i>
+                             </div>`;*/
+        
 
         const businessList = document.createElement("div");
         businessList.classList.add("business-list");
@@ -69,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             div.classList.add("business-item");
             div.innerHTML = `<div style="display: flex; align-items:center; justify-content:space-between;">
                                 <div class="business-details" style="display: flex; align-items:center; gap:10px;">
-                                <div><img src="${business.image}" style="height:40px; width:40px;"></div>  
+                                <div><img src="${business.image}" style="height:50px; width:50px;"></div>  
                                 <div style="font-size:20px;">${business.name}</div>
                             </div>
                             <div class="business-price">$ ${business.price}</div>
@@ -82,6 +92,11 @@ document.addEventListener("DOMContentLoaded", function () {
         modalContent.appendChild(businessList);
         modal.appendChild(modalContent);
         document.body.appendChild(modal);
+        lucide.createIcons();
+
+        document.querySelector('.dialogHeadingDiv i').addEventListener("click", () => {
+            modal.remove();
+        });
     }
 
     // Function to Show Business Details

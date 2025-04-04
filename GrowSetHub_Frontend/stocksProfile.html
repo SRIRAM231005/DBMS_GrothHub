@@ -5,25 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stocks Portfolio</title>
     <link rel="stylesheet" href="stocksProfile.css">
+    <link rel="stylesheet" href="backgroundStyle.css">
     <link rel="stylesheet" href="navigationBar.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
     <div class="bottom-nav" id="bottomNav"></div>
-
-    <div class="selection-container">
-        <div class="selection-card active" id="stocksCard" onclick="selectInvestment('stocks')">
-            <img src="images/stocks.png" alt="Stocks">
-            <span>Stocks</span>
+    <div class="bg-decoration">
+        <div class="wave-bottom"></div>
+        <div class="floating-elements">
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
         </div>
-        <div class="selection-card" id="realEstateCard" onclick="selectInvestment('realestate')">
-            <img src="images/realEstate.png" alt="Real Estate">
-            <span>Real Estate</span>
-        </div>
+        <div class="circuit-pattern"></div>
     </div>
 
   <div class="container">
-    <h1 class="title">Stocks</h1>
+    <header>
+        <h1>Investing</h1>
+        <nav>
+            <ul>
+                <li><a href="stocksProfile.html" class="active"><i data-lucide="activity" class="icon1"></i> Shares</a></li>
+                <li><a href="estate.html"><i data-lucide="house" class="icon1"></i> Real Estate</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <div class="summary-box">
     <div class="summary-item">
@@ -55,8 +63,10 @@
     <!-- Dialog Box -->
     <div id="company-dialog" class="dialog">
         <div class="dialog-content">
-            <button class="close-dialog" onclick="closeDialog()">X</button>
-            <h3>Select a Company</h3>
+            <div style="display: flex;align-items: center;justify-content: space-between; padding-bottom: 10px;">
+                <div style="font-size: 25px;">Select Company</div>
+                <div><button class="close-dialog" onclick="closeDialog()"><i data-lucide="X" class="icon1"></i></button></div>
+            </div>
             <div id="company-list"></div>
         </div>
     </div>

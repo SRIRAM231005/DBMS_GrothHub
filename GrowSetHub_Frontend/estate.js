@@ -1,3 +1,6 @@
+const credentials= JSON.parse(localStorage.getItem('credentials'));
+console.log(credentials);
+
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
         { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "investing.html" },//images/Investing.png
@@ -14,10 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (item.active) navDiv.classList.add("active");
 
         navDiv.innerHTML = `
-            <img src="${item.img}">
+            <i data-lucide="${item.img}" class="icon"></i>
             <span class="text">${item.text}</span>
             ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
-        `;
+        `;//<img src="${item.img}">
 
         bottomNav.appendChild(navDiv);
 
@@ -25,11 +28,15 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = item.link;
         });
     });
+
+    lucide.createIcons();
 });
 
-function openDialog() {
-    document.getElementById('interestDialog').classList.remove('hidden');
-}
-function closeDialog() {
-    document.getElementById('interestDialog').classList.add('hidden');
-}
+
+
+document.querySelector('.card.market').addEventListener('click', function() {
+    window.location.href = 'market.html';
+});
+document.querySelector('.card.property').addEventListener('click', function() {
+    window.location.href = 'property.html';
+});

@@ -92,3 +92,10 @@ body{
     font-weight: lighter;
     cursor: pointer;
 }
+
+.icon{
+    height: 45px;
+    width: 45px;
+    stroke-width: 2;
+    color: #007bff;
+}
