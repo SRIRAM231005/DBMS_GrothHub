@@ -46,7 +46,7 @@ console.log("check12",BusinessDetails);
         
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
-        { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "investing.html" },//images/Investing.png
+        { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "stocksProfile.html" },//images/Investing.png
         { img: "building-2", text: "Business", badge: "8", link: "business.html" },//images/Business.png
         { img: "circle-dollar-sign", text: "Earnings", badge: null, link: "home.html" },//images/Earnings.png
         { img: "circle-user-round", text: "Profile", badge: "1", link: "profile.html", active: true }//images/Profile.png

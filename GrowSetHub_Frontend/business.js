@@ -349,11 +349,13 @@ function DisplayUserBusiness(index,businessCat,idx){
 
         document.querySelector(`.business-card${idx}`).addEventListener('click', () => {
             localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
-            //console.log("BusinessCategory:",BusinessCatagory);
+            console.log("idx: ",idx);
+            console.log("info:",UserBusinessData[index]);
+            console.log("BusinessCategory:",BusinessCatagory);
             if(businessCat == "IT"){
-                window.location.href = "IT.html";
+                // window.location.href = "IT.html";
             }else if(businessCat == "Bank-Corporation"){
-                window.location.href = "bank.html";
+                // window.location.href = "bank.html";
             }
         });
     

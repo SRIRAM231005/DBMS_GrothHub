@@ -139,7 +139,98 @@ async function SoldShares(req , res){
     }
 }
 
-module.exports = { Stocks, CompaniesWithStocks, UserInvestments, BoughtShares, SoldShares };
+
+
+async function getAllRealEstatesNotBought(req , res){
+    try {
+        const {username} = req.body;
+        const sql = "select * from RealEstateMain where idx not in (select idx from userrealestate where username = ?)";
+        
+        const [results] = await connection.promise().query((sql),[username]);
+        console.log(results);
+
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+async function getAllRealEstatesBought(req , res){
+    try {
+        const {username} = req.body;
+        const sql = "select * from RealEstateMain where idx in (select idx from userrealestate where username = ?)";
+        
+        const [results] = await connection.promise().query((sql),[username]);
+        console.log(results);
+
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+async function buyProperty(req , res){
+    try {
+        const {username,idx} = req.body;
+        const sql = "insert into userrealestate (username,idx) values (?,?)";
+        
+        const [results] = await connection.promise().query((sql),[username,idx]);
+
+        console.log(results);
+
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+async function sellProperty(req , res){
+    try {
+        const {username,idx} = req.body;
+        const sql = "delete from userrealestate where (username,idx) = (?,?)";
+        
+        const [results] = await connection.promise().query((sql),[username,idx]);
+
+        console.log(results);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+async function getCountofPropBought(req , res){
+    try {
+        const {username} = req.body;
+        const sql = "select count(*) as CountProp from userRealEstate where username = ?)";
+        
+        const [results] = await connection.promise().query((sql),[username]);
+        console.log(results);
+
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data3:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+
+
+
+module.exports = { Stocks, CompaniesWithStocks, UserInvestments, BoughtShares, SoldShares, getAllRealEstatesNotBought, getAllRealEstatesBought, buyProperty, sellProperty };
 
 
 //https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=summaryDetail,defaultKeyStatistics`;

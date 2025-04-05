@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS UserBusiness(
 );
 
 CREATE TABLE IF NOT EXISTS ItBusiness(
-    Username VARCHAR(255) ,
+    Username VARCHAR(255),
     BusinessName VARCHAR(255),
     Wages decimal(10,2),
     Revenue decimal(10,2) default 0,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS ItBusiness(
 );
 
 CREATE TABLE IF NOT EXISTS BankBusiness(
-    Username VARCHAR(255) ,
+    Username VARCHAR(255),
     BankName VARCHAR(255),
     Revenue decimal(10,2) default 0,
     PRIMARY KEY (Username, BankName)
@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS UserInvestments(
     buyPrice DECIMAL(10,2) NOT NULL,
     sharesOwned int,
     currentSharePrice DECIMAL(10,2)
+<<<<<<< Updated upstream
 );
 
 create table if not exists RealEstate(
@@ -111,5 +112,21 @@ create table userRealEstate(
     username varchar(50),
     idx int,
     primary key(username,index)
+=======
+);
+
+ create table RealEstateMain(
+    idx int primary key auto_increment, 
+    imgloc varchar(20), 
+    price decimal(15,2), 
+    location varchar(25), 
+    incPerHr decimal(12,2)
+);
+
+ create table UserRealEstate(
+    username varchar(20), 
+    idx int, 
+    primary key(username,idx)
+>>>>>>> Stashed changes
 );
 
