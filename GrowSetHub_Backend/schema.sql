@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS ItProjects(
     NoOfDesigner int,
     NoOfTeamLeader int,
     NoOfTester int,
-    TimeTaken time,
+    TimeTaken int,
     Cost int
 );
 

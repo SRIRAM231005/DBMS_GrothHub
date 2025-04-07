@@ -265,6 +265,7 @@ fetchUserBusiness(credentials);
 
 let UserBusinessData;
 let BusinessCatagory;
+//let IndexArray=[];
 
 async function ShowBusiness(username){
     console.log("sample:",UserBusinesses);
@@ -282,7 +283,9 @@ async function ShowBusiness(username){
             BusinessCatagory = element.Business;
             UserBusinessData.forEach((ele,ind) =>{
                 if(element.Businessname === ele.BusinessName){
-                    DisplayUserBusiness(ele.index,BusinessCatagory,idx);
+                    //IndexArray.push({index1: ele.index , index2: idx , category: BusinessCatagory});
+                    DisplayUserBusiness(ele.index,BusinessCatagory,idx,UserBusinessData);
+                    AddEventListners(ele.index,BusinessCatagory,idx,UserBusinessData);
                 }
             })
             //return data; // Return fetched data
@@ -292,17 +295,24 @@ async function ShowBusiness(username){
             return null;
         }
     })
+    console.log("sriram");
 }
 
 let a=0;
-function DisplayUserBusiness(index,businessCat,idx){
+function DisplayUserBusiness(index,businessCat,idx,dataArray){
     console.log("Type of Business:",businessCat);
+    let Index;
+    dataArray.forEach((ele,inde) =>{
+        if(ele.BusinessName === UserBusinesses[idx].Businessname){
+            Index = inde;
+        }
+    })
     const container = document.querySelector(".companies");
     if(a===0){
         container.innerHTML = ""; 
         a++;
     }
-    console.log("check11",UserBusinessData[index]);
+    //console.log("check11",UserBusinessData[ind]);
     console.log(index);
     console.log("check12",UserBusinessData);
     const businessCard = document.createElement("div");
@@ -311,55 +321,41 @@ function DisplayUserBusiness(index,businessCat,idx){
         businessCard.innerHTML = `
             <div class="icon" style="margin-right: 20px;"><img src="${businesses2[0].icon}" style="height:60px; width:60px;"></div>
             <div class="details">
-                <div style="font-size:24px;">${UserBusinessData[index].BusinessName}</div>
+                <div style="font-size:24px;">${dataArray[Index].BusinessName}</div>
                 <div style="margin-top:5px;margin-bottom:20px;">${businessCat}</div>
                 <div class="progress" style="margin-bottom:10px;">
                     📊 ${businesses2[0].progress}
                 </div>
                 <div class="earnings">
-                    <strong>$${UserBusinessData[index].Revenue}</strong>
+                    <strong>$${dataArray[Index].Revenue}</strong>
                 </div>
             </div>
             <span class="notification1">${businesses2[0].notificationCount}</span>
         `;
 
-        /*businessCard.addEventListener("click", () => {
-            localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
-            //console.log("BusinessCategory:",BusinessCatagory);
-            if(businessCat == "IT"){
-                window.location.href = "IT.html";
-            }else if(businessCat == "Bank-Corporation"){
-                window.location.href = "bank.html";
-            }
-        });*/
-
-        // document.querySelectorAll('.business-card').forEach((div,index) => {
-        //     div.addEventListener('click', () => {
-        //         localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
-        //         //console.log("BusinessCategory:",BusinessCatagory);
-        //         if(businessCat == "IT"){
-        //             window.location.href = "IT.html";
-        //         }else if(businessCat == "Bank-Corporation"){
-        //             window.location.href = "bank.html";
-        //         }
-        //     });
-        // });
-
         container.appendChild(businessCard);
+}
 
-        document.querySelector(`.business-card${idx}`).addEventListener('click', () => {
-            localStorage.setItem("UserBusinessInfo",JSON.stringify(UserBusinessData[index]));
-            console.log("idx: ",idx);
-            console.log("info:",UserBusinessData[index]);
-            console.log("BusinessCategory:",BusinessCatagory);
-            if(businessCat == "IT"){
-                // window.location.href = "IT.html";
-            }else if(businessCat == "Bank-Corporation"){
-                // window.location.href = "bank.html";
-            }
-        });
-    
-    count++;
+
+function AddEventListners(index1,category,index2,dataArray){
+    console.log(dataArray);
+    let Index;
+            document.querySelector(`.business-card${index2}`).addEventListener('click', () => {
+                dataArray.forEach((ele,inde) =>{
+                    if(ele.BusinessName === UserBusinesses[index2].Businessname){
+                        Index = inde;
+                    }
+                })
+                localStorage.setItem("UserBusinessInfo",JSON.stringify(dataArray[Index]));
+                console.log("idx: ",Index);
+                console.log("info2:",dataArray[Index]);
+                //console.log("BusinessCategory:",BusinessCatagory);
+                if(category == "IT"){
+                     window.location.href = "IT.html";
+                }else if(category == "Bank-Corporation"){
+                     window.location.href = "bank.html";
+                }
+            });
 }
 
 

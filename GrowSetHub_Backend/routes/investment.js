@@ -1,5 +1,5 @@
 const express = require("express");
-const {Stocks,CompaniesWithStocks,UserInvestments,BoughtShares,SoldShares,getAllRealEstatesNotBought,getAllRealEstatesBought,buyProperty,sellProperty} = require('../controller/investment_control');
+const {Stocks,CompaniesWithStocks,UserInvestments,BoughtShares,SoldShares,getAllRealEstatesNotBought,getAllRealEstatesBought,buyProperty,sellProperty,getTotalIncomePerHourUser,getCountofPropBought} = require('../controller/investment_control');
 
 const investmentRouter = express.Router();
 
@@ -12,5 +12,7 @@ investmentRouter.route('/getAllRealEstatesNotBought').post(getAllRealEstatesNotB
 investmentRouter.route('/getAllRealEstatesBought').post(getAllRealEstatesBought);
 investmentRouter.route('/buyProperty').post(buyProperty);
 investmentRouter.route('/sellProperty').post(sellProperty);
+investmentRouter.route('/getTotalIncomePerHourUser').post(getTotalIncomePerHourUser);
+investmentRouter.route('/getCountofPropBought').post(getCountofPropBought);
 
 module.exports = investmentRouter

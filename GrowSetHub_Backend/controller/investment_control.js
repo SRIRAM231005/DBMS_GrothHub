@@ -213,9 +213,9 @@ async function sellProperty(req , res){
 async function getCountofPropBought(req , res){
     try {
         const {username} = req.body;
-        const sql = "select count(*) as CountProp from userRealEstate where username = ?)";
+        const sql = "select count(*) as CountProp from userRealEstate where username = ?";
         
-        const [results] = await connection.promise().query((sql),[username]);
+        const [results] = await connection.promise().query(sql,[username]);
         console.log(results);
 
         
@@ -227,10 +227,25 @@ async function getCountofPropBought(req , res){
     }
 }
 
+async function getTotalIncomePerHourUser(req , res){
+    try {
+        const { username } = req.body;
+        const sql = "select sum(incPerHr) as TotInc from realestatemain where idx in (select idx from userrealestate where Username = ?)";
+        const [results] = await connection.promise().query(sql, [username]);
+        console.log(req.body);
+        console.log("inc per hour",results);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
 
 
 
-module.exports = { Stocks, CompaniesWithStocks, UserInvestments, BoughtShares, SoldShares, getAllRealEstatesNotBought, getAllRealEstatesBought, buyProperty, sellProperty };
+
+module.exports = { Stocks, CompaniesWithStocks, UserInvestments, BoughtShares, SoldShares, getAllRealEstatesNotBought, getAllRealEstatesBought, buyProperty, sellProperty,getTotalIncomePerHourUser,getCountofPropBought };
 
 
 //https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=summaryDetail,defaultKeyStatistics`;

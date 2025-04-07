@@ -27,10 +27,10 @@ async function ITbusiness(req, res) {
 
 async function ITUserProjects(req, res) {
     try {
-        const { username } = req.body;
-        const sql = "SELECT * FROM ITUserProjects WHERE Username = ?";
+        const { username,businessName } = req.body;
+        const sql = "SELECT * FROM ITUserProjects WHERE Username = ? and BusinessName = ? ";
         
-        const [results] = await connection.promise().query(sql, [username]);
+        const [results] = await connection.promise().query(sql, [username,businessName]);
 
         if (results.length > 0) {
             return res.status(200).json(results);
@@ -45,10 +45,10 @@ async function ITUserProjects(req, res) {
 
 async function ITUserEmployees(req, res) {
     try {
-        const { username } = req.body;
-        const sql = "SELECT * FROM ITUseremployees WHERE Username = ?";
+        const { username,businessName } = req.body;
+        const sql = "SELECT * FROM ITUseremployees WHERE Username = ? and BusinessName = ?";
         
-        const [results] = await connection.promise().query(sql, [username]);
+        const [results] = await connection.promise().query(sql, [username,businessName]);
         console.log(results);
         console.log(username);
         console.log(req.body);
@@ -101,12 +101,12 @@ async function ITProjectsEmployees(req, res) {
 
 async function ITEmployeesFire(req , res){
     try {
-        const { username,employeename } = req.body;
-        const sql = "DELETE FROM ITUserEmployees WHERE Username = ? AND Employeename = ?";
-        const sql1 = "UPDATE ItBusiness SET Wages = Wages-(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
+        const { username,employeename,businessName } = req.body;
+        const sql = "DELETE FROM ITUserEmployees WHERE Username = ? AND Employeename = ? and BusinessName = ?";
+        const sql1 = "UPDATE ItBusiness SET Wages = Wages-(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ? and BusinessName = ?";
         
-        const [results] = await connection.promise().query(sql, [username,employeename]);
-        await connection.promise().query(sql1, [employeename,username])
+        const [results] = await connection.promise().query(sql, [username,employeename,businessName]);
+        await connection.promise().query(sql1, [employeename,username,businessName])
         console.log(req.body);
         
         return res.status(200).json(results);
@@ -135,12 +135,12 @@ async function ITEmployeesHire(req , res){
 
 async function ITEmployeesAfterHire(req , res){
     try {
-        const { username,employeename } = req.body;
-        const sql = "INSERT INTO ITUserEmployees (Username, Employeename) VALUES (?, ?)";
-        const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
+        const { username,businessName,employeename } = req.body;
+        const sql = "INSERT INTO ITUserEmployees (Username, BusinessName,Employeename) VALUES (?, ?, ?)";
+        const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ? and BusinessName = ?";
 
-        const [results] = await connection.promise().query(sql, [username,employeename]);
-        await connection.promise().query(sql1, [employeename,username])
+        const [results] = await connection.promise().query(sql, [username,businessName,employeename]);
+        await connection.promise().query(sql1, [employeename,username,businessName])
         console.log(req.body);
         
         return res.status(200).json(results);
@@ -151,9 +151,9 @@ async function ITEmployeesAfterHire(req , res){
 
 async function showDevList(req, res){
     try{
-        const { username,role } = req.body;
-        const sql = "select Employeename, Salary, Skill from itemployees where Employeename in (select Employeename from ituseremployees where Username = ?) and Role like CONCAT('%', ?, '%')";
-        const [results] = await connection.promise().query(sql, [username,role]);
+        const { username,businessName,role } = req.body;
+        const sql = "select Employeename, Salary, Skill from itemployees where Employeename in (select Employeename from ituseremployees where Username = ? and BusinessName = ?) and Role like CONCAT('%', ?, '%')";
+        const [results] = await connection.promise().query(sql, [username,businessName,role]);
         // console.log("demo:",req.body);
         console.log("demo:",results);
         return res.status(200).json(results);
@@ -183,7 +183,7 @@ async function InsertITBusiness(req , res){
 async function HireSelectedEmployees(req , res){
     try {
         const { username, businessname, employeename } = req.body;
-        const sql = "INSERT INTO ITUserEmployees VALUES (?, ?, ?)";
+        const sql = "INSERT INTO ITUserEmployees(Username, BusinessName,Employeename) VALUES (?, ?, ?)";
         // const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
 
         const [results] = await connection.promise().query(sql, [username,businessname,employeename]);
@@ -199,19 +199,33 @@ async function HireSelectedEmployees(req , res){
 
 async function BusEmpPrjStart(req , res){
     try {
-        const { username, businessname, employeename, prjname } = req.body;
+        const { username, businessname, empName, prjname } = req.body;
         console.log(req.body.username);
+        console.log(req.body.empName);
+        console.log(req.body.prjname);
         console.log(req.body.businessname);
-        const sql0 = "select * from ituseremployees where EmpStatusPrj = 0 and trim(Username) = trim(?) and trim(BusinessName) = trim(?) and trim(Employeename) = trim(?)";
-        // const sql = "update ituseremployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and Username = ? and BusinessName = ? and Employeename = ?";
-        // const sql1 = "insert into ituserprojects (Username, BusinessName, Projectname) values (?,?,?)";
-        // const [results] = await connection.promise().query(sql, [username,businessname,employeename]);
-        // await connection.promise().query(sql1, [username,businessname,prjname]);
-        const [demo] = await connection.promise().query(sql0,[username,businessname,employeename]);
-        // const [results] = await connection.promise().query(sql0);
-        // console.log("res: ",query(sql, [username,businessname,employeename]));
-        console.log(demo);
-        // return res.status(200).json(results);
+        
+        const sql = "update ituseremployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and Username = ? and BusinessName = ? and Employeename = ?";
+        
+        const [results] = await connection.promise().query(sql,[username,businessname,empName]);
+        
+        console.log("verify",results);
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+async function PrjCompTimeAddition(req , res){
+    try {
+        const { username, businessname, prjname } = req.body;
+        const sql = "insert into ituserprojects (Username, BusinessName, Projectname, ProjectCompTime) values (?,?,?,now()+ interval 60 second)";
+        
+        const [results] = await connection.promise().query(sql,[username,businessname,prjname]);
+
+        console.log("verify",results);
+        return res.status(200).json(results);
 
     } catch (err) {
         console.error("❌ Error getting data2:", err);
@@ -225,7 +239,22 @@ async function getPrjProgressCount(req , res){
         const sql = "select count(*) as countPrj from ItUserProjects where Username = ? and BusinessName = ? and ProjectStatus = 0 group by BusinessName";
         const [results] = await connection.promise().query(sql, [username,businessname]);
         console.log(req.body);
-        console.log("Hollalala",results);
+        console.log("hola",results);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+async function getPrjCompCount(req , res){
+    try {
+        const { username, businessname } = req.body;
+        const sql = "select count(*) as countPrj from ItUserProjects where Username = ? and BusinessName = ? and ProjectStatus = 1 group by BusinessName";
+        const [results] = await connection.promise().query(sql, [username,businessname]);
+        console.log(req.body);
+        console.log("hi",results);
         
         return res.status(200).json(results);
 
@@ -235,6 +264,6 @@ async function getPrjProgressCount(req , res){
 }
 
 
-module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount};
+module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition};
 
  

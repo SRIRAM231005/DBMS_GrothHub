@@ -1,4 +1,6 @@
-// const { use } = require("../GrowSetHub_Backend/routes/ITbusiness");
+const credentials= JSON.parse(localStorage.getItem('credentials'));
+console.log(credentials);
+let username = credentials;
 
 // const socket = io('http://localhost:8008'); // Connect to backend
 console.log(typeof io); 
@@ -16,6 +18,8 @@ socket.on("disconnect", () => {
 
         socket.on('updateProjects', (projects) => {
             console.log('Received updated projects:', projects);
+            fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
+            fetchPrjComp(credentials,BusinessDetails.BusinessName);
             /*const list = document.getElementById('projectList');
             list.innerHTML = ''; // Clear existing list
 
@@ -153,9 +157,7 @@ function EmployeeListGeneration(ProjectsAndEmployees){
 
 
 
-const credentials= JSON.parse(localStorage.getItem('credentials'));
-console.log(credentials);
-let username = credentials;
+
 let ProjectsAndEmployees;
 
 /*const ProjectsListButton = document.querySelector('.start-project');
@@ -181,12 +183,15 @@ async function fetchITMainBusiness(username) {
     }
 }
 
-async function fetchITUserProjects(username) {
+async function fetchITUserProjects(username,businessName) {
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITUserProjects', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username }),
+            body: JSON.stringify({ 
+                username:username,
+                businessName:businessName
+             }),
         });
 
         const data = await response.json();
@@ -198,12 +203,12 @@ async function fetchITUserProjects(username) {
     }
 }
 
-async function fetchITUserEmployees(username) {
+async function fetchITUserEmployees(username,businessName) {
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITUserEmployees', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username }),
+            body: JSON.stringify({ username:username, businessName:businessName }),
         });
 
         const data = await response.json();
@@ -237,14 +242,15 @@ async function fetchITProjectsEmployees(username,businessname) {
     }
 }
 
-async function fetchITEmployeesFire(username,employeename){
+async function fetchITEmployeesFire(username,employeename,businessName) {
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/ITEmployeesFire', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                 username: username,
-                 employeename: employeename
+                username: username,
+                employeename: employeename,
+                businessName: businessName
             }),
         });
         const data = await response.json();
@@ -269,7 +275,26 @@ async function fetchPrjinProgress(username,businessname) {
         const data = await response.json();
         console.log("lkjh",data);
         document.querySelector(".in-progress h3").textContent = `${data[0].countPrj}`;
-        console.log(document.querySelector(".in-progress h3"))
+        console.log(document.querySelector(".in-progress h3"));
+        return data;
+    } catch (error) {
+        console.error("❌ Error fetching IT user projects:", error);
+        return null;
+    }
+}
+
+async function fetchPrjComp(username,businessname) {
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/getPrjCompCount', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username:username, businessname:businessname }),
+        });
+        
+        const data = await response.json();
+        console.log("lkjh",data);
+        document.querySelector(".completed h3").textContent = `${data[0].countPrj}`;
+        console.log(document.querySelector(".completed h3"))
         return data;
     } catch (error) {
         console.error("❌ Error fetching IT user projects:", error);
@@ -288,6 +313,7 @@ async function fetchPrjinProgress(username,businessname) {
 // });
 
 fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
+fetchPrjComp(credentials,BusinessDetails.BusinessName);
 let AllEmp;
 
 async function fetchITEmployeesHire(username,businessname,empRole){
@@ -336,8 +362,8 @@ async function fetchEmpSelHire(username,businessname,employeename){
 
 console.log("check123",BusinessDetails);
 fetchITMainBusiness(username);
-fetchITUserProjects(username);
-fetchITUserEmployees(username);
+fetchITUserProjects(username,BusinessDetails.BusinessName);
+fetchITUserEmployees(username,BusinessDetails.BusinessName);
 fetchITProjectsEmployees(username,BusinessDetails.BusinessName);
 //fetchITEmployeesFire(username,employeename);
 //EmployeeListGeneration()
@@ -524,10 +550,12 @@ function EmployeeDivFunction(count){
         HireEmployeeBSR(count,employees[count-1].name);
 
         if((document.querySelector(".employee-fire"))){
+            console.log("17");
             document.querySelector(".employee-fire").addEventListener("click", (event) => {
-                if (event.target.classList.contains("HireButtons")) {
+                console.log("18");
+                if (event.target.classList.contains("FireButton")) {
                     console.log(`Button inside Employee ${count},${event.target.dataset.number} clicked!`);
-                    fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[event.target.dataset.number].Employeename);
+                    fetchITEmployeesFire(username,ProjectsAndEmployees.Employees[event.target.dataset.number].Employeename,BusinessDetails.BusinessName);
                 }
             });
         }

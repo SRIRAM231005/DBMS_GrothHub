@@ -47,7 +47,7 @@ async function fetchBalance(username){
 }
 
 function UpdateBalance(){
-    document.querySelector(".balance").textContent = `$${Balance.Balance}`;
+    document.querySelector(".balance").textContent = `$${Balance[0].Balance}`;
 }
 
 fetchBalance(credentials);

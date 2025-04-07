@@ -7,6 +7,37 @@ console.log(PrjInfo);
 const BusinessDetails = JSON.parse(localStorage.getItem('UserBusinessInfo'));
 console.log(BusinessDetails);
 
+document.addEventListener("DOMContentLoaded", function () {
+    const navItems = [
+        { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "stocksProfile.html" },//images/Investing.png
+        { img: "building-2", text: "Business", badge: "8", link: "business.html" },//images/Business.png
+        { img: "circle-dollar-sign", text: "Earnings", badge: null, link: "home.html" },//images/Earnings.png
+        { img: "circle-user-round", text: "Profile", badge: "1", link: "profile.html", active: true }//images/Profile.png
+    ];
+
+    const bottomNav = document.getElementById("bottomNav");
+
+    navItems.forEach(item => {
+        const navDiv = document.createElement("div");
+        navDiv.classList.add("nav-item");
+        if (item.active) navDiv.classList.add("active");
+
+        navDiv.innerHTML = `
+            <i data-lucide="${item.img}" class="icon"></i>
+            <span class="text">${item.text}</span>
+            ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
+        `;//<img src="${item.img}">
+
+        bottomNav.appendChild(navDiv);
+
+        navDiv.addEventListener("click", () => {
+            window.location.href = item.link;
+        });
+    });
+
+    lucide.createIcons();
+});
+
 
 
 // document.addEventListener("DOMContentLoaded", function () {
@@ -24,16 +55,37 @@ console.log(BusinessDetails);
 //     });
 // });
 
+let prjDetails;
+async function fetchPrjAdditionTime(username,businessname,prjname) {
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/PrjCompTimeAddition', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                username: username,
+                businessname: businessname,
+                prjname: prjname
+            }),
+        });
+
+        prjDetails = await response.json();
+        console.log("repeat:",prjDetails);
+        //return data; // Return fetched data
+    } catch (error) {
+        console.error("❌ Error fetching IT main business:", error);
+        return null;
+    }
+}
 
 let arr = ["Developers", "Designers", "Team Leaders", "Testers"];
 for (let index = 0; index < arr.length; index++) {
     const element = arr[index];
     console.log(element);
-    fetchShowDevList(credentials,element);
+    fetchShowDevList(credentials,BusinessDetails.BusinessName,element);
 }
 
 let developers;
-async function fetchShowDevList(username,role){
+async function fetchShowDevList(username,businessName,role){
     console.log(role);
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/showDevList', {
@@ -41,6 +93,7 @@ async function fetchShowDevList(username,role){
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                  username: username,
+                 businessName: businessName,
                  role: role
             }),
         });
@@ -156,7 +209,9 @@ document.querySelector('.footer button').addEventListener('click', () => {
         console.log("55");
         selectedEmployees.forEach(empName =>{
             fetchChooseEmpforPrj(credentials,BusinessDetails.BusinessName,empName,PrjInfo.Projectname);
+            console.log("EmpName:",empName);
         });
+        fetchPrjAdditionTime(credentials,BusinessDetails.BusinessName,PrjInfo.Projectname);
         selectedEmployees.length=0;
     }
 
@@ -212,3 +267,4 @@ async function fetchChooseEmpforPrj(username,businessname,empName,prjname) {
         return null;
     }
 }
+
