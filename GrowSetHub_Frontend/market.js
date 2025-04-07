@@ -123,6 +123,8 @@ async function buyProperty(username,idx) {
         });
         const result = await response.json();
         console.log("Property bought successfully:", result);
+        fetchGetAllRealEstatesNotbelongingtoUser(credentials);
+
     } catch (error) {
         console.error("❌ Error fetching properties List :", error);
         return null;

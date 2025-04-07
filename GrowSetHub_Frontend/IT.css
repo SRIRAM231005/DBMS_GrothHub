@@ -277,3 +277,340 @@ header {
     padding: 10px;
 }
 
+/* .prj{
+        width: 400px;
+        max-width: 90%;
+        background: white;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: fadeIn 0.3s ease-in-out;
+}
+
+.dialogPrjHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .tabHeaders {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .tabButton {
+    padding: 8px 16px;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  .tabButton.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .projectCard {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  button.stopBtn,
+  button.rewardBtn {
+    margin-top: 5px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  } */
+
+  /* .prj::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  .prj {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    width: min(90vw, 600px);
+    border: none;
+    border-radius: 16px;
+    background-color: white;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    z-index: 1000;
+  }
+  
+  
+  .dialogPrjHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #6a11cb, #2575fc); 
+    padding: 16px 20px;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+ 
+  .dialogPrjHead img.closeBtn {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    filter: brightness(0) invert(1);
+  }
+  
+  .tabHeaders {
+    display: flex;
+    background: #f2f2f2;
+    padding: 10px 16px;
+    gap: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .tabButton {
+    background: gray;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s;
+  }
+  
+  .tabButton:hover {
+    background: #5a0fb1;
+  }
+  
+  .tabButton.active {
+    background: #1b5de9;
+    color: white;
+  }
+  
+  .tabContent {
+    background: white;
+    padding: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  .tabPanel {
+    display: none;
+  }
+  
+  .tabPanel.active {
+    display: block;
+  }
+  
+  .projectCard {
+    background: #f9f9f9;
+    border-left: 6px solid #6a11cb;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .projectCard p {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  button.stopBtn {
+    background-color: #ff4d4d; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  button.stopBtn:hover {
+    background-color: #e60000;
+  }
+  
+  button.rewardBtn {
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  button.rewardBtn:hover {
+    background-color: #43a047;
+  } */
+
+/* Dialog base styles */
+.prj {
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background: white;
+    /* Center the dialog */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+  }
+  
+  /* Dialog header styles */
+  .dialogPrjHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  /* Tab header container */
+  .tabHeaders {
+    display: flex;
+    gap: 12px;
+  }
+  
+  /* Tab button styles */
+  .tabButton {
+    /* background: rgb(194, 194, 221); */
+    background-color: #e0dfdf;
+    border: none;
+    /* color: rgba(255, 255, 255, 0.7); */
+    color: rgb(0,0,0,0.5);
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 18px; /* Larger heading size */
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  
+  .tabButton:hover {
+    background: rgb(194, 194, 221);
+    color: white;
+    transform: translateY(-2px); /* More visible hover effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .tabButton.active {
+    background: blue;
+    color: white;
+    scale: 1.05; /* Slightly larger when active */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Close button */
+  .closeBtn {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  
+  .closeBtn:hover {
+    opacity: 1;
+  }
+  
+  /* Tab content */
+  .tabContent {
+    padding: 20px;
+  }
+  
+  .tabPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  /* Project card styling */
+  .projectCard {
+    background: #e0dfdf; /* Very light off-white color */
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0; /* Adding border as requested */
+  }
+  
+  .projectCard p {
+    margin: 0;
+    color: #333;
+  }
+  
+  /* Button styles */
+  .stopBtn, .rewardBtn {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .stopBtn {
+    background-color: #ffcccb; /* light red */
+    color: #d32f2f;
+  }
+  
+  .stopBtn:hover {
+    background-color: #ffb3b3;
+  }
+  
+  .rewardBtn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .rewardBtn:hover {
+    background-color: #3d9140;
+  }
+  
+  /* Loading state */
+  #ongoing, #completed {
+    min-height: 150px;
+  }
+  
+  /* Dialog backdrop */
+  .prj::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+  
+  /* Animation for dialog open */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+  
+  .prj[open] {
+    animation: fadeIn 0.3s ease forwards;
+  }

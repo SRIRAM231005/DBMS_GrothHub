@@ -16,19 +16,19 @@ socket.on("disconnect", () => {
 });*/
 
 
-        socket.on('updateProjects', (projects) => {
-            console.log('Received updated projects:', projects);
-            fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
-            fetchPrjComp(credentials,BusinessDetails.BusinessName);
-            /*const list = document.getElementById('projectList');
-            list.innerHTML = ''; // Clear existing list
+socket.on('updateProjects', (projects) => {
+    console.log('Received updated projects:', projects);
+    fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
+    fetchPrjComp(credentials,BusinessDetails.BusinessName);
+    /*const list = document.getElementById('projectList');
+    list.innerHTML = ''; // Clear existing list
 
-            projects.forEach(project => {
-                const li = document.createElement('li');
-                li.textContent = `${project.name} - ${project.status}`;
-                list.appendChild(li);
-            });*/
-        });
+    projects.forEach(project => {
+        const li = document.createElement('li');
+        li.textContent = `${project.name} - ${project.status}`;
+        list.appendChild(li);
+    });*/
+});
         
         
 let BusinessDetails;
@@ -273,7 +273,7 @@ async function fetchPrjinProgress(username,businessname) {
         });
         
         const data = await response.json();
-        console.log("lkjh",data);
+        console.log("progress",data);
         document.querySelector(".in-progress h3").textContent = `${data[0].countPrj}`;
         console.log(document.querySelector(".in-progress h3"));
         return data;
@@ -292,7 +292,7 @@ async function fetchPrjComp(username,businessname) {
         });
         
         const data = await response.json();
-        console.log("lkjh",data);
+        console.log("completed",data);
         document.querySelector(".completed h3").textContent = `${data[0].countPrj}`;
         console.log(document.querySelector(".completed h3"))
         return data;
@@ -302,19 +302,14 @@ async function fetchPrjComp(username,businessname) {
     }
 }
 
-// document.addEventListener("DOMContentLoaded", function () {
-//     const countProPrj = fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
-//     if (countProPrj && countProPrj.length!==0) {
-//         console.log("Display",countProPrj);
-//         document.querySelector(".in-progress h3").textContent = `${countProPrj}`;
-//     } else {
-//         console.error("❌ countProPrj is missing or does not contain enough elements.");
-//     }
-// });
-
-fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
-fetchPrjComp(credentials,BusinessDetails.BusinessName);
 let AllEmp;
+let prjProgList;
+let prjCompList;
+fetchPrjComp(credentials,BusinessDetails.BusinessName);
+fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
+fetchgetPrjinProgress(credentials,BusinessDetails.BusinessName);
+fetchgetPrjCompleted(credentials,BusinessDetails.BusinessName);
+
 
 async function fetchITEmployeesHire(username,businessname,empRole){
     console.log("de:",businessname);
@@ -559,8 +554,7 @@ function EmployeeDivFunction(count){
                 }
             });
         }
-
-
+        
         dialog.showModal();
 }
 
@@ -646,4 +640,145 @@ function EmployeeHireDialog(){
         });
 
         dialog.showModal();
+}
+
+
+document.querySelectorAll(".project").forEach(item => {
+    item.addEventListener("click", () => {
+      let dialog = document.querySelector('.prj');
+      if (!dialog) {
+        dialog = document.createElement('dialog');
+        dialog.classList.add('prj');
+        document.body.appendChild(dialog);
+      }
+  
+      dialog.innerHTML = `
+        <div class="dialogPrjHead">
+          <div class="tabHeaders">
+            <button class="tabButton active" data-tab="ongoing" style="margin-left:60px; margin-right:25px">Ongoing Projects</button>
+            <button class="tabButton" data-tab="completed">Completed Projects</button>
+          </div>
+          <div><img src="images/cross_close.png" class="closeBtn"></div>
+        </div>
+        <hr style="border: 2px solid #c6c5c5;">
+        <div class="tabContent">
+          <div id="ongoing" class="tabPanel"></div>
+          <div id="completed" class="tabPanel" style="display: none;"></div>
+        </div>
+      `;
+  
+      dialog.querySelector('.closeBtn').addEventListener('click', () => {
+        dialog.close();
+      });
+  
+      // Tab switching logic
+      dialog.querySelectorAll(".tabButton").forEach(button => {
+        button.addEventListener("click", () => {
+          dialog.querySelectorAll(".tabButton").forEach(btn => btn.classList.remove("active"));
+          dialog.querySelectorAll(".tabPanel").forEach(panel => panel.style.display = "none");
+  
+          button.classList.add("active");
+          const tab = button.getAttribute("data-tab");
+          dialog.querySelector(`#${tab}`).style.display = "block";
+  
+          if (tab === "ongoing") {
+            loadOngoingProjects();
+          } else {
+            loadCompletedProjects();
+          }
+        });
+      });
+  
+      // Auto-load ongoing on open
+      loadOngoingProjects();
+  
+      if (!dialog.open) dialog.showModal();
+  
+      // Fetch ongoing projects
+      function loadOngoingProjects() {
+        const ongoingContainer = dialog.querySelector("#ongoing");
+        ongoingContainer.innerHTML = "Loading ongoing projects...";
+  
+        // Replace this fetch with actual backend call
+        setTimeout(() => {
+          ongoingContainer.innerHTML = `
+            <div class="projectCard">
+              <p><strong>Project A</strong> - Description of project A</p>
+              <button class="stopBtn">Stop Project</button>
+            </div>
+            <div class="projectCard">
+              <p><strong>Project B</strong> - Description of project B</p>
+              <button class="stopBtn">Stop Project</button>
+            </div>
+          `;
+          ongoingContainer.querySelectorAll(".stopBtn").forEach(btn => {
+            btn.addEventListener("click", () => {
+              alert("Project stopped!");
+              // backend call to stop project
+            });
+          });
+        }, 500);
+      }
+  
+      // Fetch completed projects
+      function loadCompletedProjects() {
+        const completedContainer = dialog.querySelector("#completed");
+        completedContainer.innerHTML = "Loading completed projects...";
+  
+        // Replace this fetch with actual backend call
+        setTimeout(() => {
+          completedContainer.innerHTML = `
+            <div class="projectCard">
+              <p><strong>Project X</strong> - Finished on 2025-03-01</p>
+              <button class="rewardBtn">Collect Reward</button>
+            </div>
+            <div class="projectCard">
+              <p><strong>Project Y</strong> - Finished on 2025-03-05</p>
+              <button class="rewardBtn">Collect Reward</button>
+            </div>
+          `;
+          completedContainer.querySelectorAll(".rewardBtn").forEach(btn => {
+            btn.addEventListener("click", () => {
+              alert("Reward Collected!");
+              // backend call to collect reward
+            });
+          });
+        }, 500);
+      }
+    });
+  });
+  
+
+async function fetchgetPrjinProgress(username,businessName) {
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/getPrjProgress', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username:username, businessName:businessName }),
+        });
+
+        prjProgList = await response.json();
+        console.log("prg list",prjProgList);
+        return prjProgList;
+    } catch (error) {
+        console.error("❌ Error fetching IT user projects:", error);
+        return null;
+    }
+}
+
+async function fetchgetPrjCompleted(username,businessName) {
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/getPrjComp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username:username, businessName:businessName }),
+        });
+
+        prjCompList = await response.json();
+        console.log("comp list",prjCompList);
+        return prjCompList;
+    } catch (error) {
+        console.error("❌ Error fetching IT user projects:", error);
+        return null;
+    }
 }

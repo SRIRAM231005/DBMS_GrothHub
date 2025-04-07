@@ -263,7 +263,37 @@ async function getPrjCompCount(req , res){
     }
 }
 
+async function getPrjComp(req , res){
+    try {
+        const { username, businessname } = req.body;
+        const sql = "select * from ItUserProjects where Username = ? and BusinessName = ? and ProjectStatus = 1";
+        const [results] = await connection.promise().query(sql, [username,businessname]);
+        console.log(req.body);
+        console.log("hi",results);
+        
+        return res.status(200).json(results);
 
-module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition};
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+async function getPrjProgress(req , res){
+    try {
+        const { username, businessname } = req.body;
+        const sql = "select * from ItUserProjects where Username = ? and BusinessName = ? and ProjectStatus = 0";
+        const [results] = await connection.promise().query(sql, [username,businessname]);
+        console.log(req.body);
+        console.log("hi",results);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+
+module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition,getPrjComp,getPrjProgress};
 
  
