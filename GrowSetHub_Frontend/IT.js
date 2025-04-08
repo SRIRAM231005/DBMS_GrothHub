@@ -554,7 +554,7 @@ function EmployeeDivFunction(count){
                 }
             });
         }
-        
+
         dialog.showModal();
 }
 
@@ -701,21 +701,23 @@ document.querySelectorAll(".project").forEach(item => {
   
         // Replace this fetch with actual backend call
         setTimeout(() => {
-          ongoingContainer.innerHTML = `
-            <div class="projectCard">
-              <p><strong>Project A</strong> - Description of project A</p>
-              <button class="stopBtn">Stop Project</button>
-            </div>
-            <div class="projectCard">
-              <p><strong>Project B</strong> - Description of project B</p>
-              <button class="stopBtn">Stop Project</button>
-            </div>
-          `;
-          ongoingContainer.querySelectorAll(".stopBtn").forEach(btn => {
-            btn.addEventListener("click", () => {
-              alert("Project stopped!");
-              // backend call to stop project
-            });
+          ongoingContainer.innerHTML = ``;
+          prjProgList.forEach(rec =>{
+              const prjBox = document.createElement('div');
+              prjBox.classList.add('prjBox');
+              prjBox.innerHTML = `
+                <div class="projectCard">
+                  <p><strong>${rec.Projectname}</strong> - Description of project A <br>Time Left: </p>
+                  <button class="stopBtn">Stop Project</button>
+                </div>
+              `;
+            //   ongoingContainer.querySelectorAll(".stopBtn").forEach(btn => {
+            //     btn.addEventListener("click", () => {
+            //       alert("Project stopped!");
+            //       // backend call to stop project
+            //     });
+            //   });
+            document.getElementById('ongoing').appendChild(prjBox);
           });
         }, 500);
       }
@@ -727,34 +729,36 @@ document.querySelectorAll(".project").forEach(item => {
   
         // Replace this fetch with actual backend call
         setTimeout(() => {
-          completedContainer.innerHTML = `
-            <div class="projectCard">
-              <p><strong>Project X</strong> - Finished on 2025-03-01</p>
-              <button class="rewardBtn">Collect Reward</button>
-            </div>
-            <div class="projectCard">
-              <p><strong>Project Y</strong> - Finished on 2025-03-05</p>
-              <button class="rewardBtn">Collect Reward</button>
-            </div>
-          `;
-          completedContainer.querySelectorAll(".rewardBtn").forEach(btn => {
-            btn.addEventListener("click", () => {
-              alert("Reward Collected!");
-              // backend call to collect reward
+            completedContainer.innerHTML = ``;
+            prjCompList.forEach(rec =>{
+                const prjBox = document.createElement('div');
+                prjBox.classList.add('prjBox');
+                prjBox.innerHTML = `
+                  <div class="projectCard">
+                    <p><strong>${rec.Projectname}</strong> - Finished on ${rec.ProjectCompTime.slice(0,10)}</p>
+                    <button class="rewardBtn">Collect Reward</button>
+                  </div>
+                  `;
+                // completedContainer.querySelectorAll(".rewardBtn").forEach(btn => {
+                //   btn.addEventListener("click", () => {
+                //     alert("Reward Collected!");
+                //     // backend call to collect reward
+                //   });
+                // });
+                document.getElementById('completed').appendChild(prjBox);
             });
-          });
         }, 500);
       }
     });
   });
   
 
-async function fetchgetPrjinProgress(username,businessName) {
+async function fetchgetPrjinProgress(username,businessname) {
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/getPrjProgress', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username:username, businessName:businessName }),
+            body: JSON.stringify({ username:username, businessname:businessname }),
         });
 
         prjProgList = await response.json();
@@ -766,12 +770,12 @@ async function fetchgetPrjinProgress(username,businessName) {
     }
 }
 
-async function fetchgetPrjCompleted(username,businessName) {
+async function fetchgetPrjCompleted(username,businessname) {
     try {
         const response = await fetch('http://localhost:8008/ITbusiness/getPrjComp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username:username, businessName:businessName }),
+            body: JSON.stringify({ username:username, businessname:businessname }),
         });
 
         prjCompList = await response.json();
@@ -782,3 +786,22 @@ async function fetchgetPrjCompleted(username,businessName) {
         return null;
     }
 }
+
+async function updateStatusPrjandEmp(index,username,businessname) {       //make changes here
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/getPrjComp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ index:index, username:username, businessname:businessname }),
+        });
+
+        prjCompList = await response.json();
+        console.log("comp list",prjCompList);
+        return prjCompList;
+    } catch (error) {
+        console.error("❌ Error fetching IT user projects:", error);
+        return null;
+    }
+}
+
+

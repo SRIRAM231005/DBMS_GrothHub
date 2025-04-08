@@ -269,7 +269,7 @@ async function getPrjComp(req , res){
         const sql = "select * from ItUserProjects where Username = ? and BusinessName = ? and ProjectStatus = 1";
         const [results] = await connection.promise().query(sql, [username,businessname]);
         console.log(req.body);
-        console.log("hi",results);
+        console.log("compPrj",results);
         
         return res.status(200).json(results);
 
@@ -284,7 +284,7 @@ async function getPrjProgress(req , res){
         const sql = "select * from ItUserProjects where Username = ? and BusinessName = ? and ProjectStatus = 0";
         const [results] = await connection.promise().query(sql, [username,businessname]);
         console.log(req.body);
-        console.log("hi",results);
+        console.log("prgPrj",results);
         
         return res.status(200).json(results);
 

@@ -597,6 +597,9 @@ header {
   /* Loading state */
   #ongoing, #completed {
     min-height: 150px;
+    max-height: 250px;       /* Set your max height */
+    overflow-y: auto;        /* Enable vertical scroll when needed */
+    transition: max-height 0.3s ease; /* Optional smoothness */
   }
   
   /* Dialog backdrop */
@@ -614,3 +617,12 @@ header {
   .prj[open] {
     animation: fadeIn 0.3s ease forwards;
   }
+
+  #completed::-webkit-scrollbar, #ongoing::-webkit-scrollbar {
+    width: 6px;
+  }
+  #completed::-webkit-scrollbar-thumb, #ongoing::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+  

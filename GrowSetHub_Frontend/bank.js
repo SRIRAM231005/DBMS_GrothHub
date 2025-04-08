@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (item.active) navDiv.classList.add("active");
 
         navDiv.innerHTML = `
-            <img src="${item.img}">
+            <i data-lucide="${item.img}" class="icon"></i>
             <span class="text">${item.text}</span>
             ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
-        `;
+        `;//<img src="${item.img}">
 
         bottomNav.appendChild(navDiv);
 
@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = item.link;
         });
     });
+
+    lucide.createIcons();
 });
 
 function openDialog() {
