@@ -60,6 +60,17 @@
                         <span>Completed</span>
                     </div>
                 </div>
+                <dialog id="confirmDialog">
+                    <div style="display: flex; justify-content: space-between; align-items: center; position: relative;">
+                        <p><strong>Are you sure you want to stop working on this project?</strong></p>
+                        <div class="clsimg"><img src="images/cross_close.png" onclick="closeDialogPrj()"></div>
+                    </div>
+                   
+                    <div style="margin-top: 10px;display: flex; align-items: center; gap:25px; justify-content: center;">
+                      <button id="yesBtn">Yes</button>
+                      <button id="noBtn" onclick="closeDialogPrj()">No</button>
+                    </div>
+                </dialog>
             </section>
             <button class="start-project">Start New Project</button>
             <section class="employees">

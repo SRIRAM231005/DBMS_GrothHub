@@ -1,3 +1,18 @@
+//top bar
+const settingsToggle = document.getElementById('settingsToggle');
+const dropdownMenu = document.getElementById('dropdownMenu');
+
+settingsToggle.addEventListener('click', () => {
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+});
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.settings-wrapper')) {
+    dropdownMenu.style.display = 'none';
+    }
+});
+//top bar
+
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
         { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "stocksProfile.html" },//images/Investing.png

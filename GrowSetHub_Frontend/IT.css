@@ -275,192 +275,8 @@ header {
     text-align: center;
     margin-top: 15px; /* Adds 15px gap from EmpListBody */
     padding: 10px;
-}
+}  
 
-/* .prj{
-        width: 400px;
-        max-width: 90%;
-        background: white;
-        border-radius: 10px;
-        border: none;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        text-align: center;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        animation: fadeIn 0.3s ease-in-out;
-}
-
-.dialogPrjHead {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .tabHeaders {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .tabButton {
-    padding: 8px 16px;
-    background-color: #ddd;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 5px;
-  }
-  
-  .tabButton.active {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .projectCard {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  
-  button.stopBtn,
-  button.rewardBtn {
-    margin-top: 5px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-  } */
-
-  /* .prj::backdrop {
-    background: rgba(0, 0, 0, 0.3);
-  }
-  
-  .prj {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    width: min(90vw, 600px);
-    border: none;
-    border-radius: 16px;
-    background-color: white;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
-    z-index: 1000;
-  }
-  
-  
-  .dialogPrjHead {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(to right, #6a11cb, #2575fc); 
-    padding: 16px 20px;
-    color: white;
-    font-size: 20px;
-    font-weight: 600;
-  }
-  
- 
-  .dialogPrjHead img.closeBtn {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    filter: brightness(0) invert(1);
-  }
-  
-  .tabHeaders {
-    display: flex;
-    background: #f2f2f2;
-    padding: 10px 16px;
-    gap: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .tabButton {
-    background: gray;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background 0.3s;
-  }
-  
-  .tabButton:hover {
-    background: #5a0fb1;
-  }
-  
-  .tabButton.active {
-    background: #1b5de9;
-    color: white;
-  }
-  
-  .tabContent {
-    background: white;
-    padding: 20px;
-    max-height: 60vh;
-    overflow-y: auto;
-  }
-  
-  .tabPanel {
-    display: none;
-  }
-  
-  .tabPanel.active {
-    display: block;
-  }
-  
-  .projectCard {
-    background: #f9f9f9;
-    border-left: 6px solid #6a11cb;
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .projectCard p {
-    margin: 0 0 10px 0;
-    color: #333;
-    font-weight: 500;
-  }
-  
-  button.stopBtn {
-    background-color: #ff4d4d; 
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-  }
-  
-  button.stopBtn:hover {
-    background-color: #e60000;
-  }
-  
-  button.rewardBtn {
-    background-color: #4CAF50; 
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-  }
-  
-  button.rewardBtn:hover {
-    background-color: #43a047;
-  } */
 
 /* Dialog base styles */
 .prj {
@@ -626,3 +442,59 @@ header {
     border-radius: 3px;
   }
   
+
+  dialog {
+    padding: 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+dialog p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.clsimg{
+    position: absolute;
+    top: -20px;
+    right: -18px;
+}
+  
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+dialog #noBtn {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+dialog #yesBtn {
+    background:rgb(13, 136, 23);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+/* Close Button */
+dialog img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

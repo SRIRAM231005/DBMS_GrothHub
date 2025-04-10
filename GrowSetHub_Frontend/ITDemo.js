@@ -363,6 +363,68 @@ fetchITProjectsEmployees(username,BusinessDetails.BusinessName);
 //fetchITEmployeesFire(username,employeename);
 //EmployeeListGeneration()
 
+//EmployeeListGeneration();
+
+// const ProjectsAndEmployees = {
+//     Projects: [
+//         { Projectname: "Interfaces layout", NoOfDev: 30, NoOfDesigner: 20, NoOfTeamLeader: 0, NoOfTester: 0, Cost: 240000 },
+//         { Projectname: "Corporate website development", NoOfDev: 100, NoOfDesigner: 60, NoOfTeamLeader: 0, NoOfTester: 0, Cost: 4300000 },
+//         { Projectname: "Development of the site online store", NoOfDev: 450, NoOfDesigner: 90, NoOfTeamLeader: 100, NoOfTester: 50, Cost: 14000000 }
+//     ],
+//     Employees: [
+//         {
+//             EmployeeName: "Andrew Hopkins",
+//             Role: "Junior Developers",
+//             Salary: 3750,
+//             Skill: 15
+//         },
+//         {
+//             EmployeeName: "Thomas Chang",
+//             Role: "Junior Developers",
+//             Salary: 3750,
+//             Skill: 15
+//         },
+//         {
+//             EmployeeName: "Brandon Elliott",
+//             Role: "Junior Developers",
+//             Salary: 3002,
+//             Skill: 15
+//         },
+//         {
+//             EmployeeName: "Reuben",
+//             Role: "Junior Developers",
+//             Salary: 2787,
+//             Skill: 16
+//         },
+//         {
+//             EmployeeName: "Sophia Martinez",
+//             Role: "Middle Developers",
+//             Salary: 6000,
+//             Skill: 20
+//         },
+//         {
+//             EmployeeName: "Liam Johnson",
+//             Role: "Middle Developers",
+//             Salary: 6200,
+//             Skill: 21
+//         },
+
+//         // Senior Developers
+//         {
+//             EmployeeName: "Olivia Brown",
+//             Role: "Senior Developers",
+//             Salary: 9000,
+//             Skill: 25
+//         },
+//         {
+//             EmployeeName: "Ethan Wilson",
+//             Role: "Senior Developers",
+//             Salary: 9500,
+//             Skill: 26
+//         }
+//     ]
+// };
+
 
 function showPrjList(){
     const ProjectsListButton = document.querySelector('.start-project');
@@ -581,14 +643,14 @@ function EmployeeHireDialog(){
 }
 
 
-let dialog = document.querySelector('.prj');
-if (!dialog) {
-  dialog = document.createElement('dialog');
-  dialog.classList.add('prj');
-  document.body.appendChild(dialog);
-}
 document.querySelectorAll(".project").forEach(item => {
     item.addEventListener("click", () => {
+        let dialog = document.querySelector('.prj');
+        if (!dialog) {
+          dialog = document.createElement('dialog');
+          dialog.classList.add('prj');
+          document.body.appendChild(dialog);
+        }
   
       dialog.innerHTML = `
         <div class="dialogPrjHead">
@@ -607,7 +669,6 @@ document.querySelectorAll(".project").forEach(item => {
   
       dialog.querySelector('.closeBtn').addEventListener('click', () => {
         dialog.close();
-        fetchPrjComp(credentials,BusinessDetails.BusinessName);
       });
   
       // Tab switching logic
@@ -621,18 +682,68 @@ document.querySelectorAll(".project").forEach(item => {
           dialog.querySelector(`#${tab}`).style.display = "block";
   
           if (tab === "ongoing") {
-            loadOngoingProjects(dialog);
+            loadOngoingProjects();
           } else {
-            loadCompletedProjects(dialog);
+            loadCompletedProjects();
           }
         });
       });
   
       // Auto-load ongoing on open
-      loadOngoingProjects(dialog);
+      loadOngoingProjects();
   
       if (!dialog.open) dialog.showModal();
+
+      function loadOngoingProjects() {
+        const ongoingContainer = dialog.querySelector("#ongoing");
+        ongoingContainer.innerHTML = "Loading ongoing projects...";
+    
+        // Replace this fetch with actual backend call
+        setTimeout(() => {
+          ongoingContainer.innerHTML = ``;
+          prjProgList.forEach(rec =>{
+              const prjBox = document.createElement('div');
+              prjBox.classList.add('prjBox');
+              prjBox.innerHTML = `
+                <div class="projectCard">
+                  <p><strong>${rec.Projectname}</strong> - Description of project A <br>Time Left: </p>
+                  <button class="stopBtn">Stop Project</button>
+                </div>
+              `;
+            //   ongoingContainer.querySelectorAll(".stopBtn").forEach(btn => {
+            //     btn.addEventListener("click", () => {
+            //       alert("Project stopped!");
+            //       // backend call to stop project
+            //     });
+            //   });
+            document.getElementById('ongoing').appendChild(prjBox);
+          });
+        }, 500);
+      }
+    
+      // Fetch completed projects
+    function loadCompletedProjects() {
+        const completedContainer = dialog.querySelector("#completed");
+        completedContainer.innerHTML = "Loading completed projects...";
+    
+        // Replace this fetch with actual backend call
+        setTimeout(() => {
+            completedContainer.innerHTML = ``;
+            prjCompList.forEach(rec =>{
+                const prjBox = document.createElement('div');
+                prjBox.classList.add('prjBox');
+                prjBox.innerHTML = `
+                  <div class="projectCard">
+                    <p><strong>${rec.Projectname}</strong> - Finished on ${rec.ProjectCompTime.slice(0,10)}</p>
+                    <button class="rewardBtn rbtn${rec.Projectname}" onclick="updateStatusPrjandEmp(credentials,'${BusinessDetails.BusinessName}','${rec.Projectname}')">Collect Reward</button>
+                  </div>
+                  `;
+                  document.getElementById('completed').appendChild(prjBox);
+                });
+        }, 500);
+    }
   
+      
     });
 });
 
@@ -646,74 +757,7 @@ document.querySelectorAll(".project").forEach(item => {
 
 //DEMO CODE
 // Fetch ongoing projects
-function loadOngoingProjects(dialog) {
-    const ongoingContainer = dialog.querySelector("#ongoing");
-    ongoingContainer.innerHTML = "Loading ongoing projects...";
 
-    // Replace this fetch with actual backend call
-    setTimeout(() => {
-      ongoingContainer.innerHTML = ``;
-      prjProgList.forEach(rec =>{
-          const prjBox = document.createElement('div');
-          prjBox.classList.add('prjBox');
-          prjBox.innerHTML = `
-            <div class="projectCard">
-              <p><strong>${rec.Projectname}</strong> - Description of project A <br>Time Left: </p>
-              <button class="stopBtn sBtn${rec.Projectname}" onclick="showStopDialog('${rec.Projectname}')">Stop Project</button>
-            </div>
-          `;
-        //   ongoingContainer.querySelectorAll(".stopBtn").forEach(btn => {
-        //     btn.addEventListener("click", () => {
-        //       alert("Project stopped!");
-        //       // backend call to stop project
-        //     });
-        //   });
-        document.getElementById('ongoing').appendChild(prjBox);
-      });
-    }, 500);
-  }
-
-
-let tempPrjName = null;
-function showStopDialog(prjName) {
-    tempPrjName = prjName;
-    document.getElementById('confirmDialog').showModal();
-}
-
-function closeDialogPrj() {
-    document.getElementById('confirmDialog').close();
-    fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
-}
-
-document.getElementById('yesBtn').addEventListener('click', () => {
-    if (tempPrjName !== null) {
-        updateStatusPrjandEmp(credentials,BusinessDetails.BusinessName,tempPrjName);
-    }
-    closeDialogPrj();
-    fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
-});
-
-  // Fetch completed projects
-function loadCompletedProjects(dialog) {
-    const completedContainer = dialog.querySelector("#completed");
-    completedContainer.innerHTML = "Loading completed projects...";
-
-    // Replace this fetch with actual backend call
-    setTimeout(() => {
-        completedContainer.innerHTML = ``;
-        prjCompList.forEach(rec =>{
-            const prjBox = document.createElement('div');
-            prjBox.classList.add('prjBox');
-            prjBox.innerHTML = `
-              <div class="projectCard">
-                <p><strong>${rec.Projectname}</strong> - Finished on ${rec.ProjectCompTime.slice(0,10)}</p>
-                <button class="rewardBtn rbtn${rec.Projectname}" onclick="updateStatusPrjandEmp(credentials,'${BusinessDetails.BusinessName}','${rec.Projectname}')">Collect Reward</button>
-              </div>
-              `;
-              document.getElementById('completed').appendChild(prjBox);
-            });
-    }, 500);
-}
 //DEMO CODE
 
 async function fetchgetPrjinProgress(username,businessname) {
@@ -763,12 +807,12 @@ async function updateStatusPrjandEmp(username,businessname,projectname) {
         const data = await response.json();
         console.log("updateStatus",data);
         fetchgetPrjCompleted(username,BusinessDetails.BusinessName);
-        fetchgetPrjinProgress(username,BusinessDetails.BusinessName);
-        loadCompletedProjects(dialog);
-        loadOngoingProjects(dialog);
+        loadCompletedProjects();
         return data;
     } catch (error) {
         console.error("❌ Error changing status:", error);
         return null;
     }
 }
+
+

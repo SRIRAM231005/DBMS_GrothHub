@@ -48,11 +48,14 @@ function createPropertyCard(property) {
             <img src="${property.image}" alt="House">
             <div class="property-info">
                 <h2 class="price">$ ${property.price.toLocaleString()}</h2>
-                <div class="location">
-                    <span class="location-icon">📍</span>
-                    <span>${property.location}</span>
+                <div class="info" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="location">
+                        <span class="location-icon">📍</span>
+                        <span>${property.location}</span>
+                    </div>
+                    <div><img src="images/info.png" alt="Property Info" style="width: 24px; height: 24px; object-fit: contain;"></div>
                 </div>
-                <button class="sell-btn sellbtn${property.idx}" onclick="sellProperty(credentials,${property.idx})">Sell</button>
+                <button class="sell-btn sellbtn${property.idx}" onclick="showSellDialog(credentials,${property.idx})">Sell</button>
             </div>
         </div>
     `;
@@ -139,16 +142,37 @@ async function getNumPropUser(username) {
         });
         const result = await response.json();
         console.log("Properties fetched:", result);
-        if(`${result[0].CountProp}`===1){
+        if(result[0].CountProp===1){
             document.querySelector(".total-properties").textContent = `${result[0].CountProp} Property Owned`;
         }else{
             document.querySelector(".total-properties").textContent = `${result[0].CountProp} Properties Owned`;
         }
         console.log(document.querySelector(".total-properties"));
-        return data;
+        return result;
     } catch (error) {
         console.error("❌ Error fetching number of properties :", error);
         return null;
     }
 }
+
+
+let tempCredentials = null;
+let tempIdx = null;
+
+function showSellDialog(credentials, idx) {
+  tempCredentials = credentials;
+  tempIdx = idx;
+  document.getElementById('confirmDialog').showModal();
+}
+
+function closeDialog() {
+  document.getElementById('confirmDialog').close();
+}
+
+document.getElementById('yesBtn').addEventListener('click', () => {
+  if (tempCredentials !== null && tempIdx !== null) {
+    sellProperty(tempCredentials, tempIdx);
+  }
+  closeDialog();
+});
 

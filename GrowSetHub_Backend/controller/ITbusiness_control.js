@@ -200,14 +200,12 @@ async function HireSelectedEmployees(req , res){
 async function BusEmpPrjStart(req , res){
     try {
         const { username, businessname, empName, prjname } = req.body;
-        console.log(req.body.username);
-        console.log(req.body.empName);
-        console.log(req.body.prjname);
-        console.log(req.body.businessname);
         
         const sql = "update ituseremployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and Username = ? and BusinessName = ? and Employeename = ?";
+        const sql1 = "update ituseremployees set PrjName = ? where EmpStatusPrj = 1 and Username = ? and BusinessName = ? and Employeename = ?";
         
         const [results] = await connection.promise().query(sql,[username,businessname,empName]);
+        await connection.promise().query(sql1,[prjname,username,businessname,empName]);
         
         console.log("verify",results);
         return res.status(200).json(results);
@@ -293,7 +291,39 @@ async function getPrjProgress(req , res){
     }
 }
 
+async function changeStatusCompProj(req , res){
+    try {
+        const { username,businessname,projectname } = req.body;
+        const sql = "delete from ITUserProjects where Username = ? and BusinessName = ? and Projectname = ?";
+        const sql1 = "update ituseremployees set EmpStatusPrj = 0 where Username = ? and BusinessName = ? and Prjname = ?";
 
-module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition,getPrjComp,getPrjProgress};
+        const [results] = await connection.promise().query(sql, [username,businessname,projectname]);
+        await connection.promise().query(sql1, [username,businessname,projectname])
+        console.log(req.body);
+        
+        return res.status(200).json(results);
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+async function changeStatusStopProj(req , res){
+    try {
+        const { username,businessname,projectname } = req.body;
+        const sql = "delete from ITUserProjects where Username = ? and BusinessName = ? and Projectname = ?";
+        const sql1 = "update ituseremployees set EmpStatusPrj = 0 where Username = ? and BusinessName = ? and Prjname = ?";
+
+        const [results] = await connection.promise().query(sql, [username,businessname,projectname]);
+        await connection.promise().query(sql1, [username,businessname,projectname])
+        console.log(req.body);
+        
+        return res.status(200).json(results);
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+
+module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition,getPrjComp,getPrjProgress,changeStatusCompProj,changeStatusStopProj};
 
  

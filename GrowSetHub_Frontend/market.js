@@ -46,11 +46,14 @@ function createPropertyCard(property) {
             <img src="${property.image}" alt="House">
             <div class="property-info">
                 <h2 class="price">$ ${property.price.toLocaleString()}</h2>
-                <div class="location">
-                    <span class="location-icon">📍</span>
-                    <span>${property.location}</span>
+                <div class="info" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="location">
+                        <span class="location-icon">📍</span>
+                        <span>${property.location}</span>
+                    </div>
+                    <div><img src="images/info.png" alt="Property Info" style="width: 24px; height: 24px; object-fit: contain;"></div>
                 </div>
-                <button class="buy-btn buybtn${property.idx}" onclick="buyProperty(credentials,${property.idx})">Buy</button>
+                <button class="buy-btn buybtn${property.idx}" onclick="showBuyDialog(credentials,${property.idx})">Buy</button>
             </div>
         </div>
     `;
@@ -131,4 +134,23 @@ async function buyProperty(username,idx) {
     }
 }
 
+let tempCredentials = null;
+let tempIdx = null;
+
+function showBuyDialog(credentials, idx) {
+  tempCredentials = credentials;
+  tempIdx = idx;
+  document.getElementById('confirmDialog').showModal();
+}
+
+function closeDialog() {
+  document.getElementById('confirmDialog').close();
+}
+
+document.getElementById('yesBtn').addEventListener('click', () => {
+  if (tempCredentials !== null && tempIdx !== null) {
+    buyProperty(tempCredentials, tempIdx);
+  }
+  closeDialog();
+});
     
