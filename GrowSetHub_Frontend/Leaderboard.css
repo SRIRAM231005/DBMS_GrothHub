@@ -13,19 +13,28 @@ body {
     padding: 30px;
     max-width: 700px;
     margin: auto;
+    margin-top: 50px;
+  }
+
+  .leaderboard-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
   }
   
   .leaderboard-title {
     text-align: center;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     font-size: 28px;
     color: #6a1b9a; /* violet */
   }
   
   .tabs {
     display: flex;
-    justify-content: space-around;
+    justify-content: left;
     margin-bottom: 16px;
+    gap: 15px;
   }
   
   .tab-btn {
@@ -36,6 +45,8 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
   }
   
   .tab-btn.active {
@@ -49,9 +60,9 @@ body {
   }
   
   .search-input {
-    width: 94%;
+    width: 34%;
     padding: 10px 16px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     border: 1px solid #cfd8dc;
     border-radius: 8px;
     font-size: 16px;
@@ -76,7 +87,28 @@ body {
   }
   
   .rank {
+    padding: 10px;
+    border-radius: 20px;
+    /*background-color: #a0a2a3;*/
     font-weight: bold;
-    color: #00796b;
+    color: #00796b
+  }
+
+  .gold-rank {
+    background-color: rgb(255, 215, 0, 0.5);
+    color: rgb(255, 132, 0);
+  }
+  
+  .silver-rank {
+    background-color: silver;
+    color: black;
+  }
+  
+  .bronze-rank {
+    background-color: #cd7f32; /* bronze color */
+    color: white;
+  }
+  .icon1{
+    margin-right: 10px;
   }
   

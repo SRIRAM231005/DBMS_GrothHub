@@ -1,3 +1,7 @@
+const credentials= JSON.parse(localStorage.getItem('credentials'));
+console.log(credentials);
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
         { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "stocksProfile.html" },//images/Investing.png
@@ -53,7 +57,7 @@ function fetchAndDisplayLeaderboard(type) {
   container.innerHTML = `<p style="text-align:center;">Loading ${type} leaderboard...</p>`;
 
   setTimeout(() => {
-    currentData = fetchData(type); // Simulated fetch
+    currentData = fetchLeaderBoardData(type); // Simulated fetch
     displayLeaderboard(currentData);
   }, 500);
 }
@@ -70,8 +74,14 @@ function displayLeaderboard(data) {
   data.forEach((entry, idx) => {
     const div = document.createElement("div");
     div.classList.add("rank-entry");
+
+    let rankClass = "";
+    if (idx === 0) rankClass = "gold-rank";
+    else if (idx === 1) rankClass = "silver-rank";
+    else if (idx === 2) rankClass = "bronze-rank"; 
+
     div.innerHTML = `
-      <span class="rank">#${idx + 1}</span>
+      <span class="rank ${rankClass}">#${idx + 1}</span>
       <span>${entry.name}</span>
       <span>${entry.value}</span>
     `;
@@ -105,6 +115,24 @@ function fetchData(type) {
   };
 
   return dummyData[type] || [];
+}
+
+
+async function fetchLeaderBoardData(type){
+  try {
+    const response = await fetch('http://localhost:8008/user/LeaderBoardData', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({username: credentials})
+    });
+
+    let LeaderBoardData = await response.json();
+    console.log('LeaderBoardData:',LeaderBoardData);
+    return LeaderBoardData[type]; // Return fetched data
+  } catch (error) {
+      console.error("❌ Error fetching IT main business:", error);
+      return null;
+  }
 }
 
 // Load default tab on page load

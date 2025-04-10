@@ -97,22 +97,6 @@ CREATE TABLE IF NOT EXISTS UserInvestments(
     buyPrice DECIMAL(10,2) NOT NULL,
     sharesOwned int,
     currentSharePrice DECIMAL(10,2)
-<<<<<<< Updated upstream
-);
-
-create table if not exists RealEstate(
-    idx int primary key,
-    img_url varchar(100),
-    price decimal(12,2),
-    location varchar(50),
-    incomeperhour decimal(12,2)
-);
-
-create table userRealEstate(
-    username varchar(50),
-    idx int,
-    primary key(username,index)
-=======
 );
 
  create table RealEstateMain(
@@ -127,6 +111,5 @@ create table userRealEstate(
     username varchar(20), 
     idx int, 
     primary key(username,idx)
->>>>>>> Stashed changes
 );
 
