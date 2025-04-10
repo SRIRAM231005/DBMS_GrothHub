@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="backgroundStyle.css">
+  <link rel="stylesheet" href="navigationBar1.css">
+  <link rel="stylesheet" href="Leaderboard.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="bottom-nav" id="bottomNav"></div>
+    <div class="bg-decoration">
+        <div class="wave-bottom"></div>
+        <div class="floating-elements">
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+        </div>
+        <div class="circuit-pattern"></div>
+    </div>
+
+<div class="leaderboard-container">
+  <h2 class="leaderboard-title">🏆 Leaderboard</h2>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-type="balance">Balance</button>
+    <button class="tab-btn" data-type="shares">Shares</button>
+    <button class="tab-btn" data-type="realestate">Real Estates</button>
+    <button class="tab-btn" data-type="business">Businesses</button>
+  </div>
+
+  <input type="text" id="search-input" class="search-input" placeholder="🔍 Search user...">
+
+  <div class="leaderboard-content" id="leaderboard-content">
+    <!-- Rankings will be loaded here -->
+  </div>
+</div>
+
+<script src="Leaderboard.js"></script>
+</body>
+</html>
