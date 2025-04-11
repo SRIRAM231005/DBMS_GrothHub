@@ -57,6 +57,10 @@ io.on('connection', (socket) => {
         console.log('Checking and updating project status...');
         updateProjectStatus();
     });
+    cron.schedule('0 * * * *', () => {
+        console.log('⏰ Running hourly job to update bank status...');
+        updateBankStatus();
+    });    
 
     // Handle client disconnection
     socket.on('disconnect', () => {
@@ -87,6 +91,64 @@ function updateProjectStatus() {
 
     // let projects='hi';
     // io.emit('message', projects);
+}
+
+function updateBankStatus(){
+    const fetchQuery = `SELECT * FROM BankBusiness`;
+    
+    connection.query(fetchQuery, async (err, users) => {
+        if (err) {
+            console.error('Error updating bank status:', err);
+        } else {
+            const query = `UPDATE BankBusiness SET IntSetTime = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE IntSetTime <= NOW()`;
+            await connection.promise().query(query);
+
+            users.forEach(async (user) =>{
+                let TotalDeposits;
+                let TotalCredits;
+                let marketingInvestment = 50;
+                const sql2 = "SELECT AVG(CreditInt) AS competitorCreditAvg from BankBusiness";
+                const [results2] = await connection.promise().query(sql2);
+
+                const sql3 = "SELECT Level from Balances where Username = ?";
+                const [results3] = await connection.promise().query(sql3,[user.Username]);
+
+                function calculateTotalDeposits(creditInterest, debitInterest, level, marketingInvestment, competitorCreditAvg) {
+                    const baseDeposit = 10000;
+                    const marketingBoost = Math.log10(marketingInvestment + 10) * 100;
+                    const levelMultiplier = 1 + Math.pow(level, 1.5) * 0.1;
+                    const interestGap = debitInterest - creditInterest;
+                    const interestBoost = (creditInterest / (interestGap + 1)) * 100;
+                    const competitiveness = Math.max(0.5, 1 + (creditInterest - competitorCreditAvg) * 0.1);
+                    const totalDeposits = (baseDeposit + marketingBoost * levelMultiplier + interestBoost) * competitiveness;        
+                    TotalDeposits = Math.round(totalDeposits);
+                }
+                calculateTotalDeposits(user.CreditInt, user.DebitInt, results3[0].Level, marketingInvestment, results2[0].competitorCreditAvg);
+
+                function calculateTotalCredits(debitInterest, creditInterest, level, marketingInvestment, totalDeposits, competitorCreditAvg) {
+                    const baseCreditDemand = 8000;
+                    const marketingBoost = Math.log10(marketingInvestment + 10) * 80;
+                    const levelMultiplier = 1 + Math.pow(level, 1.3) * 0.08;
+                    const interestAppeal = Math.max(1, (competitorCreditAvg / (creditInterest + 0.5)));
+                    const riskCap = totalDeposits * 0.85; // can give loans upto 85% of deposits              
+                    const rawLoanDemand = (baseCreditDemand + marketingBoost * levelMultiplier) * interestAppeal;                
+                    const totalCredits = Math.min(riskCap, rawLoanDemand); // final amount bounded by deposit pool               
+                    TotalCredits = Math.round(totalCredits);
+                }
+                calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, user.TotalAmount, results2[0].competitorCreditAvg);
+
+                const sql4 = `UPDATE BankBusiness SET TotalAmount = TotalAmount + ? WHERE Username = ? and BankName = ?`;
+                await connection.promise().query(sql4,[TotalDeposits - TotalCredits , user.Username, user.BankName]);                
+            })
+
+            connection.query(`SELECT * FROM BankBusiness`, (err, updatedUsers) => {
+                if (!err) {
+                    io.emit('updateBanks', updatedUsers);
+                }
+            });        
+            //io.emit('updateBanks', user); // Send updated data to frontend
+        }
+    });
 }
 
 // Run every 5 minutes to update project status

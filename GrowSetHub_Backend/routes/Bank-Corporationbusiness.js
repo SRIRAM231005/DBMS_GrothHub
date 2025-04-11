@@ -4,6 +4,7 @@ const {bankMainBusiness} = require('../controller/Bank-Corporationbusiness_contr
 const BankCorporationRouter = express.Router();
 
 BankCorporationRouter.route('/Bank-Corporationmainbusiness').post(bankMainBusiness);
+BankCorporationRouter.route('/SettingInterestsRates').post(SettingInterestsRates);
 // BankCorporationRouter.route('/usercheck').post(userUniquenessCheck);
 
 module.exports = BankCorporationRouter
