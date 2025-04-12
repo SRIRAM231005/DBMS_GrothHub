@@ -31,9 +31,12 @@ async function Statistics(req , res){
         const sql = "UPDATE Statistics SET NoOfBusiness = (SELECT COUNT(Businessname) AS business_count FROM UserBusiness WHERE Username = ? ) WHERE Username = ?";
         /*const sql1 = "SELECT COUNT(Businessname) AS business_count FROM UserBusiness WHERE Username = ? "*/
         const sql1 = "UPDATE Statistics SET E_business = (SELECT Sum(Revenue) FROM ItBusiness WHERE Username = ?) WHERE Username = ?";
+        const sql3 = "update statistics set Real_estate = (select count(*) from UserRealEstate where Username = ?) where Username = ?";
+        // const sql4 = "update statistics set E_trading = (select ) where Username = ?";
         const sql2 = "SELECT * FROM Statistics WHERE Username = ?";
         
         await connection.promise().query(sql, [username,username]);
+        await connection.promise().query(sql3, [username,username]);
         await connection.promise().query(sql1, [username,username]);
         const [results] = await connection.promise().query(sql2, [username]);
 
@@ -122,7 +125,7 @@ async function LeaderBoardData(req , res){
         return res.status(200).json({
             balance: results1,
             shares: results2,
-            realEstate: results4,
+            realestate: results4,
             business: results3
         });
 
@@ -132,4 +135,19 @@ async function LeaderBoardData(req , res){
     }
 }
 
-module.exports = { Balance, Statistics , LeaderBoardData };
+async function PropValUpdate(req , res){
+    try {
+        const { username,NetPropValue } = req.body;
+        const sql = "update Balances set Real_Estate = ? where Username = ?";
+        
+        const [results] = await connection.promise().query(sql, [NetPropValue,username]);
+        console.log(results);
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data1:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+module.exports = { Balance, Statistics , LeaderBoardData, PropValUpdate };

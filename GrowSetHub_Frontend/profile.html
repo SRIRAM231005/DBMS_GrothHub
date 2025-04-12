@@ -5,21 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="navigationBar1.css">
     <link rel="stylesheet" href="backgroundStyle.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-
     <div class="bg-decoration">
         <div class="wave-bottom"></div>
         <div class="floating-elements">
-          <div class="floating-element"></div>
-          <div class="floating-element"></div>
-          <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
         </div>
         <div class="circuit-pattern"></div>
     </div>
+
+    <div class="bottom-nav" id="bottomNav"></div>
 
     <div class="container">
         <div class="containerBody">
@@ -91,7 +93,7 @@
                 <h2 class="title">Statistics</h2>
                 <div class="section">
                     <p>Number of businesses <span class="value">9</span></p>
-                    <p>Real estate <span class="value">0 of 138</span></p>
+                    <p>Real estate <span class="value">0 of 6</span></p>
                     <p>Bought out companies <span class="value">0 of 50</span></p>
                 </div>
                 <h3 class="subtitle">Earned</h3>
@@ -104,12 +106,7 @@
             </div>
             </div>
         </div>
-            <div class="bottom-nav">
-                <div class="nav-item Investing"><i data-lucide="chart-no-axes-combined" class="icon"></i><span>Investing</span><span class="badge">1</span></div>
-                <div class="nav-item Business"><i data-lucide="building-2" class="icon"></i><span>Business</span><span class="badge">8</span></div>
-                <div class="nav-item Earnings"><i data-lucide="circle-dollar-sign" class="icon"></i><span>Earnings</span></div>
-                <div class="nav-item Profile"><i data-lucide="circle-user-round" class="icon"></i><span>Profile</span><span class="badge">1</span></div>
-            </div>
+            
     </div>
     <script src ="profile.js"></script>
 </body>

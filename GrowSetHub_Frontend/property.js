@@ -103,6 +103,14 @@ async function fetchGetAllRealEstatesbelongingtoUser(username){
         });
         properties1 = await response.json();
         console.log("propertiesList:",properties1);
+
+        let NetPropValue = 0;
+        properties1.forEach(property => {
+            NetPropValue += Number(property.price);
+        });
+        localStorage.setItem('NetPropVal',JSON.stringify(NetPropValue));
+        updateBalanceTable(NetPropValue);
+
         renderProperties([...properties1].sort((a, b) => b.price - a.price));
         //return data;
     } catch (error) {
@@ -142,6 +150,8 @@ async function getNumPropUser(username) {
         });
         const result = await response.json();
         console.log("Properties fetched:", result);
+        localStorage.setItem('numOfPropertiesBought', JSON.stringify(result[0].CountProp));
+        console.log("hello",JSON.stringify(result[0].CountProp));
         if(result[0].CountProp===1){
             document.querySelector(".total-properties").textContent = `${result[0].CountProp} Property Owned`;
         }else{
@@ -176,3 +186,23 @@ document.getElementById('yesBtn').addEventListener('click', () => {
   closeDialog();
 });
 
+
+async function updateBalanceTable(NetPropValue) {
+    console.log("NetPropValue:",NetPropValue);
+    try {
+        const response = await fetch('http://localhost:8008/user/PropValUpdate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: credentials,
+                NetPropValue: NetPropValue
+            }),
+        });
+        const result = await response.json();
+        console.log("value updates successfully:", result);
+        return result;
+    } catch (error) {
+        console.error("❌ Error fetching properties List :", error);
+        return null;
+    }
+}

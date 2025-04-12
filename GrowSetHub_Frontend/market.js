@@ -104,6 +104,7 @@ async function fetchGetAllRealEstatesNotbelongingtoUser(username){
         });
         properties1 = await response.json();
         console.log("propertiesList:",properties1);
+        localStorage.setItem('numOfPropertiesNotBought', JSON.stringify(properties1.length));
         // Initial render with expensive first
         renderProperties([...properties1].sort((a, b) => b.price - a.price));
 

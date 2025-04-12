@@ -1,32 +1,44 @@
 const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log(credentials);
 
+const propNotBought = JSON.parse(localStorage.getItem('numOfPropertiesNotBought'));
+// console.log("Properties Not Bought: ",localStorage.getItem('numOfPropertiesNotBought'));
+const propBought = JSON.parse(localStorage.getItem('numOfPropertiesBought'));
+// console.log("Properties Bought: ",propBought);
+const totalProp = Number(propNotBought) + Number(propBought);
+// console.log("Total Properties: ",totalProp);
 
-document.addEventListener("DOMContentLoaded", () => {
-    const Investing = document.querySelector('.Investing');
-    const Business = document.querySelector('.Business');
-    const Earning = document.querySelector('.Earnings');
-    const Profile = document.querySelector('.Profile');
 
-    Investing.addEventListener('click', () => {
-        console.log("Investing Clicked");
-        window.location.href = 'stocksProfile.html';
+document.addEventListener("DOMContentLoaded", function () {
+    const navItems = [
+        { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "stocksProfile.html" },//images/Investing.png
+        { img: "building-2", text: "Business", badge: "8", link: "business.html" },//images/Business.png
+        { img: "circle-dollar-sign", text: "Earnings", badge: null, link: "home.html" },//images/Earnings.png
+        { img: "circle-user-round", text: "Profile", badge: "1", link: "profile.html", active: true }//images/Profile.png
+    ];
+
+    const bottomNav = document.getElementById("bottomNav");
+
+    navItems.forEach(item => {
+        const navDiv = document.createElement("div");
+        navDiv.classList.add("nav-item");
+        if (item.active) navDiv.classList.add("active");
+
+        navDiv.innerHTML = `
+            <i data-lucide="${item.img}" class="icon"></i>
+            <span class="text">${item.text}</span>
+            ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
+        `;//<img src="${item.img}">
+
+        bottomNav.appendChild(navDiv);
+
+        navDiv.addEventListener("click", () => {
+            window.location.href = item.link;
+        });
     });
-    Business.addEventListener('click', () => {
-        console.log("Business Clicked");
-        window.location.href = 'business.html';
-    });
-    Earning.addEventListener('click', () => {
-        console.log("Earning Clicked");
-        window.location.href = 'home.html';
-    });
-    Profile.addEventListener('click', () => {
-        console.log("Profile Clicked");
-        window.location.href = 'profile.html';
-    });
+
+    lucide.createIcons();
 });
-
-lucide.createIcons();
 
 
 
@@ -93,9 +105,10 @@ function UpdateBalance(){
 
 function UpdateStatistics(){
     const values = document.querySelectorAll(".stats-card .section .value");
+    console.log("check values",values[0]);
 
     values[0].textContent = `${Statistics.NoOfBusiness}`; 
-    //values[1].textContent = `${realEstateOwned} of ${realEstateTotal}`; 
+    values[1].textContent = `${Statistics.Real_estate} of ${totalProp}`; 
     //values[2].textContent = `${boughtOut} of ${boughtOutTotal}`; 
     
     // Update Earned Section

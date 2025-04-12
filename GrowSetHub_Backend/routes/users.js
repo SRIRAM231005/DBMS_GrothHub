@@ -1,7 +1,7 @@
 const express = require("express");
 const {userSignup,userUniquenessCheck,userLogin} = require('../controller/user_control');
 const {InsertUserbusiness, SelectUserbusiness} = require('../controller/business_control');
-const {Balance, Statistics, LeaderBoardData} = require('../controller/profile_control');
+const {Balance, Statistics, LeaderBoardData,PropValUpdate} = require('../controller/profile_control');
 const {InsertITBusiness} = require('../controller/ITbusiness_control');
 const {InsertBankBusiness} = require('../controller/Bank-Corporationbusiness_control');
 
@@ -17,5 +17,7 @@ userRouter.route('/Statistics').post(Statistics);
 userRouter.route('/InsertITBusiness').post(InsertITBusiness);
 userRouter.route('/InsertBankBusiness').post(InsertBankBusiness);
 userRouter.route('/LeaderBoardData').post(LeaderBoardData);
+userRouter.route('/PropValUpdate').post(PropValUpdate);
+
 
 module.exports = userRouter

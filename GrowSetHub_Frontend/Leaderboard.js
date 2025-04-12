@@ -56,8 +56,8 @@ function fetchAndDisplayLeaderboard(type) {
   const container = document.getElementById("leaderboard-content");
   container.innerHTML = `<p style="text-align:center;">Loading ${type} leaderboard...</p>`;
 
-  setTimeout(() => {
-    currentData = fetchLeaderBoardData(type); // Simulated fetch
+  setTimeout(async () => {
+    currentData = await fetchLeaderBoardData(type); // Simulated fetch
     displayLeaderboard(currentData);
   }, 500);
 }
@@ -70,6 +70,8 @@ function displayLeaderboard(data) {
     container.innerHTML = `<p style="text-align:center;">No users found.</p>`;
     return;
   }
+
+  console.log('Data:', data);
 
   data.forEach((entry, idx) => {
     const div = document.createElement("div");
@@ -128,6 +130,7 @@ async function fetchLeaderBoardData(type){
 
     let LeaderBoardData = await response.json();
     console.log('LeaderBoardData:',LeaderBoardData);
+    console.log('LeaderBoard:',LeaderBoardData[type]);
     return LeaderBoardData[type]; // Return fetched data
   } catch (error) {
       console.error("❌ Error fetching IT main business:", error);
