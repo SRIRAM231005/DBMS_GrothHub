@@ -121,9 +121,9 @@ function updateBankStatus(){
                     const interestBoost = (creditInterest / (interestGap + 1)) * 100;
                     const competitiveness = Math.max(0.5, 1 + (creditInterest - competitorCreditAvg) * 0.1);
                     const totalDeposits = (baseDeposit + marketingBoost * levelMultiplier + interestBoost) * competitiveness;        
-                    TotalDeposits = Math.round(totalDeposits);
+                    return Math.round(totalDeposits);
                 }
-                calculateTotalDeposits(user.CreditInt, user.DebitInt, results3[0].Level, marketingInvestment, results2[0].competitorCreditAvg);
+                TotalDeposits = calculateTotalDeposits(user.CreditInt, user.DebitInt, results3[0].Level, marketingInvestment, results2[0].competitorCreditAvg);
 
                 function calculateTotalCredits(debitInterest, creditInterest, level, marketingInvestment, totalDeposits, competitorCreditAvg) {
                     const baseCreditDemand = 8000;
@@ -132,13 +132,21 @@ function updateBankStatus(){
                     const interestAppeal = Math.max(1, (competitorCreditAvg / (creditInterest + 0.5)));
                     const riskCap = totalDeposits * 0.85; // can give loans upto 85% of deposits              
                     const rawLoanDemand = (baseCreditDemand + marketingBoost * levelMultiplier) * interestAppeal;                
-                    const totalCredits = Math.min(riskCap, rawLoanDemand); // final amount bounded by deposit pool               
-                    TotalCredits = Math.round(totalCredits);
+                    const totalCredits = Math.min(riskCap, rawLoanDemand); // final amount bounded by deposit pool
+                    console.log("creditInterest",creditInterest);
+                    console.log("competitorCreditAvg",competitorCreditAvg);
+                    console.log("interestAppeal",interestAppeal);
+                    console.log("rawLoanDemand",rawLoanDemand);
+                    console.log("totalCredits",totalCredits);               
+                    return Math.round(totalCredits);
                 }
-                calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, user.TotalAmount + TotalDeposits, results2[0].competitorCreditAvg);
-
+                TotalCredits = calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, user.TotalAmount + TotalDeposits.toFixed(2), results2[0].competitorCreditAvg);
+                console.log("totDep",TotalDeposits);
+                console.log("totCred",TotalCredits);
+                console.log("lvl",results3[0].Level);
+                console.log("amount",user.TotalAmount);
                 const sql4 = `UPDATE BankBusiness SET TotalAmount = TotalAmount + ? WHERE Username = ? and BusinessName = ?`;
-                await connection.promise().query(sql4,[TotalDeposits - TotalCredits , user.Username, user.BusinessName]);                
+                await connection.promise().query(sql4,[TotalDeposits.toFixed(2) - TotalCredits.toFixed(2) , user.Username, user.BusinessName]);                
             })
 
             connection.query(`SELECT * FROM BankBusiness`, (err, updatedUsers) => {
