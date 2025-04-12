@@ -150,4 +150,19 @@ async function PropValUpdate(req , res){
     }
 }
 
-module.exports = { Balance, Statistics , LeaderBoardData, PropValUpdate };
+async function StockBalValUpdate(req , res){
+    try {
+        const { username,StockBalVal } = req.body;
+        const sql = "update Balances set Stocks = ? where Username = ?";
+        
+        const [results] = await connection.promise().query(sql, [StockBalVal,username]);
+        console.log(results);
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data1:", err);
+        return res.status(500).json({ error: "Database error1" });
+    }
+}
+
+module.exports = { Balance, Statistics , LeaderBoardData, PropValUpdate,StockBalValUpdate };

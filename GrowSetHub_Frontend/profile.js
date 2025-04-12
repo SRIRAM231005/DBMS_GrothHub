@@ -7,6 +7,8 @@ const propBought = JSON.parse(localStorage.getItem('numOfPropertiesBought'));
 // console.log("Properties Bought: ",propBought);
 const totalProp = Number(propNotBought) + Number(propBought);
 // console.log("Total Properties: ",totalProp);
+const stocks = JSON.parse(localStorage.getItem('TotalProfit_Loss'));
+// console.log("Total Stocks: ",stocks);
 
 
 document.addEventListener("DOMContentLoaded", function () {

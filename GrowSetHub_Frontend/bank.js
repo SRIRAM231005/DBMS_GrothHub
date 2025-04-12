@@ -4,6 +4,8 @@ console.log(credentials);
 BusinessDetails = JSON.parse(localStorage.getItem('UserBusinessInfo'));
 console.log("check12",BusinessDetails);
 
+document.querySelector('.bank-name').textContent = '🏛 ' + BusinessDetails.BusinessName;
+
 const socket = io("http://localhost:8008");
 socket.on('updateBanks', (bank) => {
     console.log('Received updated bank details:', bank);

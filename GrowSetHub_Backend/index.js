@@ -129,18 +129,20 @@ function updateBankStatus(){
                     const baseCreditDemand = 8000;
                     const marketingBoost = Math.log10(marketingInvestment + 10) * 80;
                     const levelMultiplier = 1 + Math.pow(level, 1.3) * 0.08;
-                    const interestAppeal = Math.max(1, (competitorCreditAvg / (creditInterest + 0.5)));
-                    const riskCap = totalDeposits * 0.85; // can give loans upto 85% of deposits              
+                    const interestAppeal = Math.max(1, (Number(competitorCreditAvg) / Number(creditInterest) + 0.5));
+                    const riskCap = Number(totalDeposits) * 0.85; // can give loans upto 85% of deposits              
                     const rawLoanDemand = (baseCreditDemand + marketingBoost * levelMultiplier) * interestAppeal;                
                     const totalCredits = Math.min(riskCap, rawLoanDemand); // final amount bounded by deposit pool
                     console.log("creditInterest",creditInterest);
                     console.log("competitorCreditAvg",competitorCreditAvg);
                     console.log("interestAppeal",interestAppeal);
                     console.log("rawLoanDemand",rawLoanDemand);
+                    console.log("riskCap",riskCap);
                     console.log("totalCredits",totalCredits);               
+                    console.log("totalDeposits",totalDeposits);               
                     return Math.round(totalCredits);
                 }
-                TotalCredits = calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, user.TotalAmount + TotalDeposits.toFixed(2), results2[0].competitorCreditAvg);
+                TotalCredits = calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, Number(user.TotalAmount) + Number(TotalDeposits), results2[0].competitorCreditAvg);
                 console.log("totDep",TotalDeposits);
                 console.log("totCred",TotalCredits);
                 console.log("lvl",results3[0].Level);

@@ -64,6 +64,46 @@ async function fetchCompaniesWithStocks(){
     }
 }
 
+let TotalBoughtPrice;
+let TotalProfit_Loss = 0;
+async function fetchTotalBoughtPrice(){
+    try {
+        const response = await fetch('http://localhost:8008/investment/TotalBoughtPrice', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                 username: credentials
+            }),
+        });
+        TotalBoughtPrice = await response.json();
+        console.log("totot",TotalBoughtPrice);
+        document.getElementById("total-invested").textContent = "$ " + TotalBoughtPrice[0].TotalBought;
+        console.log("data",JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
+        updateStocksBalanceinBalTable(JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
+    } catch (error) {
+        console.error("❌ Error fetching data:", error);
+        return null;
+    }
+}
+fetchTotalBoughtPrice();
+// localStorage.setItem("TotalProfit_Loss", JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
+async function updateStocksBalanceinBalTable(StockBalVal){
+    try {
+        const response = await fetch('http://localhost:8008/user/StockBalValUpdate',{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                 username: credentials,
+                 StockBalVal:StockBalVal
+            }),
+        });
+        const resultBal = await response.json();
+        console.log(resultBal);
+    } catch (error) {
+        console.error("❌ Error fetching data:", error);
+        return null;
+    }
+}
 
 async function fetchUserInvestments(username){
     try {
@@ -284,6 +324,8 @@ function openDialog() {
 function closeDialog() {
     document.getElementById("company-dialog").style.display = "none";
 }
+
+
 
 //window.onload = loadInvestments;
   

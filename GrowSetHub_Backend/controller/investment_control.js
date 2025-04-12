@@ -242,10 +242,25 @@ async function getTotalIncomePerHourUser(req , res){
     }
 }
 
+async function TotalBoughtPrice(req , res){
+    try {
+        const { username } = req.body;
+        const sql = "select sum(Pro) as TotalBought from (select buyPrice * sharesOwned as Pro from userinvestments where Username = ?) as t";
+        const [results] = await connection.promise().query(sql, [username]);
+        console.log(req.body);
+        console.log("Total Bought Price",results);
+        
+        return res.status(200).json(results);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
 
 
 
-module.exports = { Stocks, CompaniesWithStocks, UserInvestments, BoughtShares, SoldShares, getAllRealEstatesNotBought, getAllRealEstatesBought, buyProperty, sellProperty,getTotalIncomePerHourUser,getCountofPropBought };
+
+module.exports = { Stocks, CompaniesWithStocks, UserInvestments, BoughtShares, SoldShares, getAllRealEstatesNotBought, getAllRealEstatesBought, buyProperty, sellProperty,getTotalIncomePerHourUser,getCountofPropBought,TotalBoughtPrice };
 
 
 //https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=summaryDetail,defaultKeyStatistics`;
