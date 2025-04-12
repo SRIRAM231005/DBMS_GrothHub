@@ -94,7 +94,7 @@ function updateProjectStatus() {
 }
 
 function updateBankStatus(){
-    const fetchQuery = `SELECT * FROM BankBusiness`;
+    const fetchQuery = `SELECT * FROM BankBusiness WHERE IntSetTime <= NOW()`;
     
     connection.query(fetchQuery, async (err, users) => {
         if (err) {
@@ -135,7 +135,7 @@ function updateBankStatus(){
                     const totalCredits = Math.min(riskCap, rawLoanDemand); // final amount bounded by deposit pool               
                     TotalCredits = Math.round(totalCredits);
                 }
-                calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, user.TotalAmount, results2[0].competitorCreditAvg);
+                calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, user.TotalAmount + TotalDeposits, results2[0].competitorCreditAvg);
 
                 const sql4 = `UPDATE BankBusiness SET TotalAmount = TotalAmount + ? WHERE Username = ? and BusinessName = ?`;
                 await connection.promise().query(sql4,[TotalDeposits - TotalCredits , user.Username, user.BusinessName]);                
