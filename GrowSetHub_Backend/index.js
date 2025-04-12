@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
         console.log('Checking and updating project status...');
         updateProjectStatus();
     });
-    cron.schedule('0 * * * *', () => {
+    cron.schedule('* * * * *', () => {
         console.log('⏰ Running hourly job to update bank status...');
         updateBankStatus();
     });    
@@ -100,7 +100,7 @@ function updateBankStatus(){
         if (err) {
             console.error('Error updating bank status:', err);
         } else {
-            const query = `UPDATE BankBusiness SET IntSetTime = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE IntSetTime <= NOW()`;
+            const query = `UPDATE BankBusiness SET IntSetTime = DATE_ADD(NOW(), INTERVAL 1 MINUTE) WHERE IntSetTime <= NOW()`;
             await connection.promise().query(query);
 
             users.forEach(async (user) =>{
@@ -137,8 +137,8 @@ function updateBankStatus(){
                 }
                 calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, user.TotalAmount, results2[0].competitorCreditAvg);
 
-                const sql4 = `UPDATE BankBusiness SET TotalAmount = TotalAmount + ? WHERE Username = ? and BankName = ?`;
-                await connection.promise().query(sql4,[TotalDeposits - TotalCredits , user.Username, user.BankName]);                
+                const sql4 = `UPDATE BankBusiness SET TotalAmount = TotalAmount + ? WHERE Username = ? and BusinessName = ?`;
+                await connection.promise().query(sql4,[TotalDeposits - TotalCredits , user.Username, user.BusinessName]);                
             })
 
             connection.query(`SELECT * FROM BankBusiness`, (err, updatedUsers) => {

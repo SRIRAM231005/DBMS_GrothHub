@@ -52,6 +52,7 @@ function closeDialog() {
 async function SettingInterestsRates(){
     DebitInterestRate = document.getElementById('depositRate').value;
     CreditInterestRate = document.getElementById('loanRate').value;
+    console.log('DebitInterestRate:',DebitInterestRate);
 
     try {
         const response = await fetch('http://localhost:8008/Bank-Corporationbusiness/SettingInterestsRates', {

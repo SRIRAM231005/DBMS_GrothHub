@@ -47,7 +47,7 @@ async function SettingInterestsRates(req , res){
         const { username, businessname, creditInterest, debitInterest } = req.body;
         let marketingInvestment = 50;
 
-        const sql1 = "UPDATE BankBusiness SET CreditInt = ? and DebitInt = ? and IntSetTime = DATE_ADD(NOW(), INTERVAL 1 HOUR) where Username= ? and BankName = ?";
+        const sql1 = "UPDATE BankBusiness SET CreditInt = ?, DebitInt = ?, IntSetTime = DATE_ADD(NOW(), INTERVAL 1 MINUTE) where Username= ? and BusinessName = ?";
         const [results1] = await connection.promise().query(sql1, [creditInterest,debitInterest,username,businessname]);
         
         // await connection.promise().query(sql1, [businessname,username])

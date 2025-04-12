@@ -1,5 +1,5 @@
 const express = require("express");
-const {bankMainBusiness} = require('../controller/Bank-Corporationbusiness_control');
+const {bankMainBusiness,SettingInterestsRates} = require('../controller/Bank-Corporationbusiness_control');
 
 const BankCorporationRouter = express.Router();
 
