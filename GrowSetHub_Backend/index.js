@@ -102,10 +102,10 @@ function updateBankStatus(){
         } else {
             const query = `UPDATE BankBusiness SET IntSetTime = DATE_ADD(NOW(), INTERVAL 1 MINUTE) WHERE IntSetTime <= NOW()`;
             await connection.promise().query(query);
+            let TotalDeposits;
+            let TotalCredits;
 
             users.forEach(async (user) =>{
-                let TotalDeposits;
-                let TotalCredits;
                 let marketingInvestment = 50;
                 const sql2 = "SELECT AVG(CreditInt) AS competitorCreditAvg from BankBusiness";
                 const [results2] = await connection.promise().query(sql2);
@@ -147,8 +147,8 @@ function updateBankStatus(){
                 console.log("totCred",TotalCredits);
                 console.log("lvl",results3[0].Level);
                 console.log("amount",user.TotalAmount);
-                const sql4 = `UPDATE BankBusiness SET TotalAmount = TotalAmount + ? WHERE Username = ? and BusinessName = ?`;
-                await connection.promise().query(sql4,[TotalDeposits.toFixed(2) - TotalCredits.toFixed(2) , user.Username, user.BusinessName]);                
+                const sql4 = `UPDATE BankBusiness SET TotalAmount = TotalAmount + ?, TotalCredits = ?, TotalDeposits = ? WHERE Username = ? and BusinessName = ?`;
+                await connection.promise().query(sql4,[TotalDeposits.toFixed(2) - TotalCredits.toFixed(2) , TotalCredits.toFixed(2), TotalDeposits.toFixed(2), user.Username, user.BusinessName]);                
             })
 
             connection.query(`SELECT * FROM BankBusiness`, (err, updatedUsers) => {

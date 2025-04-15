@@ -77,15 +77,15 @@ async function fetchTotalBoughtPrice(){
         });
         TotalBoughtPrice = await response.json();
         console.log("totot",TotalBoughtPrice);
-        document.getElementById("total-invested").textContent = "$ " + TotalBoughtPrice[0].TotalBought;
+        document.getElementById("total-invested").textContent = "$ " + formatNumber(TotalBoughtPrice[0].TotalBought);
         console.log("data",JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
+        console.log("TotalProfit_Lossooolloaloa",TotalProfit_Loss);
         updateStocksBalanceinBalTable(JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
     } catch (error) {
         console.error("❌ Error fetching data:", error);
         return null;
     }
 }
-fetchTotalBoughtPrice();
 // localStorage.setItem("TotalProfit_Loss", JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
 async function updateStocksBalanceinBalTable(StockBalVal){
     try {
@@ -127,6 +127,14 @@ async function fetchUserInvestments(username){
 fetchCompaniesWithStocks();
 fetchUserInvestments(credentials);
 
+setTimeout(() => {
+    console.log("TotalProfit_Loss112", TotalProfit_Loss);
+    document.getElementById("total-profit").textContent = "$ " + formatNumber(TotalProfit_Loss);
+    fetchTotalBoughtPrice();
+}, 1000);  // Delay in milliseconds
+
+
+
 let UserInvestedTotalData = [];
 let UserNotInvestedTotalData = [];
 let CurrentPrice;
@@ -163,6 +171,8 @@ function DispUserInvestedTotData(){
                 profit: `$${Profits}`,
                 profitClass: profitClass
             });
+            TotalProfit_Loss += Profits;
+            console.log("TotalProfit_Losslakalaka",TotalProfit_Loss);
     
             console.log("detailed info user",UserInvestedTotalData);
             loadInvestments();
@@ -171,7 +181,6 @@ function DispUserInvestedTotData(){
             console.error("❌ Error fetching stock data:", error);
         });
     });
-
 }
 
 function DisplayCompaniesNotInvested(){
@@ -328,4 +337,16 @@ function closeDialog() {
 
 
 //window.onload = loadInvestments;
+
+function formatNumber(value) {
+    let num = parseFloat(value); 
+    if (isNaN(num)) return value; 
+    if (Math.abs(num) >= 1e9) {
+        return (num / 1e9).toFixed(2) + "B"; 
+    } else if (Math.abs(num) >= 1e6) {
+        return (num / 1e6).toFixed(2) + "M"; 
+    } else {
+        return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+}
   

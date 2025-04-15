@@ -47,7 +47,19 @@ async function fetchBalance(username){
 }
 
 function UpdateBalance(){
-    document.querySelector(".balance").textContent = `$${Balance[0].Balance}`;
+    document.querySelector(".balance").textContent = `$${formatNumber(Balance[0].Balance)}`;
 }
 
 fetchBalance(credentials);
+
+function formatNumber(value) {
+    let num = parseFloat(value); 
+    if (isNaN(num)) return value; 
+    if (Math.abs(num) >= 1e9) {
+        return (num / 1e9).toFixed(2) + "B"; 
+    } else if (Math.abs(num) >= 1e6) {
+        return (num / 1e6).toFixed(2) + "M"; 
+    } else {
+        return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+}

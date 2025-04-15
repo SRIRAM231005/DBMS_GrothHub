@@ -1,5 +1,10 @@
 const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log(credentials);
+const BalanceMoney = JSON.parse(localStorage.getItem('BalanceMoney'));
+console.log(BalanceMoney);
+
+document.querySelector(".balance").textContent = "Balance: $" + BalanceMoney;
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
@@ -37,7 +42,7 @@ const filterButtons = document.querySelectorAll('.filter-btn');
 
 fetchGetAllRealEstatesNotbelongingtoUser(credentials);
 
-// Store properties data    https://demo-source.imgix.net/house.jpg  
+// Store properties data    
 
 // Function to create property card HTML
 function createPropertyCard(property) {
@@ -45,7 +50,7 @@ function createPropertyCard(property) {
         <div class="property-card">
             <img src="${property.image}" alt="House">
             <div class="property-info">
-                <h2 class="price">$ ${property.price.toLocaleString()}</h2>
+                <h2 class="price">$ ${formatNumber(property.price)}</h2>
                 <div class="info" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="location">
                         <span class="location-icon">📍</span>
@@ -53,7 +58,7 @@ function createPropertyCard(property) {
                     </div>
                     <div><img src="images/info.png" alt="Property Info" style="width: 24px; height: 24px; object-fit: contain;"></div>
                 </div>
-                <button class="buy-btn buybtn${property.idx}" onclick="showBuyDialog(credentials,${property.idx})">Buy</button>
+                <button class="buy-btn buybtn${property.idx}" onclick="showBuyDialog(credentials,${property.idx},${property.price}">Buy</button>
             </div>
         </div>
     `;
@@ -137,10 +142,12 @@ async function buyProperty(username,idx) {
 
 let tempCredentials = null;
 let tempIdx = null;
+let tempPrice = null;
 
-function showBuyDialog(credentials, idx) {
+function showBuyDialog(credentials, idx, price) {
   tempCredentials = credentials;
   tempIdx = idx;
+  tempPrice = price;
   document.getElementById('confirmDialog').showModal();
 }
 
@@ -149,9 +156,27 @@ function closeDialog() {
 }
 
 document.getElementById('yesBtn').addEventListener('click', () => {
-  if (tempCredentials !== null && tempIdx !== null) {
+  if (tempCredentials !== null && tempIdx !== null && tempPrice !== null) {
+    if (BalanceMoney < price) {
+      alert("You don't have enough money to buy this property!!");
+      closeDialog();
+      return;
+    }
     buyProperty(tempCredentials, tempIdx);
   }
   closeDialog();
 });
+
+
+function formatNumber(value) {
+    let num = parseFloat(value); 
+    if (isNaN(num)) return value; 
+    if (Math.abs(num) >= 1e9) {
+        return (num / 1e9).toFixed(2) + "B"; 
+    } else if (Math.abs(num) >= 1e6) {
+        return (num / 1e6).toFixed(2) + "M"; 
+    } else {
+        return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+}
     

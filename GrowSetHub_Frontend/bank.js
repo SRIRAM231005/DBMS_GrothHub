@@ -8,16 +8,19 @@ let BankDetails;
 
 BankDetails = JSON.parse(localStorage.getItem('BankDetails'));
 
-//document.querySelector('.bank-name h1').textContent = BusinessDetails.BusinessName;
+document.querySelector('.bank-name h1').textContent = BusinessDetails.BusinessName;
 
 const socket = io("http://localhost:8008");
 socket.on('updateBanks', (bank) => {
+    let data;
     console.log('Received updated bank details:', bank);
     bank.forEach((ele) =>{
         if(ele.BusinessName == BusinessDetails.BusinessName && ele.Usernme == credentials){
-            BankDetails = ele;
+            data = ele;
+            UpdateAllDetails(ele);
         }
     })
+    //console.log("BankDetails:",data);
     //UpdateAllDetails(BankDetails); 
 });
 
@@ -130,7 +133,7 @@ function setupSettingsDialog() {
       creditRateElement.textContent = creditRateSlider.value + '%';
       
       // Simulate some financial calculations and update the dashboard
-      //SettingInterestsRates();
+      SettingInterestsRates(depositRateSlider.value, creditRateSlider.value);
       
       closeDialog();
     });
@@ -145,10 +148,11 @@ function updateRateDisplay(slider, valueDisplay) {
   }
 
 
-async function SettingInterestsRates(){
-    DebitInterestRate = document.getElementById('depositRate').value;
-    CreditInterestRate = document.getElementById('loanRate').value;
+async function SettingInterestsRates(DebitInterestRate,CreditInterestRate){
+    // DebitInterestRate = document.getElementById('deposit-rate').value;
+    // CreditInterestRate = document.getElementById('credit-rate').value;
     console.log('DebitInterestRate:',DebitInterestRate);
+    console.log('CreditInterestRate:',CreditInterestRate);
 
     try {
         const response = await fetch('http://localhost:8008/Bank-Corporationbusiness/SettingInterestsRates', {
@@ -183,7 +187,7 @@ async function fetchDisplayBankDetails(){
         });
         let DisplayBankDetails = await response.json();
         console.log('DisplayBankDetails:',DisplayBankDetails);
-        UpdateAllDetails(DisplayBankDetails);
+        UpdateAllDetails(DisplayBankDetails[0]);
     } catch (error) {
         console.error("❌ Error Setting Interests Rates:", error);
         return null;
@@ -193,9 +197,10 @@ async function fetchDisplayBankDetails(){
 fetchDisplayBankDetails();
 
 function UpdateAllDetails(BankDetails){
-    document.querySelector(".main-balance h2").textContent = `${formatNumberWithCommas(Number(BankDetails.TotalDeposits) + Number(BankDetails.TotalCredits))}`;
-    document.querySelector(".deposit-rate").textContent = `${BankDetails.DebitInt}%`;
-    document.querySelector(".credit-rate").textContent = `${BankDetails.CreditInt}%`;
+    console.log("hii");
+    document.querySelector(".main-balance h2").textContent = `${formatNumberWithCommas(Number(BankDetails.TotalDeposits) - Number(BankDetails.TotalCredits))}`;
+    document.getElementById("deposit-rate").textContent = `${BankDetails.DebitInt}%`;
+    document.getElementById("credit-rate").textContent = `${BankDetails.CreditInt}%`;
     document.querySelector(".DepositsMoney").textContent = `${formatNumberWithCommas(BankDetails.TotalDeposits)}`;
     document.querySelector(".CreditsMoney").textContent = `${formatNumberWithCommas(BankDetails.TotalCredits)}`;
     document.querySelector(".vault-amount").textContent = `${formatNumberWithCommas(BankDetails.TotalAmount)}`;

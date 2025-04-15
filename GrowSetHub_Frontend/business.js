@@ -1,18 +1,3 @@
-//top bar
-const settingsToggle = document.getElementById('settingsToggle');
-const dropdownMenu = document.getElementById('dropdownMenu');
-
-settingsToggle.addEventListener('click', () => {
-    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-});
-
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.settings-wrapper')) {
-    dropdownMenu.style.display = 'none';
-    }
-});
-//top bar
-
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
         { img: "chart-no-axes-combined", text: "Investing", badge: "1", link: "stocksProfile.html" },//images/Investing.png
@@ -59,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { name: "Football-Club", price: "19899", image: "images/footballimage.png" },
         //{ name: "Factory", price: "$24,999" }
     ];
+
 
     // Function to Create and Show Modal
     function openModal() {
@@ -313,6 +299,12 @@ async function ShowBusiness(username){
     console.log("sriram");
 }
 
+const BusinessIcons = {
+    "IT": "images/ITimage.png",
+    "Bank-Corporation": "images/bankimage.png",
+    "Football-Club": "images/footballimage.png",
+}
+
 let a=0;
 function DisplayUserBusiness(index,businessCat,idx,dataArray){
     console.log("Type of Business:",businessCat);
@@ -334,7 +326,7 @@ function DisplayUserBusiness(index,businessCat,idx,dataArray){
         businessCard.classList.add(`business-card${idx}`);
         businessCard.classList.add('business-card');
         businessCard.innerHTML = `
-            <div class="icon" style="margin-right: 20px;"><img src="${businesses2[0].icon}" style="height:60px; width:60px;"></div>
+            <div class="icon" style="margin-right: 20px;"><img src="${BusinessIcons[businessCat]}" style="height:60px; width:60px;"></div>
             <div class="details">
                 <div style="font-size:24px;">${dataArray[Index].BusinessName}</div>
                 <div style="margin-top:5px;margin-bottom:20px;">${businessCat}</div>

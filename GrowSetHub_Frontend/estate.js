@@ -57,12 +57,24 @@ async function fetchGetTotalIncome(username) {
         if(`${data[0].TotInc}`=="null"){
             document.querySelector(".income-display h2").textContent = `$ 0.00`;
         }else{
-            document.querySelector(".income-display h2").textContent = `$ ${data[0].TotInc}`;
+            document.querySelector(".income-display h2").textContent = `$ ${formatNumber(data[0].TotInc)}`;
         }
         console.log(document.querySelector(".income-display h2"));
         return data;
     } catch (error) {
         console.error("❌ Error fetching total income:", error);
         return null;
+    }
+}
+
+function formatNumber(value) {
+    let num = parseFloat(value); 
+    if (isNaN(num)) return value; 
+    if (Math.abs(num) >= 1e9) {
+        return (num / 1e9).toFixed(2) + "B"; 
+    } else if (Math.abs(num) >= 1e6) {
+        return (num / 1e6).toFixed(2) + "M"; 
+    } else {
+        return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 }

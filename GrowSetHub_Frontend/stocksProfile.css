@@ -162,9 +162,17 @@ td img {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); */
     z-index: 1000;
-    width: 350px;
+    width: 450px;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.dialog::backdrop {
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .dialog-content {
@@ -287,3 +295,14 @@ td img {
     /*margin-bottom: 5px;*/
 }
 
+.Companystock img{
+    width: 45px;
+    height: 48px;
+    margin-right: 10px;
+}
+
+.company-item img{
+    width: 50px;
+    height: 25px;
+    margin-right: 10px;
+}

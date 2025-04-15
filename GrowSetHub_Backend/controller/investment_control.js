@@ -179,8 +179,10 @@ async function buyProperty(req , res){
     try {
         const {username,idx} = req.body;
         const sql = "insert into userrealestate (username,idx) values (?,?)";
+        const sql2 = "update balances set Balance = Balance-(select price from realestatemain where idx = ?) where Username = ?";
         
         const [results] = await connection.promise().query((sql),[username,idx]);
+        await connection.promise().query((sql2),[idx,username]);
 
         console.log(results);
 
@@ -197,8 +199,10 @@ async function sellProperty(req , res){
     try {
         const {username,idx} = req.body;
         const sql = "delete from userrealestate where (username,idx) = (?,?)";
+        const sql2 = "update balances set Balance = Balance+(select price from realestatemain where idx = ?) where Username = ?";
         
         const [results] = await connection.promise().query((sql),[username,idx]);
+        await connection.promise().query((sql2),[idx,username]);
 
         console.log(results);
         

@@ -47,7 +47,7 @@ function createPropertyCard(property) {
         <div class="property-card">
             <img src="${property.image}" alt="House">
             <div class="property-info">
-                <h2 class="price">$ ${property.price.toLocaleString()}</h2>
+                <h2 class="price">$ ${formatNumber(property.price)}</h2>
                 <div class="info" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="location">
                         <span class="location-icon">📍</span>
@@ -151,7 +151,6 @@ async function getNumPropUser(username) {
         const result = await response.json();
         console.log("Properties fetched:", result);
         localStorage.setItem('numOfPropertiesBought', JSON.stringify(result[0].CountProp));
-        console.log("hello",JSON.stringify(result[0].CountProp));
         if(result[0].CountProp===1){
             document.querySelector(".total-properties").textContent = `${result[0].CountProp} Property Owned`;
         }else{
@@ -204,5 +203,17 @@ async function updateBalanceTable(NetPropValue) {
     } catch (error) {
         console.error("❌ Error fetching properties List :", error);
         return null;
+    }
+}
+
+function formatNumber(value) {
+    let num = parseFloat(value); 
+    if (isNaN(num)) return value; 
+    if (Math.abs(num) >= 1e9) {
+        return (num / 1e9).toFixed(2) + "B"; 
+    } else if (Math.abs(num) >= 1e6) {
+        return (num / 1e6).toFixed(2) + "M"; 
+    } else {
+        return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 }
