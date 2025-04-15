@@ -60,4 +60,21 @@ async function SettingInterestsRates(req , res){
     }
 }
 
-module.exports = { bankMainBusiness, InsertBankBusiness, SettingInterestsRates};
+async function DisplayBankDetails(req , res){
+    try {
+        const { username, businessname } = req.body;
+
+        const sql1 = "SELECT * FROM BankBusiness where Username = ? and BusinessName = ?";
+        const [results1] = await connection.promise().query(sql1, [username,businessname]);
+        
+        // await connection.promise().query(sql1, [businessname,username])
+        console.log(req.body);
+        
+        return res.status(200).json(results1);
+
+    } catch (err) {
+        console.error("❌ Error getting data2:", err);
+    }
+}
+
+module.exports = { bankMainBusiness, InsertBankBusiness, SettingInterestsRates, DisplayBankDetails};

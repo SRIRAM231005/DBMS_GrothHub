@@ -4,11 +4,21 @@ console.log(credentials);
 BusinessDetails = JSON.parse(localStorage.getItem('UserBusinessInfo'));
 console.log("check12",BusinessDetails);
 
-document.querySelector('.bank-name').textContent = '🏛 ' + BusinessDetails.BusinessName;
+let BankDetails;
+
+BankDetails = JSON.parse(localStorage.getItem('BankDetails'));
+
+//document.querySelector('.bank-name h1').textContent = BusinessDetails.BusinessName;
 
 const socket = io("http://localhost:8008");
 socket.on('updateBanks', (bank) => {
     console.log('Received updated bank details:', bank);
+    bank.forEach((ele) =>{
+        if(ele.BusinessName == BusinessDetails.BusinessName && ele.Usernme == credentials){
+            BankDetails = ele;
+        }
+    })
+    //UpdateAllDetails(BankDetails); 
 });
 
 
@@ -43,12 +53,96 @@ document.addEventListener("DOMContentLoaded", function () {
     lucide.createIcons();
 });
 
-function openDialog() {
-    document.getElementById('interestDialog').classList.remove('hidden');
+/*function openDialog() {
+    document.getElementById('settings-dialog').classList.remove('hidden');
 }
 function closeDialog() {
-    document.getElementById('interestDialog').classList.add('hidden');
-}
+    document.getElementById('settings-dialog').classList.add('hidden');
+}*/
+
+
+
+// Set up event listeners for the settings dialog
+function setupSettingsDialog() {
+    const settingsButton = document.querySelector('.settings-button');
+    const dialog = document.getElementById('settings-dialog');
+    const closeButton = document.querySelector('.close-dialog');
+    const cancelButton = document.querySelector('.cancel-button');
+    const saveButton = document.querySelector('.save-button');
+    
+    // Slider elements
+    const depositRateSlider = document.getElementById('deposit-rate-slider');
+    const depositRateValue = document.getElementById('deposit-rate-value');
+    const creditRateSlider = document.getElementById('credit-rate-slider');
+    const creditRateValue = document.getElementById('credit-rate-value');
+    
+    // Keep track of original values
+    let originalDepositRate = depositRateSlider.value;
+    let originalCreditRate = creditRateSlider.value;
+    
+    // Open the dialog
+    settingsButton.addEventListener('click', () => {
+      // Store original values when opening
+      originalDepositRate = depositRateSlider.value;
+      originalCreditRate = creditRateSlider.value;
+      
+      dialog.classList.add('active');
+    });
+    
+    // Close the dialog
+    function closeDialog() {
+      dialog.classList.remove('active');
+    }
+    
+    closeButton.addEventListener('click', closeDialog);
+    cancelButton.addEventListener('click', () => {
+      // Reset to original values when canceling
+      depositRateSlider.value = originalDepositRate;
+      creditRateSlider.value = originalCreditRate;
+      updateRateDisplay(depositRateSlider, depositRateValue);
+      updateRateDisplay(creditRateSlider, creditRateValue);
+      closeDialog();
+    });
+    
+    // Also close when clicking outside the dialog
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) {
+        closeDialog();
+      }
+    });
+    
+    // Update values as sliders change
+    depositRateSlider.addEventListener('input', () => {
+      updateRateDisplay(depositRateSlider, depositRateValue);
+    });
+    
+    creditRateSlider.addEventListener('input', () => {
+      updateRateDisplay(creditRateSlider, creditRateValue);
+    });
+    
+    // Save changes
+    saveButton.addEventListener('click', () => {
+      // Update the displayed rates on the dashboard
+      const depositRateElement = document.getElementById('deposit-rate');
+      const creditRateElement = document.getElementById('credit-rate');
+      
+      depositRateElement.textContent = depositRateSlider.value + '%';
+      creditRateElement.textContent = creditRateSlider.value + '%';
+      
+      // Simulate some financial calculations and update the dashboard
+      //SettingInterestsRates();
+      
+      closeDialog();
+    });
+  }
+
+// Set up event listeners for the settings dialog
+setupSettingsDialog();
+
+// Helper function to update the rate display as slider moves
+function updateRateDisplay(slider, valueDisplay) {
+    valueDisplay.textContent = slider.value + '%';
+  }
 
 
 async function SettingInterestsRates(){
@@ -75,7 +169,44 @@ async function SettingInterestsRates(){
         return null;
     }
     closeDialog();
-
-    document.querySelector('.Depositsdiv').textContent = `$${DebitInterestRate}`;
-    document.querySelector('.Creditsdiv').textContent = `$${CreditInterestRate}`;
 }
+
+async function fetchDisplayBankDetails(){
+    try {
+        const response = await fetch('http://localhost:8008/Bank-Corporationbusiness/DisplayBankDetails', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: credentials,
+                businessname: BusinessDetails.BusinessName,
+            })
+        });
+        let DisplayBankDetails = await response.json();
+        console.log('DisplayBankDetails:',DisplayBankDetails);
+        UpdateAllDetails(DisplayBankDetails);
+    } catch (error) {
+        console.error("❌ Error Setting Interests Rates:", error);
+        return null;
+    }
+}
+
+fetchDisplayBankDetails();
+
+function UpdateAllDetails(BankDetails){
+    document.querySelector(".main-balance h2").textContent = `${formatNumberWithCommas(Number(BankDetails.TotalDeposits) + Number(BankDetails.TotalCredits))}`;
+    document.querySelector(".deposit-rate").textContent = `${BankDetails.DebitInt}%`;
+    document.querySelector(".credit-rate").textContent = `${BankDetails.CreditInt}%`;
+    document.querySelector(".DepositsMoney").textContent = `${formatNumberWithCommas(BankDetails.TotalDeposits)}`;
+    document.querySelector(".CreditsMoney").textContent = `${formatNumberWithCommas(BankDetails.TotalCredits)}`;
+    document.querySelector(".vault-amount").textContent = `${formatNumberWithCommas(BankDetails.TotalAmount)}`;
+    document.querySelector(".turnover-amount").textContent = `${formatNumberWithCommas(BankDetails.TotalAmount)}`;
+    localStorage.setItem("BankDetails", JSON.stringify(BankDetails));
+}
+
+
+
+// Helper function to format numbers with commas
+function formatNumberWithCommas(number) {
+    number = Number(number);
+    return '$' + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  }

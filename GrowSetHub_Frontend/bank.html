@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="navigationBar1.css">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-10">
     <div class="bottom-nav" id="bottomNav"></div>
@@ -23,80 +22,185 @@
         <div class="circuit-pattern"></div>
     </div>
 
-    <div class="max-w-5xl mx-auto space-y-6">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-            <h2 class="bank-name text-2xl font-semibold">🏛 Hermes Stollberg Bank</h2>
-            <p class="text-2xl font-bold mt-2">$71,252,528.18</p>
-            <p class="text-gray-500 text-sm">Income per hour</p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-lg relative">
-            <div class="flex justify-between items-center">
-                <h3 class="text-lg font-semibold">Bank Rates</h3>
-                <button onclick="openDialog()" class="settings-btn">⚙️</button>
+    <div class="container">
+    <div class="dashboard">
+        <!-- Header card -->
+        <div class="card header-card">
+          <div class="header-content">
+            <div class="bank-name">
+              <i data-lucide="file-text"></i>
+              <h1>Hermes Stollberg Bank</h1>
             </div>
-            <div class="flex justify-between mt-2 items-center">
-                <div class="text-center bg-blue-50 p-3 rounded-lg w-1/2 mr-2">
-                    <p class="text-gray-700 font-semibold">💵 Deposits</p>
-                    <p class="text-xl font-bold" class="Depositsdiv">6.80%</p>
-                </div>
-                <div class="text-center bg-blue-50 p-3 rounded-lg w-1/2 ml-2">
-                    <p class="text-gray-700 font-semibold">📈 Credits</p>
-                    <p class="text-xl font-bold" class="Creditsdiv">10.25%</p>
-                </div>
+            <div class="main-balance">
+              <h2>$71,252,528.18</h2>
+              <div class="income-rate">
+                <i data-lucide="trending-up" style="margin-right: 10px;"></i>
+                <span>Income per hour</span>
+              </div>
             </div>
+          </div>
         </div>
-        <div class="grid grid-cols-2 gap-6">
-            <div class="bg-white p-6 rounded-lg shadow-lg">
-                <div class="bg-blue-100 p-4 rounded-lg mb-4">
-                    <h2 class="text-lg font-semibold flex items-center"><span class="mr-2">🔹</span>Expanding Vault</h2>
-                    <p class="text-gray-700 text-xl font-bold">$257,916,201.51</p>
-                    <p class="text-gray-500 text-sm">Required Investments</p>
-                    <p class="text-gray-700 text-xl font-bold">$9,558,908,835.68</p>
-                    <p class="text-gray-500 text-sm">Maximum Capacity</p>
-                </div>
-                <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold">Expand the Vault</button>
-                <p class="text-center text-gray-500 text-sm mt-2">Balance: $56,268,590,684.44</p>
+    
+        <!-- Bank Rates Section -->
+        <div class="card rates-card">
+          <div class="section-header">
+            <div class="section-title">
+              <i data-lucide="bar-chart-2"></i>
+              <h3>Bank Rates</h3>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h3 class="text-lg font-semibold">Information for the last 20 minutes</h3>
-                <div class="mt-3">
-                    <p class="text-gray-700 font-semibold flex items-center"><span class="mr-2">💰</span> Attracted Depositors' Money</p>
-                    <p class="text-xl font-bold">$246,972,487.46</p>
-                </div>
-                <div class="mt-3">
-                    <p class="text-gray-700 font-semibold flex items-center"><span class="mr-2">⬆️</span> Proceeds from Credits</p>
-                    <p class="text-xl font-bold">$537,322,548.60</p>
-                </div>
-                <div class="mt-3">
-                    <p class="text-gray-700 font-semibold flex items-center"><span class="mr-2">⬇️</span> Payments to Depositors</p>
-                    <p class="text-xl font-bold">$477,945,441.78</p>
-                </div>
+            <button class="settings-button">
+              <i data-lucide="settings"></i>
+            </button>
+          </div>
+    
+          <div class="rates-container">
+            <div class="rate-box deposits">
+              <div class="rate-icon">
+                <i data-lucide="arrow-down"></i>
+              </div>
+              <div class="rate-label">Deposits</div>
+              <div class="rate-value" id="deposit-rate">6.80%</div>
+              <div class="rate-description">Annual Percentage Rate</div>
             </div>
+    
+            <div class="rate-box credits">
+              <div class="rate-icon">
+                <i data-lucide="arrow-up"></i>
+              </div>
+              <div class="rate-label">Credits</div>
+              <div class="rate-value" id="credit-rate">10.25%</div>
+              <div class="rate-description">Annual Interest Rate</div>
+            </div>
+          </div>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h3 class="text-lg font-semibold">Bank Vault</h3>
-            <p class="text-xl font-bold">$7,028,609,438.00 / $7,028,609,438</p>
-            <p class="text-gray-500 text-sm">Total Funds</p>
-            <p class="text-xl font-bold">$5,242,171,205.84 (74.58%)</p>
-            <p class="text-gray-500 text-sm">In Credit Turnover</p>
+    
+        <!-- Two Column Layout -->
+        <div class="two-column-layout">
+          <!-- Last 20 Minutes Section -->
+          <div class="card">
+            <div class="section-header">
+              <div class="section-title">
+                <i data-lucide="clock"></i>
+                <h3>Last 20 Minutes</h3>
+              </div>
+            </div>
+    
+            <div class="transaction-list">
+              <!-- Transaction 1 -->
+              <div class="transaction">
+                <div class="transaction-icon green">
+                  <i data-lucide="arrow-down"></i>
+                </div>
+                <div class="transaction-details">
+                  <div class="transaction-type">Attracted Deposits</div>
+                  <div class="transaction-description">Total incoming funds</div>
+                </div>
+                <div class="transaction-amount DepositsMoney">$246,972,487.46</div>
+              </div>
+    
+              <!-- Transaction 2 -->
+              <div class="transaction">
+                <div class="transaction-icon blue">
+                  <i data-lucide="arrow-up"></i>
+                </div>
+                <div class="transaction-details">
+                  <div class="transaction-type">Credit Proceeds</div>
+                  <div class="transaction-description">Total credit revenue</div>
+                </div>
+                <div class="transaction-amount CreditsMoney">$537,322,548.60</div>
+              </div>
+    
+              <!-- Transaction 3 -->
+              <div class="transaction">
+                <div class="transaction-icon orange">
+                  <i data-lucide="file-text"></i>
+                </div>
+                <div class="transaction-details">
+                  <div class="transaction-type">Depositor Payments</div>
+                  <div class="transaction-description">Total outgoing funds</div>
+                </div>
+                <div class="transaction-amount">$477,945,441.78</div>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Bank Vault Section -->
+          <div class="card">
+            <div class="section-header">
+              <div class="section-title">
+                <i data-lucide="dollar-sign"></i>
+                <h3>Bank Vault</h3>
+              </div>
+            </div>
+    
+            <div class="vault-info">
+              <!-- Total Funds -->
+              <div class="vault-total-funds">
+                <div class="vault-box">
+                  <div class="vault-label">Total Funds</div>
+                  <div class="vault-amount">$7,028,609,438.00</div>
+                  <div class="vault-description">Current vault balance</div>
+                  <div class="document-icon">
+                    <i data-lucide="file-text"></i>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- Credit Turnover -->
+              <div class="credit-turnover">
+                <div class="turnover-box">
+                  <div class="turnover-label">Credit Turnover</div>
+                  <div class="turnover-amount">$5,242,171,205.84</div>
+                  <div class="portfolio-share">
+                    <span>Portfolio share: </span>
+                    <span class="percentage">74.58%</span>
+                  </div>
+                  <div class="chart-icon">
+                    <i data-lucide="trending-up"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
     </div>
     
-    <div id="interestDialog" class="dialog-overlay hidden">
-        <div class="dialog-box">
-            <button onclick="closeDialog()" class="close-btn">❌</button>
-            <h3 class="text-xl font-semibold">Control Panel</h3>
-            <label class="block mt-4">Deposit Interest</label>
-            <input type="range" min="0" max="20" value="6.8" class="w-full" id="depositRate">
-            <p>Value: <span id="depositValue">6.80</span>%</p>
+      <!-- Settings Dialog -->
+      <div id="settings-dialog" class="dialog-overlay">
+        <div class="dialog-content">
+          <div class="dialog-header">
+            <h3>Interest Rate Settings</h3>
+            <button class="close-dialog">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <div class="dialog-body">
+            <div class="setting-group">
+              <label for="deposit-rate-slider">Deposit Rate: <span id="deposit-rate-value">6.80%</span></label>
+              <div class="slider-container">
+                <input type="range" id="deposit-rate-slider" min="1" max="15" step="0.05" value="6.80">
+              </div>
+            </div>
             
-            <label class="block mt-4">Loan Interest</label>
-            <input type="range" min="0" max="20" value="10.25" class="w-full" id="loanRate">
-            <p>Value: <span id="loanValue">10.25</span>%</p>
-            
-            <button onclick="SettingInterestsRates();" class="confirm-btn">Set the values</button>
+            <div class="setting-group">
+              <label for="credit-rate-slider">Credit Rate: <span id="credit-rate-value">10.25%</span></label>
+              <div class="slider-container">
+                <input type="range" id="credit-rate-slider" min="5" max="25" step="0.05" value="10.25">
+              </div>
+            </div>
+          </div>
+          <div class="dialog-footer">
+            <button class="cancel-button" onclick="">Cancel</button>
+            <button class="save-button" onclick="SettingInterestsRates();">Save Changes</button>
+          </div>
         </div>
-    </div>
+      </div>
+
+    
+
+    
 
     <script src="http://localhost:8008/socket.io/socket.io.js"></script>
     <script src = "bank.js"></script>

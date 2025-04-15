@@ -1,40 +1,422 @@
-.settings-btn {
-    background-color: #e5e7eb;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background-color: #f0f2f5;
+    padding: 20px;
+  }
 
-.dialog-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+  .container {
+    max-width: 1050px;
+    margin: auto;
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+  
+  .dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+  
+  /* Header Card */
+  .header-card {
+    background-color: #2463eb;
+    color: white;
+    padding: 30px;
+  }
+  
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .bank-name {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .bank-name i {
+    margin-right: 10px;
+  }
+  
+  .main-balance {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .main-balance h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  
+  .income-rate {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  .income-rate i {
+    margin-right: 5px;
+  }
+  
+  /* Section Headers */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    display: flex;
+    align-items: center;
+  }
+  
+  .section-title i {
+    margin-right: 10px;
+    color: #2463eb;
+  }
+  
+  .settings-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #2463eb;
+  }
+  
+  /* Bank Rates */
+  .rates-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .rate-box {
+    flex: 1;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .deposits {
+    background-color: #f0fdf4;
+  }
+  
+  .credits {
+    background-color: #eff6ff;
+  }
+  
+  .rate-icon {
+    margin-bottom: 10px;
+  }
+  
+  .deposits .rate-icon i {
+    color: #22c55e;
+  }
+  
+  .credits .rate-icon i {
+    color: #2463eb;
+  }
+  
+  .rate-label {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 5px;
+  }
+  
+  .rate-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  
+  .rate-description {
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+  
+  /* Two Column Layout */
+  .two-column-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  /* Transaction List */
+  .transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .transaction {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.dialog-box {
-    background: white;
+    margin-right: 15px;
+  }
+  
+  .green {
+    background-color: #f0fdf4;
+    color: #22c55e;
+  }
+  
+  .blue {
+    background-color: #eff6ff;
+    color: #2463eb;
+  }
+  
+  .orange {
+    background-color: #fff7ed;
+    color: #f97316;
+  }
+  
+  .transaction-details {
+    flex: 1;
+  }
+  
+  .transaction-type {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .transaction-description {
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+  
+  .transaction-amount {
+    font-weight: 700;
+    text-align: right;
+  }
+  
+  /* Vault Info */
+  .vault-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .vault-box {
+    background-color: #fffbeb;
     padding: 20px;
-    border-radius: 10px;
-    width: 400px;
+    border-radius: 12px;
     position: relative;
-}
-
-.close-btn {
+  }
+  
+  .turnover-box {
+    background-color: #eff6ff;
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+  }
+  
+  .vault-label, .turnover-label {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 10px;
+  }
+  
+  .vault-amount, .turnover-amount {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  
+  .vault-description {
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+  
+  .portfolio-share {
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+  
+  .percentage {
+    color: #2463eb;
+    font-weight: 600;
+  }
+  
+  .document-icon, .chart-icon {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #e5e7eb;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.confirm-btn {
+    top: 20px;
+    right: 20px;
+    color: #64748b;
+  }
+  
+  /* Settings Dialog */
+  .dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .dialog-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .dialog-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+  
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .dialog-header h3 {
+    color: #1e293b;
+    margin: 0;
+  }
+  
+  .close-dialog {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+  }
+  
+  .dialog-body {
+    padding: 20px;
+  }
+  
+  .setting-group {
+    margin-bottom: 20px;
+  }
+  
+  .setting-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: #1e293b;
+    font-weight: 500;
+  }
+  
+  .slider-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  input[type="range"] {
     width: 100%;
-    background: #2563eb;
+    appearance: none;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    outline: none;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #2463eb;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+  
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 20px;
+    border-top: 1px solid #e2e8f0;
+    gap: 10px;
+  }
+  
+  .cancel-button, .save-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .cancel-button {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: none;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e2e8f0;
+  }
+  
+  .save-button {
+    background-color: #2463eb;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
-}
+    border: none;
+  }
+  
+  .save-button:hover {
+    background-color: #1e40af;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .two-column-layout {
+      grid-template-columns: 1fr;
+    }
+    
+    .rates-container {
+      flex-direction: column;
+    }
+  }
