@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS UserBusiness(
 );
 
 CREATE TABLE IF NOT EXISTS ItBusiness(
+    `index` INT NOT NULL AUTO_INCREMENT UNIQUE, 
     Username VARCHAR(255),
     BusinessName VARCHAR(255),
     Wages decimal(10,2),
@@ -43,12 +44,20 @@ CREATE TABLE IF NOT EXISTS ItBusiness(
     PRIMARY KEY (Username, BusinessName)
 );
 
-CREATE TABLE IF NOT EXISTS BankBusiness(
-    Username VARCHAR(255),
-    BankName VARCHAR(255),
-    Revenue decimal(10,2) default 0,
-    PRIMARY KEY (Username, BankName)
+CREATE TABLE IF NOT EXISTS BankBusiness (
+    `index` INT NOT NULL AUTO_INCREMENT UNIQUE,
+    Username VARCHAR(255) NOT NULL,
+    BusinessName VARCHAR(20) NOT NULL,
+    Revenue DECIMAL(10,2) DEFAULT 0.00,
+    CreditInt DECIMAL(10,2) DEFAULT 3.00,
+    DebitInt DECIMAL(10,2) DEFAULT 4.00,
+    TotalAmount DECIMAL(10,2) DEFAULT 0.00,
+    IntSetTime DATETIME,
+    TotalCredits DECIMAL(10,2) DEFAULT 0.00,
+    TotalDeposits DECIMAL(10,2) DEFAULT 0.00,
+    PRIMARY KEY (Username, BusinessName)
 );
+
 
 CREATE TABLE IF NOT EXISTS ItProjects(
     Projectname VARCHAR(255) PRIMARY KEY,
@@ -62,6 +71,7 @@ CREATE TABLE IF NOT EXISTS ItProjects(
 
 CREATE TABLE IF NOT EXISTS ItUserProjects(
     Username VARCHAR(255),
+    BusinessName varchar(20),
     Projectname VARCHAR(255),
     ProjectStatus int default 0,
     ProjectCompTime datetime
@@ -79,7 +89,9 @@ CREATE TABLE IF NOT EXISTS ItUserEmployees(
     Username VARCHAR(255),
     BusinessName VARCHAR(255),
     Employeename VARCHAR(255),
-    EmpStatusPrj int default 0
+    EmpStatusPrj int default 0,
+    PrjName varchar(50),
+    primary key(Username,BusinessName,Employeename)
 );
 
 CREATE TABLE IF NOT EXISTS CompaniesWithStocks(
@@ -101,9 +113,9 @@ CREATE TABLE IF NOT EXISTS UserInvestments(
 
  create table RealEstateMain(
     idx int primary key auto_increment, 
-    imgloc varchar(20), 
+    image varchar(200), 
     price decimal(15,2), 
-    location varchar(25), 
+    location varchar(100), 
     incPerHr decimal(12,2)
 );
 
