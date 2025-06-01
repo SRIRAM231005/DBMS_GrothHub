@@ -1,11 +1,20 @@
+require("dotenv").config();
 const mysql = require("mysql2");
 
 // Connect to the database
-const connection = mysql.createConnection({
+/*const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "07Adi@2005thya",
   database: "db",
+  port: 3306,
+});*/
+
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   port: 3306,
 });
 
@@ -144,7 +153,7 @@ async function SoldShares(req , res){
 async function getAllRealEstatesNotBought(req , res){
     try {
         const {username} = req.body;
-        const sql = "select * from RealEstateMain where idx not in (select idx from userrealestate where username = ?)";
+        const sql = "select * from RealEstateMain where idx not in (select idx from UserRealEstate where username = ?)";
         
         const [results] = await connection.promise().query((sql),[username]);
         console.log(results);
@@ -161,7 +170,7 @@ async function getAllRealEstatesNotBought(req , res){
 async function getAllRealEstatesBought(req , res){
     try {
         const {username} = req.body;
-        const sql = "select * from RealEstateMain where idx in (select idx from userrealestate where username = ?)";
+        const sql = "select * from RealEstateMain where idx in (select idx from UserRealEstate where username = ?)";
         
         const [results] = await connection.promise().query((sql),[username]);
         console.log(results);
@@ -178,8 +187,8 @@ async function getAllRealEstatesBought(req , res){
 async function buyProperty(req , res){
     try {
         const {username,idx} = req.body;
-        const sql = "insert into userrealestate (username,idx) values (?,?)";
-        const sql2 = "update balances set Balance = Balance-(select price from realestatemain where idx = ?) where Username = ?";
+        const sql = "insert into UserRealEstate (username,idx) values (?,?)";
+        const sql2 = "update Balances set Balance = Balance-(select price from RealEstateMain where idx = ?) where Username = ?";
         
         const [results] = await connection.promise().query((sql),[username,idx]);
         await connection.promise().query((sql2),[idx,username]);
@@ -198,8 +207,8 @@ async function buyProperty(req , res){
 async function sellProperty(req , res){
     try {
         const {username,idx} = req.body;
-        const sql = "delete from userrealestate where (username,idx) = (?,?)";
-        const sql2 = "update balances set Balance = Balance+(select price from realestatemain where idx = ?) where Username = ?";
+        const sql = "delete from UserRealEstate where (username,idx) = (?,?)";
+        const sql2 = "update Balances set Balance = Balance+(select price from RealEstateMain where idx = ?) where Username = ?";
         
         const [results] = await connection.promise().query((sql),[username,idx]);
         await connection.promise().query((sql2),[idx,username]);
@@ -217,7 +226,7 @@ async function sellProperty(req , res){
 async function getCountofPropBought(req , res){
     try {
         const {username} = req.body;
-        const sql = "select count(*) as CountProp from userRealEstate where username = ?";
+        const sql = "select count(*) as CountProp from UserRealEstate where username = ?";
         
         const [results] = await connection.promise().query(sql,[username]);
         console.log(results);
@@ -234,7 +243,7 @@ async function getCountofPropBought(req , res){
 async function getTotalIncomePerHourUser(req , res){
     try {
         const { username } = req.body;
-        const sql = "select sum(incPerHr) as TotInc from realestatemain where idx in (select idx from userrealestate where Username = ?)";
+        const sql = "select sum(incPerHr) as TotInc from RealEstateMain where idx in (select idx from UserRealEstate where Username = ?)";
         const [results] = await connection.promise().query(sql, [username]);
         console.log(req.body);
         console.log("inc per hour",results);
@@ -249,7 +258,7 @@ async function getTotalIncomePerHourUser(req , res){
 async function TotalBoughtPrice(req , res){
     try {
         const { username } = req.body;
-        const sql = "select sum(Pro) as TotalBought from (select buyPrice * sharesOwned as Pro from userinvestments where Username = ?) as t";
+        const sql = "select sum(Pro) as TotalBought from (select buyPrice * sharesOwned as Pro from UserInvestments where Username = ?) as t";
         const [results] = await connection.promise().query(sql, [username]);
         console.log(req.body);
         console.log("Total Bought Price",results);

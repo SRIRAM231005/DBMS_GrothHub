@@ -1,11 +1,20 @@
+require("dotenv").config();
 const mysql = require("mysql2");
 
 // Connect to the database
-const connection = mysql.createConnection({
+/*const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "07Adi@2005thya",
   database: "db",
+  port: 3306,
+});*/
+
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   port: 3306,
 });
 
@@ -31,7 +40,7 @@ async function Statistics(req , res){
         const sql = "UPDATE Statistics SET NoOfBusiness = (SELECT COUNT(Businessname) AS business_count FROM UserBusiness WHERE Username = ? ) WHERE Username = ?";
         /*const sql1 = "SELECT COUNT(Businessname) AS business_count FROM UserBusiness WHERE Username = ? "*/
         const sql1 = "UPDATE Statistics SET E_business = (SELECT Sum(Revenue) FROM ItBusiness WHERE Username = ?) WHERE Username = ?";
-        const sql3 = "update statistics set Real_estate = (select count(*) from UserRealEstate where Username = ?) where Username = ?";
+        const sql3 = "update Statistics set Real_estate = (select count(*) from UserRealEstate where Username = ?) where Username = ?";
         // const sql4 = "update statistics set E_trading = (select ) where Username = ?";
         const sql2 = "SELECT * FROM Statistics WHERE Username = ?";
         

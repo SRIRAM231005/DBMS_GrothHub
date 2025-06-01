@@ -1,11 +1,20 @@
+require("dotenv").config();
 const mysql = require("mysql2");
 
 // Connect to the database
-const connection = mysql.createConnection({
+/*const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "07Adi@2005thya",
   database: "db",
+  port: 3306,
+});*/
+
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   port: 3306,
 });
 
@@ -13,7 +22,7 @@ async function InsertUserbusiness(req, res){
     //await connection.beginTransaction();
     try {
         const { username, business, businessname, amount } = req.body;
-        const sql = "INSERT INTO Userbusiness (Username, Business, Businessname) VALUES (?, ?, ?)";
+        const sql = "INSERT INTO UserBusiness (Username, Business, Businessname) VALUES (?, ?, ?)";
         await connection.promise().query(sql, [username, business, businessname]);
         
         const decreaseBalanceSql = "UPDATE Balances SET Balance = Balance - ? WHERE Username = ?";
@@ -38,7 +47,7 @@ async function InsertUserbusiness(req, res){
 async function SelectUserbusiness(req, res) {
     try {
         const { username } = req.body;
-        const sql = "SELECT * FROM Userbusiness WHERE Username = ?";
+        const sql = "SELECT * FROM UserBusiness WHERE Username = ?";
         
         const [results] = await connection.promise().query(sql, [username]);
 

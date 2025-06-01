@@ -1,11 +1,20 @@
+require("dotenv").config();
 const mysql = require("mysql2");
 
 // Connect to the database
-const connection = mysql.createConnection({
+/*const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "07Adi@2005thya",
   database: "db",
+  port: 3306,
+});*/
+
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   port: 3306,
 });
 
@@ -46,7 +55,7 @@ async function ITUserProjects(req, res) {
 async function ITUserEmployees(req, res) {
     try {
         const { username,businessName } = req.body;
-        const sql = "SELECT * FROM ITUseremployees WHERE Username = ? and BusinessName = ?";
+        const sql = "SELECT * FROM ITUserEmployees WHERE Username = ? and BusinessName = ?";
         
         const [results] = await connection.promise().query(sql, [username,businessName]);
         console.log(results);
@@ -152,7 +161,7 @@ async function ITEmployeesAfterHire(req , res){
 async function showDevList(req, res){
     try{
         const { username,businessName,role } = req.body;
-        const sql = "select Employeename, Salary, Skill from itemployees where Employeename in (select Employeename from ituseremployees where Username = ? and BusinessName = ?) and Role like CONCAT('%', ?, '%')";
+        const sql = "select Employeename, Salary, Skill from ItEmployees where Employeename in (select Employeename from ItUserEmployees where Username = ? and BusinessName = ?) and Role like CONCAT('%', ?, '%')";
         const [results] = await connection.promise().query(sql, [username,businessName,role]);
         // console.log("demo:",req.body);
         console.log("demo:",results);
@@ -201,8 +210,8 @@ async function BusEmpPrjStart(req , res){
     try {
         const { username, businessname, empName, prjname } = req.body;
         
-        const sql = "update ituseremployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and Username = ? and BusinessName = ? and Employeename = ?";
-        const sql1 = "update ituseremployees set PrjName = ? where EmpStatusPrj = 1 and Username = ? and BusinessName = ? and Employeename = ?";
+        const sql = "update ItUserEmployees set EmpStatusPrj = 1 where EmpStatusPrj = 0 and Username = ? and BusinessName = ? and Employeename = ?";
+        const sql1 = "update ItUserEmployees set PrjName = ? where EmpStatusPrj = 1 and Username = ? and BusinessName = ? and Employeename = ?";
         
         const [results] = await connection.promise().query(sql,[username,businessname,empName]);
         await connection.promise().query(sql1,[prjname,username,businessname,empName]);
@@ -218,7 +227,7 @@ async function BusEmpPrjStart(req , res){
 async function PrjCompTimeAddition(req , res){
     try {
         const { username, businessname, prjname } = req.body;
-        const sql = "insert into ituserprojects (Username, BusinessName, Projectname, ProjectCompTime) values (?,?,?,now()+ interval 60 second)";
+        const sql = "insert into ItUserProjects (Username, BusinessName, Projectname, ProjectCompTime) values (?,?,?,now()+ interval 60 second)";
         
         const [results] = await connection.promise().query(sql,[username,businessname,prjname]);
 
@@ -295,7 +304,7 @@ async function changeStatusCompProj(req , res){
     try {
         const { username,businessname,projectname } = req.body;
         const sql = "delete from ITUserProjects where Username = ? and BusinessName = ? and Projectname = ?";
-        const sql1 = "update ituseremployees set EmpStatusPrj = 0 where Username = ? and BusinessName = ? and Prjname = ?";
+        const sql1 = "update ItUserEmployees set EmpStatusPrj = 0 where Username = ? and BusinessName = ? and Prjname = ?";
 
         const [results] = await connection.promise().query(sql, [username,businessname,projectname]);
         await connection.promise().query(sql1, [username,businessname,projectname])
@@ -311,7 +320,7 @@ async function changeStatusStopProj(req , res){
     try {
         const { username,businessname,projectname } = req.body;
         const sql = "delete from ITUserProjects where Username = ? and BusinessName = ? and Projectname = ?";
-        const sql1 = "update ituseremployees set EmpStatusPrj = 0 where Username = ? and BusinessName = ? and Prjname = ?";
+        const sql1 = "update ItUserEmployees set EmpStatusPrj = 0 where Username = ? and BusinessName = ? and Prjname = ?";
 
         const [results] = await connection.promise().query(sql, [username,businessname,projectname]);
         await connection.promise().query(sql1, [username,businessname,projectname])
