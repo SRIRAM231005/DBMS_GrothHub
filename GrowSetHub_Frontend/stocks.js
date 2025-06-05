@@ -57,7 +57,11 @@ async function fetchCompaniesWithStocks(){
     try {
         const response = await fetch('http://localhost:8008/investment/CompaniesWithStocks');
         CompaniesWithStocks = await response.json();
-        console.log(CompaniesWithStocks);
+        if(CompaniesWithStocks.retry){
+            setTimeout(fetchCompaniesWithStocks(), 1000);
+        }else{
+            console.log(CompaniesWithStocks);
+        }
     } catch (error) {
         console.error("❌ Error fetching data:", error);
         return null;
@@ -76,11 +80,15 @@ async function fetchTotalBoughtPrice(){
             }),
         });
         TotalBoughtPrice = await response.json();
-        console.log("totot",TotalBoughtPrice);
-        document.getElementById("total-invested").textContent = "$ " + formatNumber(TotalBoughtPrice[0].TotalBought);
-        console.log("data",JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
-        console.log("TotalProfit_Lossooolloaloa",TotalProfit_Loss);
-        updateStocksBalanceinBalTable(JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
+        if(TotalBoughtPrice.retry){
+            setTimeout(fetchTotalBoughtPrice(), 1000);
+        }else{
+            console.log("totot",TotalBoughtPrice);
+            /*document.getElementById("total-invested").textContent = "$ " + formatNumber(TotalBoughtPrice[0].TotalBought);
+            console.log("data",JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
+            console.log("TotalProfit_Lossooolloaloa",TotalProfit_Loss);*/
+            updateStocksBalanceinBalTable(JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
+        }
     } catch (error) {
         console.error("❌ Error fetching data:", error);
         return null;
@@ -98,7 +106,11 @@ async function updateStocksBalanceinBalTable(StockBalVal){
             }),
         });
         const resultBal = await response.json();
-        console.log(resultBal);
+        if(resultBal.retry){
+            setTimeout(updateStocksBalanceinBalTable(StockBalVal), 1000);
+        }else{
+            console.log(resultBal);
+        }
     } catch (error) {
         console.error("❌ Error fetching data:", error);
         return null;
@@ -115,9 +127,13 @@ async function fetchUserInvestments(username){
             }),
         });
         UserInvestmentCompanies = await response.json();
-        console.log(UserInvestmentCompanies);
-        DispUserInvestedTotData();
-        DisplayCompaniesNotInvested();
+        if(UserInvestmentCompanies.retry){
+            setTimeout(fetchUserInvestments(username), 1000);
+        }else{
+            console.log(UserInvestmentCompanies);
+            DispUserInvestedTotData();
+            DisplayCompaniesNotInvested();
+        }
     } catch (error) {
         console.error("❌ Error fetching data:", error);
         return null;
@@ -128,9 +144,22 @@ fetchCompaniesWithStocks();
 fetchUserInvestments(credentials);
 
 setTimeout(() => {
-    console.log("TotalProfit_Loss112", TotalProfit_Loss);
-    document.getElementById("total-profit").textContent = "$ " + formatNumber(TotalProfit_Loss);
+    /*console.log("TotalProfit_Loss112", TotalProfit_Loss);
+    if(TotalProfit_Loss){
+        document.getElementById("total-profit").textContent = "$ " + formatNumber(TotalProfit_Loss);
+    }else{
+        document.getElementById("total-profit").textContent = "$ 0";
+    }*/
     fetchTotalBoughtPrice();
+    if(TotalBoughtPrice && TotalProfit_Loss){
+        document.getElementById("total-invested").textContent = "$ " + formatNumber(TotalBoughtPrice[0].TotalBought);
+        document.getElementById("total-profit").textContent = "$ " + formatNumber(TotalProfit_Loss);
+        document.getElementById("total-value").textContent = "$ " + formatNumber(TotalProfit_Loss + TotalBoughtPrice[0].TotalBought);
+    }else{
+        document.getElementById("total-invested").textContent = "$ 0";
+        document.getElementById("total-profit").textContent = "- -";
+        document.getElementById("total-value").textContent = "$ 0";
+    }
 }, 1000);  // Delay in milliseconds
 
 
@@ -283,7 +312,9 @@ const companies = [
 
 function loadInvestments() {
     const investmentList = document.getElementById("investment-list");
+    const startingDiv = document.querySelector(".startingDiv");
     investmentList.innerHTML = "";
+    startingDiv.innerHTML = "";
     console.log("1st",UserInvestedTotalData[0]);
     UserInvestedTotalData.forEach((inv,index) => {
         console.log("420");

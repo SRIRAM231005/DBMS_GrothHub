@@ -1,5 +1,6 @@
 require("dotenv").config();
 const mysql = require("mysql2");
+const { connection, reconnectToDB } = require('../db');
 
 // Connect to the database
 /*const connection = mysql.createConnection({
@@ -8,7 +9,7 @@ const mysql = require("mysql2");
   password: "07Adi@2005thya",
   database: "db",
   port: 3306,
-});*/
+});
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -16,7 +17,7 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: 3306,
-});
+});*/
 
 // User Signup
 const userSignup = (req, res) => {

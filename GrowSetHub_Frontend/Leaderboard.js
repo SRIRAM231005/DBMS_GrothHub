@@ -129,9 +129,13 @@ async function fetchLeaderBoardData(type){
     });
 
     let LeaderBoardData = await response.json();
-    console.log('LeaderBoardData:',LeaderBoardData);
-    console.log('LeaderBoard:',LeaderBoardData[type]);
-    return LeaderBoardData[type]; // Return fetched data
+    if(LeaderBoardData.retry){
+      setTimeout(fetchLeaderBoardData(type), 1000);
+    }else{
+      console.log('LeaderBoardData:',LeaderBoardData);
+      console.log('LeaderBoard:',LeaderBoardData[type]);
+      return LeaderBoardData[type]; // Return fetched data
+    }
   } catch (error) {
       console.error("❌ Error fetching IT main business:", error);
       return null;

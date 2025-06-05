@@ -69,8 +69,12 @@ async function fetchPrjAdditionTime(username,businessname,prjname) {
         });
 
         prjDetails = await response.json();
-        console.log("repeat:",prjDetails);
-        //return data; // Return fetched data
+        if(prjDetails.retry){
+            setTimeout(fetchPrjAdditionTime(username,businessname,prjname), 1000);
+        }else{
+            console.log("repeat:",prjDetails);
+            //return data; // Return fetched data
+        }
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
         return null;
@@ -98,9 +102,13 @@ async function fetchShowDevList(username,businessName,role){
             }),
         });
         developers = await response.json();
-        console.log("Developers:",developers);
-        showDevList(developers,role);
-        //return data;
+        if(developers.retry){
+            setTimeout(fetchShowDevList(username,businessName,role), 1000);
+        }else{
+            console.log("Developers:",developers);
+            showDevList(developers,role);
+            //return data;
+        }
     } catch (error) {
         console.error("❌ Error fetching developers list:", error);
         return null;
@@ -260,8 +268,12 @@ async function fetchChooseEmpforPrj(username,businessname,empName,prjname) {
         });
 
         EmpDetails = await response.json();
-        console.log(EmpDetails);
-        //return data; // Return fetched data
+        if(EmpDetails.retry){
+            setTimeout(fetchChooseEmpforPrj(username,businessname,empName,prjname), 1000);
+        }else{
+            console.log(EmpDetails);
+            //return data; // Return fetched data
+        }
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
         return null;

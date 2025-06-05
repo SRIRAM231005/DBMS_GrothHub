@@ -167,7 +167,11 @@ async function SettingInterestsRates(DebitInterestRate,CreditInterestRate){
         });
     
         let SettingInterestsRates = await response.json();
-        console.log('SettingInterestsRates:',SettingInterestsRates);
+        if(SettingInterestsRates.retry){
+            setTimeout(SettingInterestsRates(depositRateSlider.value, creditRateSlider.value), 1000);
+        }else{
+            console.log('SettingInterestsRates:',SettingInterestsRates);
+        }
     } catch (error) {
         console.error("❌ Error Setting Interests Rates:", error);
         return null;
@@ -186,8 +190,12 @@ async function fetchDisplayBankDetails(){
             })
         });
         let DisplayBankDetails = await response.json();
-        console.log('DisplayBankDetails:',DisplayBankDetails);
-        UpdateAllDetails(DisplayBankDetails[0]);
+        if(DisplayBankDetails.retry){
+            setTimeout(fetchDisplayBankDetails(), 1000);
+        }else{
+            console.log('DisplayBankDetails:',DisplayBankDetails);
+            UpdateAllDetails(DisplayBankDetails[0]);
+        }
     } catch (error) {
         console.error("❌ Error Setting Interests Rates:", error);
         return null;

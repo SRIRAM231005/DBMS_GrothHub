@@ -1,14 +1,14 @@
 const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log(credentials);
 
-const propNotBought = JSON.parse(localStorage.getItem('numOfPropertiesNotBought'));
+/*const propNotBought = JSON.parse(localStorage.getItem('numOfPropertiesNotBought'));
 // console.log("Properties Not Bought: ",localStorage.getItem('numOfPropertiesNotBought'));
 const propBought = JSON.parse(localStorage.getItem('numOfPropertiesBought'));
 // console.log("Properties Bought: ",propBought);
 const totalProp = Number(propNotBought) + Number(propBought);
 // console.log("Total Properties: ",totalProp);
 const stocks = JSON.parse(localStorage.getItem('TotalProfit_Loss'));
-// console.log("Total Stocks: ",stocks);
+// console.log("Total Stocks: ",stocks);*/
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -55,10 +55,14 @@ async function fetchBalance(username){
         });
 
         Balance = await response.json();
-        console.log('Balance:',Balance);
-        localStorage.setItem('BalanceMoney', JSON.stringify(formatNumber(Balance[0].Balance)));
-        UpdateBalance();
-        //return data; // Return fetched data
+        if(Balance.retry){
+            setTimeout(fetchBalance(username), 1000);
+        }else{
+            console.log('Balance:',Balance);
+            localStorage.setItem('BalanceMoney', JSON.stringify(formatNumber(Balance[0].Balance)));
+            UpdateBalance();
+            //return data; // Return fetched data
+        }
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
         return null;
@@ -74,9 +78,13 @@ async function fetchStatistics(username){
         });
 
         Statistics = await response.json();
-        console.log('Statistics:',Statistics);
-        UpdateStatistics();
-        //return data; // Return fetched data
+        if(Statistics.retry){
+            setTimeout(fetchStatistics(username), 1000);
+        }else{
+            console.log('Statistics:',Statistics);
+            UpdateStatistics();
+            //return data; // Return fetched data
+        }
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
         return null;
@@ -112,7 +120,7 @@ function UpdateStatistics(){
     console.log("check values",values[0]);
 
     values[0].textContent = `${Statistics.NoOfBusiness}`; 
-    values[1].textContent = `${Statistics.Real_estate} of ${totalProp}`; 
+    values[1].textContent = `${Statistics.Real_estate} of 10`; 
     //values[2].textContent = `${boughtOut} of ${boughtOutTotal}`; 
     
     // Update Earned Section
@@ -133,3 +141,70 @@ function formatNumber(value) {
         return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 }
+
+async function fetchLeaderBoardData(type){
+    try {
+      const response = await fetch('http://localhost:8008/user/LeaderBoardData', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({username: credentials})
+      });
+  
+      let LeaderBoardData = await response.json();
+      if(LeaderBoardData.retry){
+        setTimeout(fetchLeaderBoardData(type), 1000);
+      }else{
+        console.log('LeaderBoardData:',LeaderBoardData);
+        console.log('LeaderBoard:',LeaderBoardData[type]);
+        return LeaderBoardData[type]; // Return fetched data
+      }
+    } catch (error) {
+        console.error("❌ Error fetching IT main business:", error);
+        return null;
+    }
+}
+
+function fetchAndDisplayLeaderboard(type) {
+    const container = document.getElementById("leaderboard-content");
+    container.innerHTML = `<p style="text-align:center;">Loading ${type} leaderboard...</p>`;
+  
+    setTimeout(async () => {
+      currentData = await fetchLeaderBoardData(type); // Simulated fetch
+      displayLeaderboard(currentData);
+    }, 500);
+  }
+  
+  function displayLeaderboard(data) {
+    const container = document.getElementById("leaderboard-content");
+    container.innerHTML = "";
+  
+    if (data.length === 0) {
+      container.innerHTML = `<p style="text-align:center;">No users found.</p>`;
+      return;
+    }
+  
+    console.log('Data:', data);
+    data.forEach((entry, idx) => {
+      if(idx < data.length-1){
+        console.log("heeey");
+        const div = document.createElement("div");
+        div.classList.add("rank-entry");
+    
+        let rankClass = "";
+        if (idx === 0) rankClass = "gold-rank";
+        else if (idx === 1) rankClass = "silver-rank";
+        else if (idx === 2) rankClass = "bronze-rank";
+    
+        div.innerHTML = `
+            <span class="rank ${rankClass}">#${idx + 1}</span>
+            <span>${entry.name}</span>
+            <span>${entry.value}</span>
+        `;
+        container.appendChild(div);
+      }
+    });
+  }
+
+  fetchAndDisplayLeaderboard('balance');
+
+//${totalProp}

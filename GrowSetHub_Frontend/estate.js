@@ -55,9 +55,9 @@ async function fetchGetTotalIncome(username) {
         console.log('Fetched income:', data);
 
         if(`${data[0].TotInc}`=="null"){
-            document.querySelector(".income-display h2").textContent = `$ 0.00`;
+            document.getElementById("total-income").textContent = `$ 0.00`;
         }else{
-            document.querySelector(".income-display h2").textContent = `$ ${formatNumber(data[0].TotInc)}`;
+            document.getElementById("total-income").textContent = `$ ${formatNumber(data[0].TotInc)}`;
         }
         console.log(document.querySelector(".income-display h2"));
         return data;

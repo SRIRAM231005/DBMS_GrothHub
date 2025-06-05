@@ -13,21 +13,39 @@
 </head>
 <body>
     <div class="heroSection">
-        <div class="amount">
-            <img src="images/creditcard.png" style="border-radius: 20px;" class="card">
-            <img src="images/mastercardLogo.png" class="masterLogo">
-            <div class="lablebalance">Balance:</div>
-            <div class="balance">$10,000.00</div>
-            <div class="pin">**** 7468</div>
-            <div class="date">05/26</div>
+        <div class="topSection">
+            <div style="display: flex;align-items: center;gap: 10px;"><i data-lucide="wallet" class="topicon"></i> Earnings</div>
+            <div><i data-lucide="circle-help" class="topicon"></i></div>
         </div>
-    </div>
+        <div class="headerSection"></div>
+        <div class="amount">
+            <div class="card">
+                <div class="cardHeader">
+                    <div class="cardLogo">
+                        <img src="images/mastercardLogo.png" class="masterLogo">
+                        <div class="pin">**** 7468</div>
+                    </div>
+                    <div class="date">05/26</div>
+                </div>
+                <div class="cardBody">
+                    <img src="images/creditcardyellow.png" class="creditLogo">
+                    <div class="cardinfo">
+                        <div class="lablebalance">Available Balance:</div>
+                        <div class="balance">$10,000.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>      
     <div class="container">
         <div class="box Investing"><i data-lucide="chart-no-axes-combined" class="icon"></i> Investing</div>
         <div class="box Business"><i data-lucide="building-2" class="icon"></i> Business</div>
         <div class="box Earnings"><i data-lucide="circle-dollar-sign" class="icon"></i> Earnings</div>
         <div class="box Profile"><i data-lucide="circle-user-round" class="icon"></i> Profile</div>
     </div>
+    <p class="dashboard-description">
+        Track your finances, manage businesses, and make smart investment decisions. Use this dashboard to keep an eye on your virtual income and build your economic empire. Whether you're a beginner or a financial pro, every click takes you closer to success.
+    </p>
     <script src="home.js"></script>
 </body>
 </html>

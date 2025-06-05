@@ -285,8 +285,12 @@ async function BoughtShares(shareprice,selectedshares){
         });
 
         const data = await response.json();
-        console.log(data);
-        //return data;
+        if(data.retry){
+            setTimeout(BoughtShares(shareprice,selectedshares),1000);
+        }else{
+            console.log(data);
+            //return data;
+        }
     } catch (error) {
         console.error("❌ Error not bought:", error);
         return null;
@@ -307,8 +311,12 @@ async function SoldShares(shareprice,selectedshares){
         });
 
         const data = await response.json();
-        console.log(data);
-        //return data;
+        if(data.retry){
+            setTimeout(SoldShares(shareprice,selectedshares),1000);
+        }else{
+            console.log(data);
+            //return data;
+        }
     } catch (error) {
         console.error("❌ Error not sold:", error);
         return null;

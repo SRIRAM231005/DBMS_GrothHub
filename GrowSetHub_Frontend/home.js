@@ -27,6 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 lucide.createIcons();
 
+const headerSection = document.querySelector('.headerSection');
+headerSection.innerHTML=`<div>Welcome back, ${credentials}!</div>
+                          <div style="color: rgba(242, 238, 238); font-size: 20px;font-weight:normal; padding-top: 10px;">Your Financial Adventure Awaits</div>`;
+
 let Balance;
 async function fetchBalance(username){
     try {
@@ -37,9 +41,13 @@ async function fetchBalance(username){
         });
 
         Balance = await response.json();
-        console.log('Balance:',Balance);
-        UpdateBalance();
-        //return data; // Return fetched data
+        if(Balance.retry){
+            setTimeout(fetchBalance(credentials),1000);
+        }else{
+            console.log('Balance:',Balance);
+            UpdateBalance();
+            //return data; // Return fetched data
+        }
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
         return null;

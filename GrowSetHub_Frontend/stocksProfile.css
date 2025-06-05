@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    max-width: 1000px;
+    width: 1000px;
     margin: auto;
     margin-top: 50px;
     background: white;
@@ -29,16 +29,26 @@ header{
 nav ul {
     list-style: none;
     display: flex;
-    gap: 50px;
+    gap: 20px;
+    border-radius: 25px;
+    padding: 5px;
+    background-color: #f8f8f8;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    height: fit-content;
 }
 
 nav ul li a {
-    text-decoration: none;
-    color: #666;
-    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     padding: 10px 20px;
     border-radius: 25px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    color: #666;
+    font-size: 16px;
+    width: 140px;
 }
 
 nav ul li a:hover {
@@ -46,7 +56,8 @@ nav ul li a:hover {
 }
 
 nav ul li a.active {
-    color: #0066ff;
+    /*color: #0066ff;*/
+    color: black;
     background: #e6f0ff;
     font-weight: 500;
 }
@@ -67,31 +78,65 @@ nav ul li a.active {
 }
 
 .summary-box {
-    background-color: rgba(144, 238, 144, 0.7); /* Light green */
-    padding: 20px;
-    border-radius: 12px;
-    width: 60%;
+    background-color: rgb(2, 43, 179);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
     margin: 20px auto;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: left;
+}
+
+.summaryBoxHeader{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: 20px;
+}
+.summaryBoxHeader i{
+    color: white;
+    width: 20px;
+    height: 20px;
 }
 
 .summary-item {
     font-size: 18px;
-    color: #000;
-    margin: 10px 0;
+    margin-top: 15px;
+}
+
+.summaryItemHeader{
+    font-size: 14px;
+    color: rgb(181, 210, 222);
+    margin-bottom: 10px;
 }
 
 .cost{
-  font-size: 28px;
+  font-size:30px;
+  font-weight: bold;
 }
 
-.investment-heading {
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 20px;
+.business-heading {
+    font-size: 24px;
+    font-weight: lighter;
+}
+
+.show-companies-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.show-companies-btn:hover {
+    background-color: #034c9a;
 }
 
 .investment-table {
@@ -106,6 +151,10 @@ table {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+table thead th{
+    color: #908f8f;
 }
 
 th, td {
@@ -132,23 +181,6 @@ td img {
 .loss {
     color: red;
     font-weight: bold;
-}
-
-.show-companies-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 18px;
-    border-radius: 5px;
-    margin-top: 15px;
-    margin-left: 35px;
-    cursor: pointer;
-    width: 90%;
-}
-
-.show-companies-btn:hover {
-    background-color: #0056b3;
 }
 
 /* Dialog Styling */

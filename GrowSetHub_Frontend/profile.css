@@ -13,16 +13,22 @@ body {
 
 .container {
     width: 90%;
-    /*max-width: 400px;*/
     margin: 80px;
     padding-bottom: 60px;
 }
 
 .containerBody{
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
     justify-content: center;
     gap: 100px;
+}
+
+.leftcontainer{
+    background-color: white;
+    padding: 15px 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(6, 203, 253, 0.497);
 }
 
 header {
@@ -33,7 +39,13 @@ header {
 }
 
 header h2{
-    font-size: 30px;
+    font-size: 25px;
+}
+header div{
+    padding: 10px 15px;
+    background-color: #00a6ff3b;
+    color: rgb(6, 43, 188);
+    border-radius: 20px;
 }
 
 .profile-pic img {
@@ -88,7 +100,7 @@ header h2{
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     min-height: 80px;
-    width: 200px;
+    width: 300px;
 }
 
 .color-line {
@@ -173,6 +185,7 @@ header h2{
     color: white;
     line-height: 2.0;
     width: 400px;
+    margin: 40px 0;
 }
 .title {
     font-size: 22px;
@@ -201,3 +214,91 @@ p {
     stroke-width: 2;
     color: #007bff;
 }
+.profileicon{
+    height: 30px;
+    width: 30px;
+    color: #0004ff;
+}
+.profileiconDiv{
+    background-color: #00a6ff3b;
+    padding: 5px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.leaderboardcontainer {
+    /*background: linear-gradient(135deg, #2bb0ed, #0a0f30);/*135deg, #2bb0ed, #0a0f30*/
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    color: black;
+    line-height: 2.0;
+    width: 400px;
+    margin: 40px 0;
+}
+
+.rank-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 16px;
+  }
+  
+  .rank-entry:nth-child(even) {
+    background-color: #f3faff; /* light bluish highlight */
+  }
+  
+  .rank {
+    /*padding: 10px;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    font-weight: bold;
+    color: #00796b
+  }
+
+  .gold-rank {
+    background-color: rgb(255, 215, 0, 0.5);
+    color: rgb(255, 132, 0);
+  }
+  
+  .silver-rank {
+    background-color: silver;
+    color: black;
+  }
+  
+  .bronze-rank {
+    background-color: #cd7f32; /* bronze color */
+    color: white;
+  }
+  .you{
+    background-color: #27ae60;
+  }
+
+  .viewLeaderB{
+    display: flex;
+    justify-content: center;
+    color: blue;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .badgeHeader{
+    font-size: 20px;
+    color: #888;
+    padding: 20px 0;
+  }
+  .badgeContent{
+    /*border: 2px solid black;*/
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 100px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

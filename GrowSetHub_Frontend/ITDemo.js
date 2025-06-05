@@ -175,8 +175,12 @@ async function fetchITMainBusiness(username) {
         });
 
         const data = await response.json();
-        console.log(data);
-        //return data; // Return fetched data
+        if(data.retry){
+            setTimeout(fetchITMainBusiness(username), 1000);
+        }else{
+            console.log(data);
+            //return data; // Return fetched data
+        }
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
         return null;
@@ -195,8 +199,12 @@ async function fetchITUserProjects(username,businessName) {
         });
 
         const data = await response.json();
-        console.log(data);
-        return data;
+        if(data.retry){
+            setTimeout(fetchITUserProjects(username,businessName), 1000);
+        }else{
+            console.log(data);
+            return data;
+        }
     } catch (error) {
         console.error("❌ Error fetching IT user projects:", error);
         return null;
@@ -212,8 +220,12 @@ async function fetchITUserEmployees(username,businessName) {
         });
 
         const data = await response.json();
-        console.log(data);
-        return data;
+        if(data.retry){
+            setTimeout(fetchITUserEmployees(username,businessName), 1000);
+        }else{
+            console.log(data);
+            return data;
+        }
     } catch (error) {
         console.error("❌ Error fetching IT user employees:", error);
         return null;
@@ -229,12 +241,16 @@ async function fetchITProjectsEmployees(username,businessname) {
         });
 
         ProjectsAndEmployees = await response.json();
-        console.log(ProjectsAndEmployees);
-        if(Object.keys(ProjectsAndEmployees).length===0){
-            return;
+        if(ProjectsAndEmployees.retry){
+            setTimeout(fetchITProjectsEmployees(username,businessname), 1000);
         }else{
-            showPrjList();
-            EmployeeListGeneration(ProjectsAndEmployees);       
+            console.log(ProjectsAndEmployees);
+            if(Object.keys(ProjectsAndEmployees).length===0){
+                return;
+            }else{
+                showPrjList();
+                EmployeeListGeneration(ProjectsAndEmployees);       
+            }
         }
     } catch (error) {
         console.error("❌ Error fetching IT projects employees:", error);
@@ -254,10 +270,14 @@ async function fetchITEmployeesFire(username,employeename,businessName) {
             }),
         });
         const data = await response.json();
-        console.log(data);
-        dialogueClose1();
-        location.reload();
-        //return data;
+        if(data.retry){
+            setTimeout(fetchITEmployeesFire(username,employeename,businessName), 1000);
+        }else{
+            console.log(data);
+            dialogueClose1();
+            location.reload();
+            //return data;
+        }
     } catch (error) {
         console.error("❌ Error fetching IT projects employees:", error);
         return null;
@@ -273,10 +293,14 @@ async function fetchPrjinProgress(username,businessname) {
         });
         
         const data = await response.json();
-        console.log("progress",data);
-        document.querySelector(".in-progress h3").textContent = `${data[0].countPrj}`;
-        console.log(document.querySelector(".in-progress h3"));
-        return data;
+        if(data.retry){
+            setTimeout(fetchPrjinProgress(username,businessname), 1000);
+        }else{
+            console.log("progress",data);
+            document.querySelector(".in-progress h3").textContent = `${data[0].countPrj}`;
+            console.log(document.querySelector(".in-progress h3"));
+            return data;
+        }
     } catch (error) {
         console.error("❌ Error fetching IT user projects:", error);
         return null;
@@ -292,10 +316,14 @@ async function fetchPrjComp(username,businessname) {
         });
         
         const data = await response.json();
-        console.log("completed",data);
-        document.querySelector(".completed h3").textContent = `${data[0].countPrj}`;
-        console.log(document.querySelector(".completed h3"))
-        return data;
+        if(data.retry){
+            setTimeout(fetchPrjComp(username,businessname), 1000);
+        }else{
+            console.log("completed",data);
+            document.querySelector(".completed h3").textContent = `${data[0].countPrj}`;
+            console.log(document.querySelector(".completed h3"))
+            return data;
+        }
     } catch (error) {
         console.error("❌ Error fetching IT user projects:", error);
         return null;

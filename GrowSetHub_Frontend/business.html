@@ -25,13 +25,29 @@
         <header>
             <h1>Business</h1>
         </header>
-        <div class="income-box">
+        <!--<div class="income-box">
             <h2>$ 96,691,957.71</h2>
             <p class="income-text">Total income per hour</p>
+        </div>-->
+        <div class="summary-box">
+            <div class="summaryBoxHeader"><i data-lucide="building2"></i> Business Profile</div>
+            <div class="summary-item"  style="display: flex; align-items: center; gap: 100px;">
+                <div>
+                    <div class="summaryItemHeader">Total Income</div>
+                    <div id="total-income" class="cost">$ 0</div>
+                </div>
+            </div>
         </div>
-        <div class="buttons"><button class="start">Start a business</button></div>
-        <h2>My companies</h2>
-        <div class="companies"><div style="color:grey; font-size:20px;text-align:center;padding:100px;">No Company Built Until Now</div></div>
+        <!--<div class="buttons"><button class="start">Start a business</button></div>
+        <h2>My companies</h2>-->
+        <div style="display: flex;align-items: center;justify-content: space-between; margin: 10px 20px;">
+            <h2 class="business-heading">Your Businesses</h2>
+            <button class="show-companies-btn start" onclick="openDialog()"><i data-lucide="circle-plus"></i> Start New Business</button>
+        </div>
+        <div class="companies startingDiv">
+            <div style="font-size: 20px; margin-bottom: 15px;">No Company Built Until Now</div>
+            <div style="color: #908f8f;">Start building your business empire by adding your first company.</div>
+        </div>
     </div>
     <script src="business.js"></script>
 </body>

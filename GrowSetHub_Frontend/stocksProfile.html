@@ -27,24 +27,33 @@
         <h1>Investing</h1>
         <nav>
             <ul>
-                <li><a href="stocksProfile.html" class="active"><i data-lucide="activity" class="icon1"></i> Shares</a></li>
+                <li><a href="stocksProfile.html" class="active"><i data-lucide="activity" class="icon1"></i> Stocks</a></li>
                 <li><a href="estate.html"><i data-lucide="house" class="icon1"></i> Real Estate</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="summary-box">
-    <div class="summary-item">
-        <div id="total-invested" class="cost">$ 4,500</div>
-        Total Invested
+        <div class="summaryBoxHeader"><i data-lucide="trending-up"></i> Stock Profile</div>
+        <div class="summary-item">
+            <div class="summaryItemHeader">Total Value</div>
+            <div id="total-value" class="cost">$ 4,500</div>
+        </div>
+        <div class="summary-item"  style="display: flex; align-items: center; gap: 100px;">
+            <div>
+                <div class="summaryItemHeader">Invested</div>
+                <div id="total-invested" class="cost">$ 6,500</div>
+            </div>
+            <div>
+                <div class="summaryItemHeader">Total Profit/Loss</div>
+                <div id="total-profit" class="cost">$ 6,500</div>
+            </div>
+        </div>
     </div>
-    <div class="summary-item">
-        <div id="total-profit" class="cost">$ 6,500</div>
-        Total Profit/Loss
+    <div style="display: flex;align-items: center;justify-content: space-between; margin: 10px 20px;">
+        <h2 class="investment-heading">Your Investments</h2>
+        <button class="show-companies-btn" onclick="openDialog()"><i data-lucide="circle-plus"></i> Buy New Stocks</button>
     </div>
-    </div>
-    <button class="show-companies-btn" onclick="openDialog()">Show Available Companies</button>
-    <h2 class="investment-heading">Your Investments</h2>
     <div class="investment-table">
         <table>
             <thead>
@@ -58,6 +67,11 @@
             </thead>
             <tbody id="investment-list"></tbody>
         </table>
+    </div>
+    <div class="startingDiv" style="margin: 70px; text-align: center;">
+        <!--<i data-lucide="wallet" style="height: 40px;width: 40px; color: #908f8f;"></i>-->
+        <div style="font-size: 20px; margin-bottom: 15px;">No Stock Investments Yet</div>
+        <div style="color: #908f8f;">Start building your stock portfolio by adding your first investment.</div>
     </div>
   </div>
     <!-- Dialog Box -->

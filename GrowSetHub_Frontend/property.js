@@ -102,17 +102,21 @@ async function fetchGetAllRealEstatesbelongingtoUser(username){
             }),
         });
         properties1 = await response.json();
-        console.log("propertiesList:",properties1);
+        if(properties1.retry){
+            setTimeout(fetchGetAllRealEstatesbelongingtoUser(username), 1000);
+        }else{
+            console.log("propertiesList:",properties1);
 
-        let NetPropValue = 0;
-        properties1.forEach(property => {
-            NetPropValue += Number(property.price);
-        });
-        localStorage.setItem('NetPropVal',JSON.stringify(NetPropValue));
-        updateBalanceTable(NetPropValue);
+            let NetPropValue = 0;
+            properties1.forEach(property => {
+                NetPropValue += Number(property.price);
+            });
+            localStorage.setItem('NetPropVal',JSON.stringify(NetPropValue));
+            updateBalanceTable(NetPropValue);
 
-        renderProperties([...properties1].sort((a, b) => b.price - a.price));
-        //return data;
+            renderProperties([...properties1].sort((a, b) => b.price - a.price));
+            //return data;
+        }
     } catch (error) {
         console.error("❌ Error fetching properties List :", error);
         return null;
@@ -130,9 +134,13 @@ async function sellProperty(username,idx) {
             }),
         });
         const result = await response.json();
-        console.log("Property sold successfully:", result);
-        fetchGetAllRealEstatesbelongingtoUser(credentials);
-        getNumPropUser(credentials);
+        if(result.retry){
+            setTimeout(sellProperty(username,idx), 1000);
+        }else{
+            console.log("Property sold successfully:", result);
+            fetchGetAllRealEstatesbelongingtoUser(credentials);
+            getNumPropUser(credentials);
+        }
     } catch (error) {
         console.error("❌ Error fetching properties List :", error);
         return null;
@@ -149,15 +157,19 @@ async function getNumPropUser(username) {
             }),
         });
         const result = await response.json();
-        console.log("Properties fetched:", result);
-        localStorage.setItem('numOfPropertiesBought', JSON.stringify(result[0].CountProp));
-        if(result[0].CountProp===1){
-            document.querySelector(".total-properties").textContent = `${result[0].CountProp} Property Owned`;
+        if(result.retry){
+            setTimeout(getNumPropUser(username), 1000);
         }else{
-            document.querySelector(".total-properties").textContent = `${result[0].CountProp} Properties Owned`;
+            console.log("Properties fetched:", result);
+            localStorage.setItem('numOfPropertiesBought', JSON.stringify(result[0].CountProp));
+            if(result[0].CountProp===1){
+                document.querySelector(".total-properties").textContent = `${result[0].CountProp} Property Owned`;
+            }else{
+                document.querySelector(".total-properties").textContent = `${result[0].CountProp} Properties Owned`;
+            }
+            console.log(document.querySelector(".total-properties"));
+            return result;
         }
-        console.log(document.querySelector(".total-properties"));
-        return result;
     } catch (error) {
         console.error("❌ Error fetching number of properties :", error);
         return null;
@@ -198,8 +210,12 @@ async function updateBalanceTable(NetPropValue) {
             }),
         });
         const result = await response.json();
-        console.log("value updates successfully:", result);
-        return result;
+        if(result.retry){
+            setTimeout(updateBalanceTable(NetPropValue), 1000);
+        }else{
+            console.log("value updates successfully:", result);
+            return result;
+        }
     } catch (error) {
         console.error("❌ Error fetching properties List :", error);
         return null;

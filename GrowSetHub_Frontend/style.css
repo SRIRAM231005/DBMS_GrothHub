@@ -13,61 +13,92 @@ body{
     width: 100%;
 }
 .heroSection{
-    background-image: linear-gradient(45deg, #00ffea,#00c3ff, #005eff);
+    background-image: linear-gradient(45deg, #02c8de,#00c3ff, #005eff);
     width: 100%;
     height: 500px;
 }
+.topSection{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    font-size: 24px;
+    color: white;
+    font-family: 'Roboto' , sans-serif;
+    font-weight: bold;
+}
+.topicon{
+    height: 30px;
+    width: 30px;
+}
+.headerSection{
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    padding: 50px 100px;
+    font-family: 'Roboto' , sans-serif;
+}
 .amount{
-    position: relative;
-    height: 100%;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .card{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
+    background-color: black;
+    border: 1px solid rgba(138, 137, 137, 0.645);
+    border-radius: 20px;
+    height: 200px;
+    width: 500px;
+    padding: 10px;
+}
+.cardHeader, .cardBody{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+.cardBody{
+    justify-content: left;
+    gap: 30px;
+}
+.cardLogo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .masterLogo{
-    position: absolute;
-    left: 38%;
-    top: 36%;
     width: 50px;
     height: 30px;
-    transform: translate(-50%,-50%);
     border-radius: 20px;
 }
 .balance{
     color: white;
-    position: absolute;
-    left: 49.5%;
-    top: 56%;
-    transform: translate(-50%,-50%);
     font-size: 40px;
 }
 .lablebalance{
     color: rgb(144, 143, 143);
-    position: absolute;
-    left: 45%;
-    top: 47%;
-    transform: translate(-50%,-50%);
     font-size: 20px;
 }
-.pin{
+.pin, .date{
     color: rgb(144, 143, 143);
-    position: absolute;
-    left: 44%;
-    top: 36%;
-    transform: translate(-50%,-50%);
     font-size: 20px;
 }
-.date{
-    color: rgb(144, 143, 143);
-    position: absolute;
-    left: 63%;
-    top: 36%;
-    transform: translate(-50%,-50%);
-    font-size: 20px;
+.dashboard-description {
+    max-width: 800px;
+    margin: 60px auto;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.6;
+    padding: 0 10px;
+    font-family: 'Roboto' , sans-serif;
+    animation: fadeIn 1s ease-in;
+}  
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .container {

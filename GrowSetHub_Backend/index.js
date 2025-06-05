@@ -9,12 +9,23 @@ const cron = require('node-cron');
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-      origin: '*', // Allow frontend origin
+      origin: '*', 
       methods: ["GET", "POST"]
     }
-  });
+});
+ 
   
+/*const pool = require("./db"); 
 
+pool.query("SELECT 1")
+  .then(() => {
+    console.log("✅ MySQL pool connection successful!");
+  })
+  .catch((err) => {
+    console.error("❌ MySQL pool connection failed:", err.message);
+  });*/
+  
+  
 // const pool = require("./db");
 
 // pool.getConnection((err, connection) => {
@@ -26,7 +37,7 @@ const io = new Server(server, {
 //   connection.release();
 // });
 
-const connection = mysql.createConnection({
+/*const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -40,7 +51,7 @@ connection.connect((err) => {
     return;
   }
   console.log("✅ MySQL direct connection successful!");
-});
+});*/
 
 
 app.get("/", (req, res) => {
@@ -72,13 +83,13 @@ io.on('connection', (socket) => {
 // Function to update project status and notify frontend
 function updateProjectStatus() {
     const query = `UPDATE ITUserprojects SET ProjectStatus = 1 WHERE ProjectStatus = 0 AND ProjectCompTime <= NOW()`;
-    console.log("117");
+    //console.log("117");
     connection.query(query, (err, result) => {
-        console.log(result);
+        //console.log(result);
         if (err) {
             console.error('Error updating project status:', err);
         } else {
-            console.log('Updated projects:', result.affectedRows);
+            //console.log('Updated projects:', result.affectedRows);
 
             // Fetch updated projects and send to frontend
             connection.query(`SELECT * FROM ITUserprojects`, (err, projects) => {
@@ -133,20 +144,20 @@ function updateBankStatus(){
                     const riskCap = Number(totalDeposits) * 0.85; // can give loans upto 85% of deposits              
                     const rawLoanDemand = (baseCreditDemand + marketingBoost * levelMultiplier) * interestAppeal;                
                     const totalCredits = Math.min(riskCap, rawLoanDemand); // final amount bounded by deposit pool
-                    console.log("creditInterest",creditInterest);
+                    /*console.log("creditInterest",creditInterest);
                     console.log("competitorCreditAvg",competitorCreditAvg);
                     console.log("interestAppeal",interestAppeal);
                     console.log("rawLoanDemand",rawLoanDemand);
                     console.log("riskCap",riskCap);
                     console.log("totalCredits",totalCredits);               
-                    console.log("totalDeposits",totalDeposits);               
+                    console.log("totalDeposits",totalDeposits);*/               
                     return Math.round(totalCredits);
                 }
                 TotalCredits = calculateTotalCredits(user.DebitInt, user.CreditInt, results3[0].Level, marketingInvestment, Number(user.TotalAmount) + Number(TotalDeposits), results2[0].competitorCreditAvg);
-                console.log("totDep",TotalDeposits);
+                /*console.log("totDep",TotalDeposits);
                 console.log("totCred",TotalCredits);
                 console.log("lvl",results3[0].Level);
-                console.log("amount",user.TotalAmount);
+                console.log("amount",user.TotalAmount);*/
                 const sql4 = `UPDATE BankBusiness SET TotalAmount = TotalAmount + ?, TotalCredits = ?, TotalDeposits = ? WHERE Username = ? and BusinessName = ?`;
                 await connection.promise().query(sql4,[TotalDeposits.toFixed(2) - TotalCredits.toFixed(2) , TotalCredits.toFixed(2), TotalDeposits.toFixed(2), user.Username, user.BusinessName]);                
             })

@@ -25,85 +25,101 @@
 
     <div class="container">
         <div class="containerBody">
-            <div class="maincontainer">
-            <header>
-                <h2>Profile</h2>
-                <div class="profile-pic">
-                    <img src="images/profileimg.png" alt="Profile">
-                </div>
-            </header>
+            <div class="leftcontainer">
+                <header>
+                    <h2>Finantial Profile</h2>
+                    <div>Level 0</div>
+                </header>
 
-            <section class="fortune">
-                <h1>$67.8 B</h1>
-                <p>Fortune</p>
-                <div class="progress-bar">
-                    <div class="bar balance"></div>
-                    <div class="bar business"></div>
-                    <div class="bar real-estate"></div>
-                    <div class="bar stocks"></div>
-                </div>
-            </section>
+                <section class="fortune">
+                    <div style="font-size: 20px; color: #888; padding: 10px; padding-bottom: 0;">Total Fortune</div>
+                    <h1 style="padding: 10px;">$67.8 B</h1>
+                    <div class="progress-bar">
+                        <div class="bar balance"></div>
+                        <div class="bar business"></div>
+                        <div class="bar real-estate"></div>
+                        <div class="bar stocks"></div>
+                    </div>
+                </section>
 
-            <section class="assets">
-                <div class="card">
-                    <span class="color-line balance"></span>
-                    <div class="card-content">
-                        <span>Balance</span>
-                        <p>$ 43.8 B</p>
+                <section class="assets">
+                    <div class="card">
+                        <span class="color-line balance"></span>
+                        <div class="card-content">
+                            <span>Balance</span>
+                            <p>$ 43.8 B</p>
+                        </div>
+                        <div class="profileiconDiv"><i data-lucide="wallet" class="profileicon"></i></div>
                     </div>
-                </div>
-                <div class="card">
-                    <span class="color-line business"></span>
-                    <div class="card-content">
-                        <span>Businesses</span>
-                        <p>$ 7.5 B</p>
+                    <div class="card">
+                        <span class="color-line business"></span>
+                        <div class="card-content">
+                            <span>Businesses</span>
+                            <p>$ 7.5 B</p>
+                        </div>
+                        <div class="profileiconDiv"><i data-lucide="building-2" class="profileicon"></i></div>
                     </div>
-                </div>
-                <div class="card">
-                    <span class="color-line stocks"></span>
-                    <div class="card-content">
-                        <span>Stocks</span>
-                        <p>$ 3,687.13</p>
+                    <div class="card">
+                        <span class="color-line stocks"></span>
+                        <div class="card-content">
+                            <span>Stocks</span>
+                            <p>$ 3,687.13</p>
+                        </div>
+                        <div class="profileiconDiv"><i data-lucide="chart-candlestick" class="profileicon"></i></div>
                     </div>
-                </div>
-                <div class="card">
-                    <span class="color-line real-estate"></span>
-                    <div class="card-content">
-                        <span>Real Estate</span>
-                        <p>$ 7.7 B</p>
+                    <div class="card">
+                        <span class="color-line real-estate"></span>
+                        <div class="card-content">
+                            <span>Real Estate</span>
+                            <p>$ 7.7 B</p>
+                        </div>
+                        <div class="profileiconDiv"><i data-lucide="house" class="profileicon"></i></div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="taxes">
-                <div class="tax-header">
-                    <span class="notification">4</span>
-                </div>
-                <div class="tax-actions">
-                    <img src="images/Taxesimg.png">
-                    <div>
-                        <p style="margin-bottom: 10px;font-size: 20px;">Taxes</p>
-                        <button class="pay-taxes">Pay all taxes</button>
+                <section class="taxes">
+                    <div class="tax-header">
+                        <span class="notification">4</span>
                     </div>
-                </div>
-            </section>
+                    <div class="tax-actions">
+                        <img src="images/Taxesimg.png">
+                        <div>
+                            <p style="margin-bottom: 10px;font-size: 20px;">Taxes</p>
+                            <button class="pay-taxes">Pay all taxes</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="badges">
+                    <div class="badgeHeader">Your Badges</div>
+                    <div class="badgeContent">Coming Soon...</div>
+                </section>
             </div>
-            <div class="statscontainer">
-            <div class="stats-card">
-                <h2 class="title">Statistics</h2>
-                <div class="section">
-                    <p>Number of businesses <span class="value">9</span></p>
-                    <p>Real estate <span class="value">0 of 6</span></p>
-                    <p>Bought out companies <span class="value">0 of 50</span></p>
+
+            <div class="rightcontainer">
+                <div class="statscontainer">
+                    <div class="stats-card">
+                        <h2 class="title">Statistics</h2>
+                        <div class="section">
+                            <p>Number of businesses <span class="value">9</span></p>
+                            <p>Real estate <span class="value">0 of 6</span></p>
+                            <p>Bought out companies <span class="value">0 of 50</span></p>
+                        </div>
+                        <h3 class="subtitle">Earned</h3>
+                        <div class="section">
+                            <p>In business <span class="value">$34.5B</span></p>
+                            <p>On rent <span class="value">$37.4B</span></p>
+                            <p>On dividends <span class="value">$21,642.34</span></p>
+                            <p>On trading <span class="value">-$227.80</span></p>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="subtitle">Earned</h3>
-                <div class="section">
-                    <p>In business <span class="value">$34.5B</span></p>
-                    <p>On rent <span class="value">$37.4B</span></p>
-                    <p>On dividends <span class="value">$21,642.34</span></p>
-                    <p>On trading <span class="value">-$227.80</span></p>
+
+                <div class="leaderboardcontainer">
+                    <h2 class="title" style="display: flex;align-items: center; gap: 10px;"><i data-lucide="trophy" class="icon" style="height: 25px;width: 25px;"></i> Leaderboard</h2>
+                    <div id="leaderboard-content"></div>
+                    <div onclick="window.location.href = 'Leaderboard.html'" class="viewLeaderB">View Leaderboard</div>
                 </div>
-            </div>
             </div>
         </div>
             
