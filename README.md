@@ -48,10 +48,10 @@
 ## 5. Database Schema 
 
 ### ER Diagram
-<img src="./public/images/erdiagram.png" alt="ERDiagram" width="600" />
+<img src="./public/images/erdiagram.jpg" alt="ERDiagram" width="600" />
 
 ### Schema Diagram
-<img src="./public/images/schemadiagram.png" alt="SchemaDiagram" width="600" />
+<img src="./public/images/schemadiagram.jpg" alt="SchemaDiagram" width="600" />
 
 ---
 
