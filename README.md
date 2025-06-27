@@ -55,9 +55,4 @@
 
 ---
 
-## 6. License
-
-This project is licensed under the **MIT License**.
-Feel free to fork and build on top of this with credit.
-
 ```
