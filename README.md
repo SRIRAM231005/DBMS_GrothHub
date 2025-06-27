@@ -47,6 +47,12 @@
 
 ## 5. Database Schema 
 
+### ER Diagram
+<img src="./public/images/erdiagram.png" alt="ERDiagram" width="600" />
+
+### Schema Diagram
+<img src="./public/images/schemadiagram.png" alt="SchemaDiagram" width="600" />
+
 ---
 
 ## 6. License
