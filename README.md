@@ -24,6 +24,9 @@
 * 🔁 **WebSocket integration** for real-time data (planned/future scope)
 * 📈 **Stat Tracking**: Business growth, assets owned, and net worth
 
+### Screenshots:
+
+<img src="./public/images/profile.jpeg"/>
 ---
 
 ## 4. Tech Stack
