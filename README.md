@@ -26,8 +26,6 @@
 
 ### Screenshots:
 
-
-
 <img src="./public/images/login.jpeg" width="600" />
 <img src="./public/images/profile.jpeg" width="600" />
 <img src="./public/images/cardbalance.jpeg" width="600" />
