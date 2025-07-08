@@ -39,6 +39,7 @@
 <img src="./public/images/leaderboard.jpeg" width="600" />
 
 ---
+---
 
 ## 4. Tech Stack
 
