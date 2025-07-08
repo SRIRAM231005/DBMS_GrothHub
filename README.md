@@ -38,6 +38,7 @@
 <img src="./public/images/shares.jpeg" width="600" />
 <img src="./public/images/leaderboard.jpeg" width="600" />
 
+---
 
 ## 4. Tech Stack
 
