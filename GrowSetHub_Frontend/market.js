@@ -44,6 +44,7 @@ fetchGetAllRealEstatesNotbelongingtoUser(credentials);
 
 
 function createPropertyCard(property) {
+    console.log("here",property.price);
     return `
         <div class="property-card">
             <img src="${property.image}" alt="House">
@@ -56,7 +57,7 @@ function createPropertyCard(property) {
                     </div>
                     <div><img src="images/info.png" alt="Property Info" style="width: 24px; height: 24px; object-fit: contain;"></div>
                 </div>
-                <button class="buy-btn buybtn${property.idx}" onclick="showBuyDialog(credentials,${property.idx},${property.price}">Buy</button>
+                <button class="buy-btn buybtn${property.idx}" onclick="showBuyDialog(credentials,${property.idx},${property.price})">Buy</button>
             </div>
         </div>
     `;
@@ -103,7 +104,7 @@ async function fetchGetAllRealEstatesNotbelongingtoUser(username){
         localStorage.setItem('numOfPropertiesNotBought', JSON.stringify(properties1.length));
         
         renderProperties([...properties1].sort((a, b) => b.price - a.price));
-        
+
     } catch (error) {
         console.error("❌ Error fetching properties List :", error);
         return null;
@@ -147,7 +148,7 @@ function closeDialog() {
 
 document.getElementById('yesBtn').addEventListener('click', () => {
   if (tempCredentials !== null && tempIdx !== null && tempPrice !== null) {
-    if (BalanceMoney < price) {
+    if (BalanceMoney < tempPrice) {
       alert("You don't have enough money to buy this property!!");
       closeDialog();
       return;
