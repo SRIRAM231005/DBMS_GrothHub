@@ -168,7 +168,7 @@ async function SettingInterestsRates(DebitInterestRate,CreditInterestRate){
     
         let SettingInterestsRates = await response.json();
         if(SettingInterestsRates.retry){
-            setTimeout(SettingInterestsRates(depositRateSlider.value, creditRateSlider.value), 1000);
+            setTimeout(() => SettingInterestsRates(depositRateSlider.value, creditRateSlider.value), 1000);
         }else{
             console.log('SettingInterestsRates:',SettingInterestsRates);
         }
@@ -191,7 +191,7 @@ async function fetchDisplayBankDetails(){
         });
         let DisplayBankDetails = await response.json();
         if(DisplayBankDetails.retry){
-            setTimeout(fetchDisplayBankDetails(), 1000);
+            setTimeout(() => fetchDisplayBankDetails(), 1000);
         }else{
             console.log('DisplayBankDetails:',DisplayBankDetails);
             UpdateAllDetails(DisplayBankDetails[0]);

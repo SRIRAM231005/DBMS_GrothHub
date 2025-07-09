@@ -18,7 +18,6 @@ async function createPool() {
   });
   console.log("✅ MySQL pool created");
 
-  // Notify all waiters
   waitingResolvers.forEach(resolve => resolve());
   waitingResolvers = [];
   isReconnecting = false;
@@ -50,10 +49,10 @@ async function reconnectToDB() {
   }
 }
 
-// Initial pool creation
+
 createPool();
 
-// Keep-alive ping
+
 setInterval(async () => {
   try {
     await pool.query('SELECT 1');
@@ -66,7 +65,7 @@ setInterval(async () => {
   }
 }, 60 * 1000);
 
-// Export
+
 module.exports = {
   connection: async () => {
     if (isReconnecting || !pool) {

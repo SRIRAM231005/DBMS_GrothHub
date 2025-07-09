@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-let currentData = []; // to hold full data for search filtering
+let currentData = []; 
 
 document.querySelectorAll(".tab-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -57,7 +57,7 @@ function fetchAndDisplayLeaderboard(type) {
   container.innerHTML = `<p style="text-align:center;">Loading ${type} leaderboard...</p>`;
 
   setTimeout(async () => {
-    currentData = await fetchLeaderBoardData(type); // Simulated fetch
+    currentData = await fetchLeaderBoardData(type); 
     displayLeaderboard(currentData);
   }, 500);
 }
@@ -130,11 +130,11 @@ async function fetchLeaderBoardData(type){
 
     let LeaderBoardData = await response.json();
     if(LeaderBoardData.retry){
-      setTimeout(fetchLeaderBoardData(type), 1000);
+      setTimeout(() => fetchLeaderBoardData(type), 1000);
     }else{
       console.log('LeaderBoardData:',LeaderBoardData);
       console.log('LeaderBoard:',LeaderBoardData[type]);
-      return LeaderBoardData[type]; // Return fetched data
+      return LeaderBoardData[type];
     }
   } catch (error) {
       console.error("❌ Error fetching IT main business:", error);
@@ -142,5 +142,4 @@ async function fetchLeaderBoardData(type){
   }
 }
 
-// Load default tab on page load
 fetchAndDisplayLeaderboard("balance");

@@ -4,16 +4,18 @@ body {
     /* height: 100vh; Full screen height */
     /*margin: 0;*/
 }
+ body div{
+    margin-left: 0px;
+ }
 
 .stock-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #1e1e1e;
-    padding: 15px;
-    width: 90%;
-    margin-top: 20px;
-    margin-left: 60px;
+    padding: 20px;
+    /*width: 98%;*/
+    margin-top: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     color: white;

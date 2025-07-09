@@ -2,22 +2,6 @@ require("dotenv").config();
 const mysql = require("mysql2");
 const { connection, reconnectToDB } = require('../db');
 
-// Connect to the database
-/*const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "07Adi@2005thya",
-  database: "db",
-  port: 3306,
-});
-
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: 3306,
-});*/
 
 const pool = connection();
 
@@ -34,6 +18,26 @@ async function ITbusiness(req, res) {
         }
     } catch (err) {
         console.error("❌ Error getting ITbusiness:", err);
+        if (err.code === 'ECONNRESET' || err.fatal) {
+            await reconnectToDB();
+            res.status(503).json({ success: false, retry: true });
+        } else {
+            res.status(500).json({ success: false });
+        }
+    }
+}
+
+async function GetITBusinessDetails(req, res){
+    const pool = await connection();
+    try{
+        const { username,businessName } = req.body;
+        const sql = "SELECT * FROM ITBusiness WHERE Username = ? and BusinessName = ?";
+
+        const [results] = await pool.query(sql, [username,businessName]);
+
+        return res.status(200).json(results);
+    } catch (err) {
+        console.error("❌ Error getting ITBusinessDetails:", err);
         if (err.code === 'ECONNRESET' || err.fatal) {
             await reconnectToDB();
             res.status(503).json({ success: false, retry: true });
@@ -228,7 +232,7 @@ async function InsertITBusiness(req , res){
     const pool = await connection();
     try {
         const { username, businessname } = req.body;
-        const sql = "INSERT INTO ITBusiness (Username, BusinessName) VALUES (?, ?)";
+        const sql = "INSERT INTO ItBusiness (Username, BusinessName) VALUES (?, ?)";
         // const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
 
         const [results] = await pool.query(sql, [username,businessname]);
@@ -252,11 +256,11 @@ async function HireSelectedEmployees(req , res){
     const pool = await connection();
     try {
         const { username, businessname, employeename } = req.body;
-        const sql = "INSERT INTO ITUserEmployees(Username, BusinessName,Employeename) VALUES (?, ?, ?)";
-        // const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
+        const sql = "INSERT INTO ItUserEmployees(Username, BusinessName,Employeename) VALUES (?, ?, ?)";
+        const sql1 = "UPDATE ItBusiness SET Wages = Wages+(SELECT Salary FROM ItEmployees WHERE Employeename = ?) WHERE Username = ?";
 
         const [results] = await pool.query(sql, [username,businessname,employeename]);
-        // await pool.query(sql1, [businessname,username])
+        await pool.query(sql1, [employeename,username])
         //console.log(req.body);
         
         return res.status(200).json(results);
@@ -414,6 +418,7 @@ async function changeStatusCompProj(req , res){
         const { username,businessname,projectname } = req.body;
         const sql = "delete from ITUserProjects where Username = ? and BusinessName = ? and Projectname = ?";
         const sql1 = "update ItUserEmployees set EmpStatusPrj = 0 where Username = ? and BusinessName = ? and Prjname = ?";
+        const sql2 = "update Balances set Business = Business + (select Cost from ItProjects where Projectname = ?) where Username = ?";
 
         const [results] = await pool.query(sql, [username,businessname,projectname]);
         await pool.query(sql1, [username,businessname,projectname])
@@ -455,6 +460,6 @@ async function changeStatusStopProj(req , res){
 }
 
 
-module.exports = {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition,getPrjComp,getPrjProgress,changeStatusCompProj,changeStatusStopProj};
+module.exports = {ITbusiness, GetITBusinessDetails, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, InsertITBusiness, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition,getPrjComp,getPrjProgress,changeStatusCompProj,changeStatusStopProj};
 
  

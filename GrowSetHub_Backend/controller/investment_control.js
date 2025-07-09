@@ -2,22 +2,6 @@ require("dotenv").config();
 const mysql = require("mysql2");
 const { connection, reconnectToDB } = require('../db');
 
-// Connect to the database
-/*const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "07Adi@2005thya",
-  database: "db",
-  port: 3306,
-});
-
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: 3306,
-});*/
 
 const pool = connection();
 
@@ -90,8 +74,11 @@ async function BoughtShares(req , res){
         // const [results1] = await pool.query(sql1);
         // const count = results1[0].total;
 
-        const sql2 = "INSERT INTO UserInvestments (Username, CompanyName, buyPrice, sharesOwned, currentSharePrice) VALUES(?,?,?,?,?)";
-        const [results2] = await pool.query(sql2,[username,companyname,shareprice,selectedshares,shareprice]);
+        const sql1 = "INSERT INTO UserInvestments (Username, CompanyName, buyPrice, sharesOwned, currentSharePrice) VALUES(?,?,?,?,?)";
+        const [results2] = await pool.query(sql1,[username,companyname,shareprice,selectedshares,shareprice]);
+
+        const sql2 = "update Balances set Balance = Balance - ? where Username = ?";
+        await pool.query(sql2, [shareprice*selectedshares,username]);
 
         //console.log(results2);
         
@@ -161,6 +148,9 @@ async function SoldShares(req , res){
             const sql5 = "update UserInvestments set sharesOwned = ? where `index` = ?";
             const [results5] = await pool.query(sql5,[updatedShares,LastIndex]);
         }
+
+        const sql6 = "update Balances set Balance = Balance + ? where Username = ?";
+        await pool.query(sql6, [shareprice*selectedshares,username]);
         
         return res.status(200).json({message: "done sold"});
 

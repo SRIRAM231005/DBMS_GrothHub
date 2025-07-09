@@ -42,7 +42,7 @@ async function fetchBalance(username){
 
         Balance = await response.json();
         if(Balance.retry){
-            setTimeout(fetchBalance(credentials),1000);
+            setTimeout(() => fetchBalance(credentials),1000);
         }else{
             console.log('Balance:',Balance);
             UpdateBalance();

@@ -305,34 +305,75 @@ const BusinessIcons = {
     "Football-Club": "images/footballimage.png",
 }
 
+async function fetchItPrjCount(username,businessname,idx){
+    try {
+        const response = await fetch('http://localhost:8008/ITbusiness/getPrjProgressCount', {
+           method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username:username, businessname:businessname }),
+        });
+        
+        const data1 = await response.json();
+        if(data1.retry){
+            setTimeout(() => fetchPrjinProgress(username,businessname), 1000);
+        }else{
+            const response = await fetch('http://localhost:8008/ITbusiness/getPrjCompCount', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username:username, businessname:businessname }),
+            });
+            
+            const data2 = await response.json();
+            if(data2.retry){
+                setTimeout(() => fetchPrjComp(username,businessname), 1000);
+            }else{
+                let count=0;
+                if(data1.length > 0){
+                    count += data1[0].countPrj;
+                }
+                if(data2.length > 0){
+                    count += data2[0].countPrj;
+                }
+                let progressDiv = document.querySelector(`.business-card${idx} .details .progress`);
+                progressDiv.innerHTML = `📊 ${count}`;
+            }
+        }
+    } catch (error) {
+        console.error("❌ Error fetching IT user projects:", error);
+        return null;
+    }
+}
+
 let a=0;
 function DisplayUserBusiness(index,businessCat,idx,dataArray){
     console.log("Type of Business:",businessCat);
-    let Index;
+    let Index; let prjcount=1;
     dataArray.forEach((ele,inde) =>{
         if(ele.BusinessName === UserBusinesses[idx].Businessname){
             Index = inde;
         }
     })
+    if(businessCat === "IT"){
+        fetchItPrjCount(credentials,dataArray[Index].BusinessName,idx);
+    }
     const container = document.querySelector(".companies");
     if(a===0){
         container.innerHTML = ""; 
         a++;
     }
     //console.log("check11",UserBusinessData[ind]);
-    console.log(index);
-    console.log("check12",UserBusinessData);
+    /*console.log(index);
+    console.log("check12",UserBusinessData);*/
+
     const businessCard = document.createElement("div");
         businessCard.classList.add(`business-card${idx}`);
         businessCard.classList.add('business-card');
         businessCard.innerHTML = `
-            <div class="icon" style="margin-right: 20px;"><img src="${BusinessIcons[businessCat]}" style="height:60px; width:60px;"></div>
+            <div class="icon"><img src="${BusinessIcons[businessCat]}" style="height:60px; width:60px;"></div>
             <div class="details">
                 <div style="font-size:24px;">${dataArray[Index].BusinessName}</div>
-                <div style="margin-top:5px;margin-bottom:20px;">${businessCat}</div>
-                <div class="progress" style="margin-bottom:10px;">
-                    📊 ${businesses2[0].progress}
-                </div>
+                <div style="margin-top:5px;margin-bottom:10px;">${businessCat}</div>
+                <div class="progress" style="margin-bottom:10px;"></div>
                 <div class="earnings">
                     <strong>$${dataArray[Index].Revenue}</strong>
                 </div>

@@ -2,22 +2,6 @@ require("dotenv").config();
 const mysql = require("mysql2");
 const { connection, reconnectToDB } = require('../db');
 
-// Connect to the database
-/*const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "07Adi@2005thya",
-  database: "db",
-  port: 3306,
-});
-
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: 3306,
-});*/
 
 const pool = connection(); 
 
@@ -190,10 +174,9 @@ async function StockBalValUpdate(req , res){
     const pool = await connection();
     try {
         const { username,StockBalVal } = req.body;
-        const sql = "update Balances set Stocks = ? where Username = ?";
+        const sql1 = "update Balances set Stocks = ? where Username = ?";
         
-        const [results] = await pool.query(sql, [StockBalVal,username]);
-        //console.log(results);
+        const [results] = await pool.query(sql1, [StockBalVal,username]);
         return res.status(200).json(results);
 
     } catch (err) {

@@ -4,11 +4,13 @@ const credentials= JSON.parse(localStorage.getItem('credentials'));
 console.log("Cred:",credentials);
 const symbol = StocksCompanyinfo.symbol;
 console.log("Sym:",symbol);
+
+document.getElementById('company-logo').src = StocksCompanyinfo.logo;
 let CurrentSharePrice;
 
 
 async function fetchStockData() {
-    //const symbol = "AAPL"; // Example stock
+    //const symbol = "AAPL";
     const url = `http://localhost:8008/investment/stocks`;
 
     try {
@@ -42,12 +44,10 @@ async function fetchStockData() {
         const lowPrices = quotes.low;
         console.log("low",lowPrices);
 
-        // Convert timestamps to readable format
         const labels = timestamps.map(ts => new Date(ts * 1000).toLocaleTimeString());
-
-        // Prepare candlestick data
+        
         const candlestickData = timestamps.map((ts, i) => ({
-            x: ts * 1000, // Convert to milliseconds for Chart.js
+            x: ts * 1000, 
             o: openPrices[i],
             h: highPrices[i],
             l: lowPrices[i],
@@ -72,7 +72,6 @@ function drawStockChart(data) {
         window.myChart.destroy();
     }
 
-    // Find min and max values for dynamic y-axis scaling
     //const prices = data.map(d => [d.o, d.h, d.l, d.c]).flat();
     //const filteredData = data.filter(entry => entry.value !== null);
     const prices = data
@@ -84,11 +83,20 @@ function drawStockChart(data) {
     let filteredData1 = data.filter(d => d.o !== null && d.o !== undefined && d.c !== null && d.c !== undefined);
     console.log("updated1:",filteredData1);
     console.log("updata:",data);
-    let filteredTimestamps = filteredData.map(d => d.x);
+    let filteredTimestamps = filteredData1.map(d => d.x);
     console.log("times:",filteredTimestamps);
     const formatTime = (timestamp) => {
         return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
+    const processedData = filteredData1.map((entry, idx) => ({
+        x: idx, // use index as x-axis
+        o: entry.o,
+        h: entry.h,
+        l: entry.l,
+        c: entry.c
+    }));
+    const labels = filteredData1.map(d => formatTime(new Date(d.x))); // eg. "12:31"
+    console.log("processed:",processedData);
     console.log("hey:",filteredTimestamps.map(data => formatTime(data)));
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
@@ -98,9 +106,10 @@ function drawStockChart(data) {
     window.myChart = new Chart(ctx, {
         type: "candlestick",
         data: {
+            labels: labels,
             datasets: [{
                 label: "Stock Price",
-                data: filteredData1,
+                data: processedData,
                 borderColor: "black",
                 color: {
                     up: "green",
@@ -113,17 +122,21 @@ function drawStockChart(data) {
             responsive: true,
             scales: {
                 x: {
-                    type: "time",
-                    time: {
+                    type: "category",
+                    /*time: {
                         unit: "minute",
                         tooltipFormat: "HH:mm",
                         displayFormats: {
                             minute: "HH:mm"
                         }
-                    },
+                    },*/
                     ticks: {
+                        source: "data",
                         autoSkip: true,
-                        maxTicksLimit: 10 // Ensures even spacing
+                        maxTicksLimit: 10,
+                        font:{
+                            size:14,
+                        }
                     }
                     //type: "category", // Use categorical scale instead of time
                     //labels: filteredTimestamps.map(formatTime) // Convert timestamps to readable labels
@@ -143,10 +156,10 @@ function drawStockChart(data) {
         }
     });
 
-    console.log("✅ Chart rendered successfully!");
+    console.log("Chart rendered successfully!");
 }
 
-// Fetch and display stock chart
+
 fetchStockData();
 //fetchCompanyData();
 
@@ -169,21 +182,18 @@ fetchStockData();
 }*/
 
 function displayDetails(){
-    // Fetch elements using their IDs
     const companyName = document.getElementById("company-name");
     const companyValuation = document.getElementById("company-valuation");
     const currentPrice = document.getElementById("current-price");
     const totalCost = document.getElementById("total-cost");
     const profit = document.getElementById("profit");
 
-    // Update the content dynamically
     companyName.textContent = StocksCompanyinfo.company;
     companyValuation.textContent = `Valuation: $${StocksCompanyinfo.valuation}`;
     currentPrice.textContent = `$${CurrentSharePrice}`;
     totalCost.textContent = `${StocksCompanyinfo.totalPrice}`;
-    profit.textContent = `${StocksCompanyinfo.profit}`;  // Assuming some profit calculation
+    profit.textContent = `${StocksCompanyinfo.profit}`;  
 
-    // Optionally, change profit text color based on positive or negative value
     //const profitValue = parseFloat(profit.textContent.replace("$", ""));
     if (StocksCompanyinfo.profitClass === "profit") {
         profit.style.color = "green";
@@ -202,22 +212,18 @@ function displayDetails(){
 let selectedShares = null;
 let actionType = "";
 
-// Function to create and show dialog
+
 function openDialog(type) {
     actionType = type;
     console.log(type);
 
-    
-    // Remove any existing dialog
     const existingDialog = document.getElementById("share-dialog");
     if (existingDialog) existingDialog.remove();
 
-    // Create dialog container
     const dialog = document.createElement("div");
     dialog.id = "share-dialog";
     dialog.className = "dialog";
 
-    // Dialog content
     dialog.innerHTML = `
         <div class="dialog-content">
             <h2>${type === "buy" ? "Buy Shares" : "Sell Shares"}</h2>
@@ -236,24 +242,20 @@ function openDialog(type) {
         </div>
     `;
 
-    // Append dialog to body and display it
     document.body.appendChild(dialog);
     dialog.style.display = "block";
 }
 
-// Function to select shares
 function selectShares(element, shares) {
     document.querySelectorAll(".share-box").forEach(box => box.classList.remove("selected"));
     element.classList.add("selected");
     selectedShares = shares;
 }
 
-// Function to close dialog
 function closeDialog() {
     document.getElementById("share-dialog").remove();
 }
 
-// Function to confirm action
 function confirmAction(type) {
     if (selectedShares !== null) {
         /*let Amount = CurrentSharePrice * selectedShares;
@@ -265,6 +267,7 @@ function confirmAction(type) {
         }
         alert(`${actionType.toUpperCase()} ${selectedShares} shares`);
         closeDialog();
+        window.location.href = 'stocksProfile.html';
     } else {
         alert("Please select the number of shares.");
     }
@@ -286,7 +289,7 @@ async function BoughtShares(shareprice,selectedshares){
 
         const data = await response.json();
         if(data.retry){
-            setTimeout(BoughtShares(shareprice,selectedshares),1000);
+            setTimeout(() => BoughtShares(shareprice,selectedshares),1000);
         }else{
             console.log(data);
             //return data;
@@ -312,7 +315,7 @@ async function SoldShares(shareprice,selectedshares){
 
         const data = await response.json();
         if(data.retry){
-            setTimeout(SoldShares(shareprice,selectedshares),1000);
+            setTimeout(() => SoldShares(shareprice,selectedshares),1000);
         }else{
             console.log(data);
             //return data;

@@ -13,49 +13,10 @@ const io = new Server(server, {
       methods: ["GET", "POST"]
     }
 });
- 
-  
-/*const pool = require("./db"); 
-
-pool.query("SELECT 1")
-  .then(() => {
-    console.log("✅ MySQL pool connection successful!");
-  })
-  .catch((err) => {
-    console.error("❌ MySQL pool connection failed:", err.message);
-  });*/
-  
-  
-// const pool = require("./db");
-
-// pool.getConnection((err, connection) => {
-//   if (err) {
-//     console.error("❌ Database connection failed:", err.message);
-//     return;
-//   }
-//   console.log("✅ Connected to MySQL database!");
-//   connection.release();
-// });
-
-/*const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: 3306,
-});
-
-connection.connect((err) => {
-  if (err) {
-    console.error("❌ MySQL direct connection failed:", err.message);
-    return;
-  }
-  console.log("✅ MySQL direct connection successful!");
-});*/
 
 
 app.get("/", (req, res) => {
-    res.send("Socket.io Server is Running! 🚀");
+    res.send("Socket.io Server is Running!");
 });
 
 let clients = [];
@@ -69,18 +30,16 @@ io.on('connection', (socket) => {
         updateProjectStatus();
     });
     cron.schedule('* * * * *', () => {
-        console.log('⏰ Running hourly job to update bank status...');
+        console.log('Running hourly job to update bank status...');
         updateBankStatus();
     });    
 
-    // Handle client disconnection
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
         clients = clients.filter(client => client.id !== socket.id);
     });
 });
 
-// Function to update project status and notify frontend
 function updateProjectStatus() {
     const query = `UPDATE ITUserprojects SET ProjectStatus = 1 WHERE ProjectStatus = 0 AND ProjectCompTime <= NOW()`;
     //console.log("117");
@@ -91,10 +50,9 @@ function updateProjectStatus() {
         } else {
             //console.log('Updated projects:', result.affectedRows);
 
-            // Fetch updated projects and send to frontend
             connection.query(`SELECT * FROM ITUserprojects`, (err, projects) => {
                 if (!err) {
-                    io.emit('updateProjects', projects); // Send updated data to frontend
+                    io.emit('updateProjects', projects);
                 }
             });
         }
@@ -141,9 +99,9 @@ function updateBankStatus(){
                     const marketingBoost = Math.log10(marketingInvestment + 10) * 80;
                     const levelMultiplier = 1 + Math.pow(level, 1.3) * 0.08;
                     const interestAppeal = Math.max(1, (Number(competitorCreditAvg) / Number(creditInterest) + 0.5));
-                    const riskCap = Number(totalDeposits) * 0.85; // can give loans upto 85% of deposits              
+                    const riskCap = Number(totalDeposits) * 0.85;              
                     const rawLoanDemand = (baseCreditDemand + marketingBoost * levelMultiplier) * interestAppeal;                
-                    const totalCredits = Math.min(riskCap, rawLoanDemand); // final amount bounded by deposit pool
+                    const totalCredits = Math.min(riskCap, rawLoanDemand);
                     /*console.log("creditInterest",creditInterest);
                     console.log("competitorCreditAvg",competitorCreditAvg);
                     console.log("interestAppeal",interestAppeal);
@@ -167,12 +125,11 @@ function updateBankStatus(){
                     io.emit('updateBanks', updatedUsers);
                 }
             });        
-            //io.emit('updateBanks', user); // Send updated data to frontend
+            //io.emit('updateBanks', user);
         }
     });
 }
 
-// Run every 5 minutes to update project status
 //cron.schedule('*/10 * * * * *', () => {
 /*    console.log('Checking and updating project status...');
     updateProjectStatus();

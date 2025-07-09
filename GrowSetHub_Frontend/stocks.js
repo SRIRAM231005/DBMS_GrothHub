@@ -34,11 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function selectInvestment(type) {
-    // Remove 'active' from both cards
     document.getElementById("stocksCard").classList.remove("active");
     document.getElementById("realEstateCard").classList.remove("active");
-
-    // Add 'active' to the selected one
     if (type === "stocks") {
         document.getElementById("stocksCard").classList.add("active");
     } else {
@@ -58,7 +55,7 @@ async function fetchCompaniesWithStocks(){
         const response = await fetch('http://localhost:8008/investment/CompaniesWithStocks');
         CompaniesWithStocks = await response.json();
         if(CompaniesWithStocks.retry){
-            setTimeout(fetchCompaniesWithStocks(), 1000);
+            setTimeout(() => fetchCompaniesWithStocks(), 1000);
         }else{
             console.log(CompaniesWithStocks);
         }
@@ -81,19 +78,17 @@ async function fetchTotalBoughtPrice(){
         });
         TotalBoughtPrice = await response.json();
         if(TotalBoughtPrice.retry){
-            setTimeout(fetchTotalBoughtPrice(), 1000);
+            setTimeout(() => fetchTotalBoughtPrice(), 1000);
         }else{
-            console.log("totot",TotalBoughtPrice);
-            /*document.getElementById("total-invested").textContent = "$ " + formatNumber(TotalBoughtPrice[0].TotalBought);
-            console.log("data",JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
-            console.log("TotalProfit_Lossooolloaloa",TotalProfit_Loss);*/
-            updateStocksBalanceinBalTable(JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
+            console.log("totot",TotalBoughtPrice[0].TotalBought);
+            //updateStocksBalanceinBalTable(JSON.stringify(/*Number(TotalProfit_Loss) +*/ Number(TotalBoughtPrice[0].TotalBought)));
         }
     } catch (error) {
         console.error("❌ Error fetching data:", error);
         return null;
     }
 }
+
 // localStorage.setItem("TotalProfit_Loss", JSON.stringify(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought)));
 async function updateStocksBalanceinBalTable(StockBalVal){
     try {
@@ -107,7 +102,7 @@ async function updateStocksBalanceinBalTable(StockBalVal){
         });
         const resultBal = await response.json();
         if(resultBal.retry){
-            setTimeout(updateStocksBalanceinBalTable(StockBalVal), 1000);
+            setTimeout(() => updateStocksBalanceinBalTable(StockBalVal), 1000);
         }else{
             console.log(resultBal);
         }
@@ -128,7 +123,7 @@ async function fetchUserInvestments(username){
         });
         UserInvestmentCompanies = await response.json();
         if(UserInvestmentCompanies.retry){
-            setTimeout(fetchUserInvestments(username), 1000);
+            setTimeout(() => fetchUserInvestments(username), 1000);
         }else{
             console.log(UserInvestmentCompanies);
             DispUserInvestedTotData();
@@ -141,17 +136,19 @@ async function fetchUserInvestments(username){
 }
 
 fetchCompaniesWithStocks();
+fetchTotalBoughtPrice();
 fetchUserInvestments(credentials);
 
-setTimeout(() => {
-    /*console.log("TotalProfit_Loss112", TotalProfit_Loss);
+/*setTimeout(() => {
+    console.log("TotalProfit_Loss112", TotalProfit_Loss);
     if(TotalProfit_Loss){
         document.getElementById("total-profit").textContent = "$ " + formatNumber(TotalProfit_Loss);
     }else{
         document.getElementById("total-profit").textContent = "$ 0";
-    }*/
-    fetchTotalBoughtPrice();
+    }
+    console.log("we reached here");
     if(TotalBoughtPrice && TotalProfit_Loss){
+        console.log("we reached here",TotalBoughtPrice[0].TotalBought);
         document.getElementById("total-invested").textContent = "$ " + formatNumber(TotalBoughtPrice[0].TotalBought);
         document.getElementById("total-profit").textContent = "$ " + formatNumber(TotalProfit_Loss);
         document.getElementById("total-value").textContent = "$ " + formatNumber(TotalProfit_Loss + TotalBoughtPrice[0].TotalBought);
@@ -160,17 +157,32 @@ setTimeout(() => {
         document.getElementById("total-profit").textContent = "- -";
         document.getElementById("total-value").textContent = "$ 0";
     }
-}, 1000);  // Delay in milliseconds
+}, 1000);   Delay in milliseconds*/
 
-
+function updateValuesInHeroSection(profitLoss){
+    TotalProfit_Loss = profitLoss;
+    console.log("we ach",TotalBoughtPrice);
+    if(TotalBoughtPrice[0].TotalBought != null){
+        document.getElementById("total-invested").textContent = "$ " + formatNumber(TotalBoughtPrice[0].TotalBought);
+        document.getElementById("total-profit").textContent = "$ " + formatNumber(TotalProfit_Loss);
+        document.getElementById("total-value").textContent = "$ " + formatNumber(Number(TotalProfit_Loss) + Number(TotalBoughtPrice[0].TotalBought));
+    }else{
+        console.log("we reached here");
+        document.getElementById("total-invested").textContent = "$ 0";
+        document.getElementById("total-profit").textContent = "- -";
+        document.getElementById("total-value").textContent = "$ 0";
+    }
+}
 
 let UserInvestedTotalData = [];
 let UserNotInvestedTotalData = [];
 let CurrentPrice;
 function DispUserInvestedTotData(){
+    let Profits; let flag = 0; let totalProfitsLoss = 0;
     UserInvestmentCompanies.forEach((element) =>{
-        let Logo, symbol, valuation, Profits, closePrice, profitClass, totalPrice;
+        let Logo, symbol, valuation, closePrice, profitClass, totalPrice;
         let buyPrice = element.buyPrice;
+        flag = 1;
         //console.log(buyPrice);
         CompaniesWithStocks.forEach((element1) =>{
             if(element.CompanyName === element1.CompanyName){
@@ -183,8 +195,9 @@ function DispUserInvestedTotData(){
             closePrice = price || 0; 
             closePrice = Number(closePrice.toFixed(3));
             CurrentPrice=closePrice;
-            Profits = ((closePrice * element.sharesOwned) - element.buyPrice);
+            Profits = ((closePrice * element.sharesOwned) - (element.buyPrice * element.sharesOwned));
             Profits = Number(Profits.toFixed(3));
+            console.log("closePrice",closePrice);
             //buyPrice = Number(buyPrice.toFixed(2));
             totalPrice = Number(buyPrice) + Number(Profits);
             console.log(totalPrice);
@@ -200,8 +213,10 @@ function DispUserInvestedTotData(){
                 profit: `$${Profits}`,
                 profitClass: profitClass
             });
-            TotalProfit_Loss += Profits;
-            console.log("TotalProfit_Losslakalaka",TotalProfit_Loss);
+            totalProfitsLoss += Profits;
+            console.log("TotalProfit_Losslakalaka",totalProfitsLoss);
+            updateValuesInHeroSection(totalProfitsLoss);
+            updateStocksBalanceinBalTable(JSON.stringify(Number(totalProfitsLoss) + Number(TotalBoughtPrice[0].TotalBought)));
     
             console.log("detailed info user",UserInvestedTotalData);
             loadInvestments();
@@ -210,6 +225,10 @@ function DispUserInvestedTotData(){
             console.error("❌ Error fetching stock data:", error);
         });
     });
+    if(flag === 0){
+        updateValuesInHeroSection(Profits);
+        updateStocksBalanceinBalTable(JSON.stringify(Profits + Number(TotalBoughtPrice[0].TotalBought)));
+    }
 }
 
 function DisplayCompaniesNotInvested(){
@@ -245,7 +264,6 @@ function DisplayCompaniesNotInvested(){
 
 
 async function fetchStockData1(symbol){
-    //const symbol = "AAPL"; // Example stock
     const url = `http://localhost:8008/investment/stocks`;
 
     try {
@@ -264,10 +282,9 @@ async function fetchStockData1(symbol){
         }
 
         const chartData = data.chart.result[0];
-            const quotes = chartData.indicators.quote[0];
-            const closePrices = quotes.close;
-            return closePrices[closePrices.length-1];
-            //console.log("close",closePrices);
+        const quotes = chartData.indicators.quote[0];
+        const closePrices = quotes.close;
+        return closePrices[closePrices.length-1];
 
     } catch (error) {
         console.error("Error fetching stock data:", error);
@@ -275,7 +292,7 @@ async function fetchStockData1(symbol){
 
 }
 
-const investments = [
+/*const investments = [
     {
         logo: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
         company: "Tesla",
@@ -300,15 +317,15 @@ const investments = [
         profit: "+₹3,500",
         profitClass: "profit"
     }
-];
+];*/
 
-const companies = [
+/*const companies = [
     { name: "Amazon", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
     { name: "Microsoft", logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" },
     { name: "Netflix", logo: "https://upload.wikimedia.org/wikipedia/commons/6/69/Netflix_logo.svg" },
     { name: "Meta", logo: "https://upload.wikimedia.org/wikipedia/commons/8/89/Meta_Logo.svg" },
     { name: "Intel", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Intel_logo_%282020%2C_dark_blue%29.svg" }
-];
+];*/
 
 function loadInvestments() {
     const investmentList = document.getElementById("investment-list");
@@ -370,6 +387,7 @@ function closeDialog() {
 //window.onload = loadInvestments;
 
 function formatNumber(value) {
+    console.log("we have reached here");
     let num = parseFloat(value); 
     if (isNaN(num)) return value; 
     if (Math.abs(num) >= 1e9) {

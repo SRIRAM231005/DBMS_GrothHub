@@ -33,9 +33,9 @@ socket.on('updateProjects', (projects) => {
         
 let BusinessDetails;
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("22");
     BusinessDetails = JSON.parse(localStorage.getItem('UserBusinessInfo'));
-    console.log("1st log",BusinessDetails); 
+    console.log("1st log",BusinessDetails);
+    fetchCompanyData(BusinessDetails); 
     if (BusinessDetails) {
         document.querySelector(".logo h1").textContent = BusinessDetails.BusinessName;
         document.querySelector(".finance-card h2").textContent = BusinessDetails.Wages;
@@ -46,7 +46,30 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 BusinessDetails = JSON.parse(localStorage.getItem('UserBusinessInfo'));
 
-console.log("check12",BusinessDetails);  
+//console.log("check12",BusinessDetails);
+
+async function fetchCompanyData(BusinessData){
+    try{
+        const response = await fetch("http://localhost:8008/ITbusiness/GetITBusinessDetails",{
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: credentials,
+                businessName: BusinessData.BusinessName,
+            })
+        });
+        const data = await response.json();
+        if(data.retry){
+            setTimeout(() => fetchCompanyData(BusinessData), 1000);
+        }else{
+            console.log(data);
+            document.querySelector(".finance-card h2").textContent = `$ ${data[0].Revenue}`;
+            document.querySelector(".finance-card h3").textContent = `$ ${data[0].Wages}`;
+        }
+    }catch(error){
+        console.error("Error fetching business data:", error);
+    }
+}
         
 document.addEventListener("DOMContentLoaded", function () {
     const navItems = [
@@ -80,23 +103,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// Employee Data Array
 let employees = [
-    { name: "Junior Developers", salary: "57,606", count: 16, icon: "images/juniorDev.png", color: "green" },
-    { name: "Middle Developers", salary: "316,005", count: 3, icon: "images/middleDev.png", color: "blue" },
+    { name: "Junior Developers", salary: "0", count: 16, icon: "images/juniorDev.png", color: "green" },
+    { name: "Middle Developers", salary: "0", count: 3, icon: "images/middleDev.png", color: "blue" },
     { name: "Senior Developers", salary: "0", count: 0, icon: "images/seniorDev.png", color: "gold" },
-    { name: "Designers", salary: "71,861", count: 3, icon: "images/designer.png", color: "teal" },
-    { name: "Team Leaders", salary: "415,075", count: 1, icon: "images/teamLeader.png", color: "dodgerblue" },
-    { name: "Testers", salary: "525,293", count: 2, icon: "images/tester.png", color: "lightblue" }
+    { name: "Designers", salary: "0", count: 3, icon: "images/designer.png", color: "teal" },
+    { name: "Team Leaders", salary: "0", count: 1, icon: "images/teamLeader.png", color: "dodgerblue" },
+    { name: "Testers", salary: "0", count: 2, icon: "images/tester.png", color: "lightblue" }
 ];
 
 
 function EmployeeListGeneration(ProjectsAndEmployees){
     
-    let roleCounts = {}; // Object to store role counts
+    let roleCounts = {}; 
 
         ProjectsAndEmployees.Employees.forEach((emp) => {
-            let role = emp.Role; // Assuming `role` is the key storing employee role
+            let role = emp.Role; 
             console.log('role:',emp.Role);
             if (roleCounts[role]) {
                 roleCounts[role]++;
@@ -105,12 +127,11 @@ function EmployeeListGeneration(ProjectsAndEmployees){
             }
         });
 
-        // Step 2: Update the `employees` array with these counts
         employees.forEach((emp) => {
             if (roleCounts[emp.name]) {
-                emp.count = roleCounts[emp.name]; // Update count
+                emp.count = roleCounts[emp.name]; 
             } else {
-                emp.count = 0; // If no employees in this role, set count to 0
+                emp.count = 0; 
             }
         });
 
@@ -176,13 +197,12 @@ async function fetchITMainBusiness(username) {
 
         const data = await response.json();
         if(data.retry){
-            setTimeout(fetchITMainBusiness(username), 1000);
+            setTimeout(() => fetchITMainBusiness(username), 1000);
         }else{
             console.log(data);
-            //return data; // Return fetched data
         }
     } catch (error) {
-        console.error("❌ Error fetching IT main business:", error);
+        console.error("Error fetching IT main business:", error);
         return null;
     }
 }
@@ -200,7 +220,7 @@ async function fetchITUserProjects(username,businessName) {
 
         const data = await response.json();
         if(data.retry){
-            setTimeout(fetchITUserProjects(username,businessName), 1000);
+            setTimeout(() => fetchITUserProjects(username,businessName), 1000);
         }else{
             console.log(data);
             return data;
@@ -221,7 +241,7 @@ async function fetchITUserEmployees(username,businessName) {
 
         const data = await response.json();
         if(data.retry){
-            setTimeout(fetchITUserEmployees(username,businessName), 1000);
+            setTimeout(() => fetchITUserEmployees(username,businessName), 1000);
         }else{
             console.log(data);
             return data;
@@ -242,7 +262,7 @@ async function fetchITProjectsEmployees(username,businessname) {
 
         ProjectsAndEmployees = await response.json();
         if(ProjectsAndEmployees.retry){
-            setTimeout(fetchITProjectsEmployees(username,businessname), 1000);
+            setTimeout(() => fetchITProjectsEmployees(username,businessname), 1000);
         }else{
             console.log(ProjectsAndEmployees);
             if(Object.keys(ProjectsAndEmployees).length===0){
@@ -271,7 +291,7 @@ async function fetchITEmployeesFire(username,employeename,businessName) {
         });
         const data = await response.json();
         if(data.retry){
-            setTimeout(fetchITEmployeesFire(username,employeename,businessName), 1000);
+            setTimeout(() => fetchITEmployeesFire(username,employeename,businessName), 1000);
         }else{
             console.log(data);
             dialogueClose1();
@@ -294,12 +314,14 @@ async function fetchPrjinProgress(username,businessname) {
         
         const data = await response.json();
         if(data.retry){
-            setTimeout(fetchPrjinProgress(username,businessname), 1000);
+            setTimeout(() => fetchPrjinProgress(username,businessname), 1000);
         }else{
             console.log("progress",data);
-            document.querySelector(".in-progress h3").textContent = `${data[0].countPrj}`;
-            console.log(document.querySelector(".in-progress h3"));
-            return data;   
+            if(data.length > 0){
+                document.querySelector(".in-progress h3").textContent = `${data[0].countPrj}`;
+                console.log(document.querySelector(".in-progress h3"));
+            }
+            //return data;   
         }
     } catch (error) {
         console.error("❌ Error fetching IT user projects:", error);
@@ -317,12 +339,14 @@ async function fetchPrjComp(username,businessname) {
         
         const data = await response.json();
         if(data.retry){
-            setTimeout(fetchPrjComp(username,businessname), 1000);
+            setTimeout(() => fetchPrjComp(username,businessname), 1000);
         }else{
             console.log("completed",data);
-            document.querySelector(".completed h3").textContent = `${data[0].countPrj}`;
-            console.log(document.querySelector(".completed h3"))
-            return data;
+            if(data.length > 0){
+                document.querySelector(".completed h3").textContent = `${data[0].countPrj}`;
+                console.log(document.querySelector(".completed h3"))
+                //return data;
+            }
         }
     } catch (error) {
         console.error("❌ Error fetching IT user projects:", error);
@@ -353,7 +377,7 @@ async function fetchITEmployeesHire(username,businessname,empRole){
         });
         AllEmp = await response.json();
         if(AllEmp.retry){
-            setTimeout(fetchITEmployeesHire(username,businessname,empRole), 1000);
+            setTimeout(() => fetchITEmployeesHire(username,businessname,empRole), 1000);
         }else{
             console.log("hire:",AllEmp);
             dialogueClose1();
@@ -380,7 +404,7 @@ async function fetchEmpSelHire(username,businessname,employeename){
         });
         HiredEmp = await response.json();
         if(HiredEmp.retry){
-            setTimeout(fetchEmpSelHire(username,businessname,employeename), 1000);
+            setTimeout(() => fetchEmpSelHire(username,businessname,employeename), 1000);
         }else{
             console.log(HiredEmp);
             //return data;
@@ -453,10 +477,10 @@ function showPrjList(){
 }
 
 function dialogueClose() {
-    const dialog = document.querySelector('.d1'); // Select the dialog element
+    const dialog = document.querySelector('.d1'); 
     if (dialog) {
-        dialog.close(); // Close the dialog
-        dialog.remove(); // Remove the dialog from the DOM to clean up
+        dialog.close(); 
+        dialog.remove(); 
     }
 }
 
@@ -533,10 +557,10 @@ function EmployeeDivFunction(count){
 }
 
 function dialogueClose1() {
-    const dialog = document.querySelector('.d2'); // Select the dialog element
+    const dialog = document.querySelector('.d2'); 
     if (dialog) {
-        dialog.close(); // Close the dialog
-        dialog.remove(); // Remove the dialog from the DOM to clean up
+        dialog.close(); 
+        dialog.remove(); 
     }
 }
 
@@ -609,7 +633,6 @@ function EmployeeHireDialog(){
                 fetchEmpSelHire(credentials,BusinessDetails.BusinessName,empName);
             })
             location.reload();
-            // Close the dialog
             dialog.close();
         });
 
@@ -646,7 +669,6 @@ document.querySelectorAll(".project").forEach(item => {
         fetchPrjComp(credentials,BusinessDetails.BusinessName);
       });
   
-      // Tab switching logic
       dialog.querySelectorAll(".tabButton").forEach(button => {
         button.addEventListener("click", () => {
           dialog.querySelectorAll(".tabButton").forEach(btn => btn.classList.remove("active"));
@@ -664,7 +686,6 @@ document.querySelectorAll(".project").forEach(item => {
         });
       });
   
-      // Auto-load ongoing on open
       loadOngoingProjects(dialog);
   
       if (!dialog.open) dialog.showModal();
@@ -675,18 +696,15 @@ document.querySelectorAll(".project").forEach(item => {
 // completedContainer.querySelectorAll(`.rbtn${rec.Projectname}`).forEach(btn => {
 //   btn.addEventListener("click", () => {
 //     alert("Reward Collected!", `${rec.Projectname}`);
-//     // backend call to collect reward
 //   });\
 
 
 
 //DEMO CODE
-// Fetch ongoing projects
 function loadOngoingProjects(dialog) {
     const ongoingContainer = dialog.querySelector("#ongoing");
     ongoingContainer.innerHTML = "Loading ongoing projects...";
 
-    // Replace this fetch with actual backend call
     setTimeout(() => {
       ongoingContainer.innerHTML = ``;
       prjProgList.forEach(rec =>{
@@ -701,7 +719,6 @@ function loadOngoingProjects(dialog) {
         //   ongoingContainer.querySelectorAll(".stopBtn").forEach(btn => {
         //     btn.addEventListener("click", () => {
         //       alert("Project stopped!");
-        //       // backend call to stop project
         //     });
         //   });
         document.getElementById('ongoing').appendChild(prjBox);
@@ -729,12 +746,11 @@ document.getElementById('yesBtn').addEventListener('click', () => {
     fetchPrjinProgress(credentials,BusinessDetails.BusinessName);
 });
 
-  // Fetch completed projects
+  
 function loadCompletedProjects(dialog) {
     const completedContainer = dialog.querySelector("#completed");
     completedContainer.innerHTML = "Loading completed projects...";
 
-    // Replace this fetch with actual backend call
     setTimeout(() => {
         completedContainer.innerHTML = ``;
         prjCompList.forEach(rec =>{
@@ -762,7 +778,7 @@ async function fetchgetPrjinProgress(username,businessname) {
 
         prjProgList = await response.json();
         if(prjProgList.retry){
-            setTimeout(fetchgetPrjinProgress(username,businessname), 1000);
+            setTimeout(() => fetchgetPrjinProgress(username,businessname), 1000);
         }else{
             console.log("prg list",prjProgList);
             return prjProgList;
@@ -783,7 +799,7 @@ async function fetchgetPrjCompleted(username,businessname) {
 
         prjCompList = await response.json();
         if(prjCompList.retry){
-            setTimeout(fetchgetPrjCompleted(username,businessname), 1000);
+            setTimeout(() => fetchgetPrjCompleted(username,businessname), 1000);
         }else{
             console.log("comp list",prjCompList);
             return prjCompList;
@@ -806,7 +822,7 @@ async function updateStatusPrjandEmp(username,businessname,projectname) {
 
         const data = await response.json();
         if(data.retry){
-            setTimeout(updateStatusPrjandEmp(username,businessname,projectname), 1000);
+            setTimeout(() => updateStatusPrjandEmp(username,businessname,projectname), 1000);
         }else{
             console.log("updateStatus",data);
             fetchgetPrjCompleted(username,BusinessDetails.BusinessName);

@@ -41,7 +41,6 @@ const filterButtons = document.querySelectorAll('.filter-btn');
 fetchGetAllRealEstatesbelongingtoUser(credentials);
 getNumPropUser(credentials);
 
-// Function to create property card HTML
 function createPropertyCard(property) {
     return `
         <div class="property-card">
@@ -61,7 +60,6 @@ function createPropertyCard(property) {
     `;
 }
 
-// Function to render property list
 function renderProperties(sortedProperties) {
     propertyList.innerHTML = sortedProperties.map(property => 
         createPropertyCard(property)
@@ -71,12 +69,8 @@ function renderProperties(sortedProperties) {
 
 filterButtons.forEach(button => {
     button.addEventListener('click', () => {
-        // Remove active class from all buttons
         filterButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
         button.classList.add('active');
-
-        // Sort properties based on button text
         const sortedProperties = [...properties1].sort((a, b) => {
             if (button.textContent === 'Expensive first') {
                 return b.price - a.price;
@@ -85,7 +79,6 @@ filterButtons.forEach(button => {
             }
         });
 
-        // Render sorted properties
         renderProperties(sortedProperties);
     });
 });
@@ -103,7 +96,7 @@ async function fetchGetAllRealEstatesbelongingtoUser(username){
         });
         properties1 = await response.json();
         if(properties1.retry){
-            setTimeout(fetchGetAllRealEstatesbelongingtoUser(username), 1000);
+            setTimeout(() => fetchGetAllRealEstatesbelongingtoUser(username), 1000);
         }else{
             console.log("propertiesList:",properties1);
 
@@ -115,7 +108,7 @@ async function fetchGetAllRealEstatesbelongingtoUser(username){
             updateBalanceTable(NetPropValue);
 
             renderProperties([...properties1].sort((a, b) => b.price - a.price));
-            //return data;
+
         }
     } catch (error) {
         console.error("❌ Error fetching properties List :", error);
@@ -135,7 +128,7 @@ async function sellProperty(username,idx) {
         });
         const result = await response.json();
         if(result.retry){
-            setTimeout(sellProperty(username,idx), 1000);
+            setTimeout(() => sellProperty(username,idx), 1000);
         }else{
             console.log("Property sold successfully:", result);
             fetchGetAllRealEstatesbelongingtoUser(credentials);
@@ -158,7 +151,7 @@ async function getNumPropUser(username) {
         });
         const result = await response.json();
         if(result.retry){
-            setTimeout(getNumPropUser(username), 1000);
+            setTimeout(() => getNumPropUser(username), 1000);
         }else{
             console.log("Properties fetched:", result);
             localStorage.setItem('numOfPropertiesBought', JSON.stringify(result[0].CountProp));
@@ -211,7 +204,7 @@ async function updateBalanceTable(NetPropValue) {
         });
         const result = await response.json();
         if(result.retry){
-            setTimeout(updateBalanceTable(NetPropValue), 1000);
+            setTimeout(() => updateBalanceTable(NetPropValue), 1000);
         }else{
             console.log("value updates successfully:", result);
             return result;

@@ -2,26 +2,9 @@ require("dotenv").config();
 const mysql = require("mysql2");
 const { connection, reconnectToDB } = require('../db');
 
-// Connect to the database
-/*const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "07Adi@2005thya",
-  database: "db",
-  port: 3306,
-});
-
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: 3306,
-});*/
 
 const pool = connection(); 
 
-// User Signup
 const userSignup = async (req, res) => {
     const pool = await connection();
     try{
@@ -44,21 +27,21 @@ const userSignup = async (req, res) => {
     }
   /*pool.query(sql, [username, password], (err,result) => {
     if (err) {
-      console.error("❌ Signup error:", err);
+      console.error("Signup error:", err);
       return res.status(500).json({ error: "Database error" });
     }
 
     const sql1 = "INSERT INTO Balances (Username, Level, Total, Balance) VALUES(?,?,?,?)";
     pool.query(sql1, [username, 0, 10000, 10000], (err,result)=>{
       if (err) {
-        console.error("❌ Signup error:", err);
+        console.error("Signup error:", err);
         return res.status(500).json({ error: "Database error" });
       }
 
       const sql2 = "INSERT INTO Statistics (Username, NoOfBusiness, Real_estate) VALUES(?,?,?)";
       pool.query(sql2, [username, 0, 0], (err,result)=>{
         if (err) {
-          console.error("❌ Signup error:", err);
+          console.error("Signup error:", err);
           return res.status(500).json({ error: "Database error" });
         }
 
@@ -88,7 +71,7 @@ const userUniquenessCheck = async (req, res) => {
     const sql = "SELECT * FROM Users WHERE Username = ?";
     pool.query(sql, [username], (err, results) => {
       if (err) {
-        console.error("❌ Error checking uniqueness:", err);
+        console.error("Error checking uniqueness:", err);
         return res.status(500).json({ error: "Database error" });
       }
       if (results.length > 0) {
@@ -118,7 +101,7 @@ const userLogin = async (req, res) => {
     const sql = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
     pool.query(sql, [username, password], (err, results) => {
       if (err) {
-        console.error("❌ Login error:", err);
+        console.error("Login error:", err);
         return res.status(500).json({ error: "Database error" });
       }
       if (results.length === 0) {

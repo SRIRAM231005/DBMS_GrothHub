@@ -70,10 +70,11 @@ async function fetchPrjAdditionTime(username,businessname,prjname) {
 
         prjDetails = await response.json();
         if(prjDetails.retry){
-            setTimeout(fetchPrjAdditionTime(username,businessname,prjname), 1000);
+            setTimeout(() => fetchPrjAdditionTime(username,businessname,prjname), 1000);
         }else{
             console.log("repeat:",prjDetails);
-            //return data; // Return fetched data
+            window.location.href = 'IT.html';
+            //return data;
         }
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);
@@ -103,7 +104,7 @@ async function fetchShowDevList(username,businessName,role){
         });
         developers = await response.json();
         if(developers.retry){
-            setTimeout(fetchShowDevList(username,businessName,role), 1000);
+            setTimeout(() => fetchShowDevList(username,businessName,role), 1000);
         }else{
             console.log("Developers:",developers);
             showDevList(developers,role);
@@ -127,7 +128,6 @@ function getIndex(role){
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Ensure PrjList exists and has enough values
     if (PrjInfo) {
         document.querySelector(".c1").textContent = `</> ${PrjInfo.NoOfDev}`;
         document.querySelector(".c2").textContent = `🎨 ${PrjInfo.NoOfDesigner}`;
@@ -153,15 +153,12 @@ function showDevList(List,role){
     // const DevelopersListButton = document.getElementById('developmentTeam');
     // console.log(DevelopersListButton);
         ListBtn.addEventListener('click', ()=>{
-            // Render the developers list in the UI
-            let developersList = document.querySelector(`.developer-list${index+1}`); // Ensure this div exists in your HTML
+            let developersList = document.querySelector(`.developer-list${index+1}`); 
             console.log("11:",developersList);
-            developersList.innerHTML = ''; // Clear previous data
+            developersList.innerHTML = ''; 
 
-            // Ensure the developer list is visible
             // document.getElementById('developerMenu').style.display = 'block';
 
-            // Create and append header row
             const header = document.createElement('div');
             header.classList.add('developer-header');
             header.innerHTML = `
@@ -184,7 +181,6 @@ function showDevList(List,role){
                 developersList.appendChild(devElement);
             });
     
-            // Show the developers menu
             const ListDisplay = document.querySelector(`.developer-menu${index+1}`);
             if (!ListDisplay.classList.contains("expanded")) {
                 ListDisplay.classList.add("expanded");
@@ -193,6 +189,7 @@ function showDevList(List,role){
             }
 
             document.querySelector(`.btn${index}`).addEventListener('click', () => {
+                alert('Confirm button clicked!');
                 console.log('Confirm button clicked!');
     
                 document.querySelectorAll('.emp-checkbox:checked').forEach(checkbox => {
@@ -269,10 +266,10 @@ async function fetchChooseEmpforPrj(username,businessname,empName,prjname) {
 
         EmpDetails = await response.json();
         if(EmpDetails.retry){
-            setTimeout(fetchChooseEmpforPrj(username,businessname,empName,prjname), 1000);
+            setTimeout(() => fetchChooseEmpforPrj(username,businessname,empName,prjname), 1000);
         }else{
             console.log(EmpDetails);
-            //return data; // Return fetched data
+            //return data;
         }
     } catch (error) {
         console.error("❌ Error fetching IT main business:", error);

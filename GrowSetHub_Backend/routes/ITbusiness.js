@@ -1,9 +1,10 @@
 const express = require("express");
-const {ITbusiness, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition,getPrjProgress,getPrjComp,changeStatusStopProj,changeStatusCompProj} = require('../controller/ITbusiness_control');
+const {ITbusiness, GetITBusinessDetails, ITUserProjects, ITUserEmployees, ITProjectsEmployees, ITEmployeesFire, ITEmployeesHire, ITEmployeesAfterHire, showDevList, HireSelectedEmployees,BusEmpPrjStart,getPrjProgressCount,getPrjCompCount,PrjCompTimeAddition,getPrjProgress,getPrjComp,changeStatusStopProj,changeStatusCompProj} = require('../controller/ITbusiness_control');
 
 const ITbusinessRouter = express.Router();
 
 ITbusinessRouter.route('/ITmainbusiness').post(ITbusiness);
+ITbusinessRouter.route('/GetITBusinessDetails').post(GetITBusinessDetails);
 ITbusinessRouter.route('/ITUserProjects').post(ITUserProjects);
 ITbusinessRouter.route('/ITUserEmployees').post(ITUserEmployees);
 ITbusinessRouter.route('/ITProjectsEmployees').post(ITProjectsEmployees);

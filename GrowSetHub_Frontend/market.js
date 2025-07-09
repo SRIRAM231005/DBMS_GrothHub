@@ -42,9 +42,7 @@ const filterButtons = document.querySelectorAll('.filter-btn');
 
 fetchGetAllRealEstatesNotbelongingtoUser(credentials);
 
-// Store properties data    
 
-// Function to create property card HTML
 function createPropertyCard(property) {
     return `
         <div class="property-card">
@@ -65,22 +63,18 @@ function createPropertyCard(property) {
 }
 
 
-// Function to render property list
 function renderProperties(sortedProperties) {
     propertyList.innerHTML = sortedProperties.map(property => 
         createPropertyCard(property)
     ).join('');
 }
 
-// Add click handlers to filter buttons
+
 filterButtons.forEach(button => {
     button.addEventListener('click', () => {
-        // Remove active class from all buttons
         filterButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
         button.classList.add('active');
 
-        // Sort properties based on button text
         const sortedProperties = [...properties1].sort((a, b) => {
             if (button.textContent === 'Expensive first') {
                 return b.price - a.price;
@@ -89,13 +83,10 @@ filterButtons.forEach(button => {
             }
         });
 
-        // Render sorted properties
         renderProperties(sortedProperties);
     });
 });
 
-// Initial render with expensive first
-// renderProperties([...properties].sort((a, b) => b.price - a.price));
 
 let properties1;
 async function fetchGetAllRealEstatesNotbelongingtoUser(username){
@@ -110,10 +101,9 @@ async function fetchGetAllRealEstatesNotbelongingtoUser(username){
         properties1 = await response.json();
         console.log("propertiesList:",properties1);
         localStorage.setItem('numOfPropertiesNotBought', JSON.stringify(properties1.length));
-        // Initial render with expensive first
+        
         renderProperties([...properties1].sort((a, b) => b.price - a.price));
-
-        //return data;
+        
     } catch (error) {
         console.error("❌ Error fetching properties List :", error);
         return null;
