@@ -27,15 +27,15 @@
 ### Screenshots:
 
 <img src="./public/images/login.jpeg" width="600" />
-<img src="./public/images/profile.jpeg" width="600" />
-<img src="./public/images/cardbalance.jpeg" width="600" />
-<img src="./public/images/IT.jpeg" width="600" />
+<img src="./public/images/profile.png" width="600" />
+<img src="./public/images/cardbalance.png" width="600" />
+<img src="./public/images/IT.png" width="600" />
 <img src="./public/images/bank2.jpeg" width="600" />
 <img src="./public/images/business.jpeg" width="600" />
 <img src="./public/images/myproperty.jpeg" width="600" />
 <img src="./public/images/investing.jpeg" width="600" />
-<img src="./public/images/realestate.jpeg" width="600" />
-<img src="./public/images/shares.jpeg" width="600" />
+<img src="./public/images/realestate.png" width="600" />
+<img src="./public/images/shares.png" width="600" />
 <img src="./public/images/leaderboard.jpeg" width="600" />
 
 
