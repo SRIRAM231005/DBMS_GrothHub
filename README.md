@@ -26,17 +26,37 @@
 
 ### Screenshots:
 
-<img src="./public/images/login.jpeg" width="600" />
-<img src="./public/images/profile.png" width="600" />
-<img src="./public/images/cardbalance.png" width="600" />
-<img src="./public/images/IT.png" width="600" />
-<img src="./public/images/bank2.jpeg" width="600" />
-<img src="./public/images/business.jpeg" width="600" />
-<img src="./public/images/myproperty.jpeg" width="600" />
-<img src="./public/images/investing.jpeg" width="600" />
-<img src="./public/images/realestate.png" width="600" />
+#### Stocks Graph
+<img src="./public/images/stocks.png" width="600" />
+
+#### Shares Market
 <img src="./public/images/shares.png" width="600" />
+
+#### Real Estate Market
+<img src="./public/images/realestate.png" width="600" />
+<img src="./public/images/myproperty.jpeg" width="600" />
+
+#### My Businesses
+<img src="./public/images/business.jpeg" width="600" />
+
+#### IT Business
+<img src="./public/images/IT.png" width="600" />
+
+#### Bank Business
+<img src="./public/images/bank2.jpeg" width="600" />
+
+#### Balance Card
+<img src="./public/images/cardbalance.png" width="600" />
+
+#### Profile Page
+<img src="./public/images/profile.png" width="600" />
+
+#### Login Page
+<img src="./public/images/login.jpeg" width="600" />
+
+#### Leaderboard
 <img src="./public/images/leaderboard.jpeg" width="600" />
+
 
 
 ---
