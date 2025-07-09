@@ -51,9 +51,6 @@
 #### Profile Page
 <img src="./public/images/profile.png" width="600" />
 
-#### Login Page
-<img src="./public/images/login.jpeg" width="600" />
-
 #### Leaderboard
 <img src="./public/images/leaderboard.jpeg" width="600" />
 
@@ -89,5 +86,3 @@
 <img src="./public/images/schemadiagram.jpg" alt="SchemaDiagram" width="600" />
 
 ---
-
-```
