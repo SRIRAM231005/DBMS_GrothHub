@@ -6,12 +6,6 @@
 
 ---
 
-## 2. Deployed Link
-
-[👉 Visit GrowthSetHub Live](https://your-deployed-site-link.com)
-
----
-
 ## 3. Features & Screenshots
 
 ### Core Features:
