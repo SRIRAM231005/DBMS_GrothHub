@@ -1,4 +1,4 @@
-# GrowthSetHub - Business Simulator
+# GrowSetHub - Business Simulator
 
 ## 1. Overview
 
